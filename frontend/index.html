@@ -4,765 +4,1029 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Learning Routine - Legacy Edition v20.1</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4\"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,700;1,700&family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js\"></script>
     <style>
         body { background-color: #060813; color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; }
         .main-title { font-family: 'Playfair Display', serif; }
         .tab-btn { background: rgba(30, 41, 59, 0.3); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s ease; }
-        .tab-btn.active { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-color: #3b82f6; box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3); }
-        .glass-card { background: rgba(13, 18, 41, 0.45); border: 1px solid rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); }
-        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 99px; }
-        .day-grid-cell { background: rgba(7, 10, 29, 0.7); border: 1px solid rgba(255, 255, 255, 0.02); transition: all 0.2s ease; }
-        .day-grid-cell:hover { border-color: rgba(59, 130, 246, 0.3); background: rgba(13, 19, 48, 0.8); }
-        .day-grid-cell.active-day { background: linear-gradient(145deg, #0f1c42 0%, #060a1f 100%); border-color: #2563eb; box-shadow: inset 0 0 12px rgba(37, 99, 219, 0.2); }
+        .tab-btn.active { background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%); color: white; border-color: #6366f1; box-shadow: 0 4px 20px rgba(79, 70, 229, 0.4); }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0b0f19; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; rounded: 10px; }
+        .modal-animate { animation: fadeIn 0.2s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
-<body class="min-h-screen pb-16 antialiased">
+<body class="min-h-screen pb-12 antialiased selection:bg-indigo-500 selection:text-white">
 
-    <header class="sticky top-0 z-50 bg-[#060813]/80 border-b border-gray-900/60 backdrop-blur-xl px-4 py-3.5">
+    <header class="border-b border-gray-900 bg-[#090d22]/80 backdrop-blur-md sticky top-0 z-40 px-4 py-3">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-700 flex items-center justify-center shadow-lg shadow-blue-500/20">
-                    <i class="fa-solid fa-graduation-cap text-sm text-white"></i>
+                <div class="h-9 w-9 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                    <i class="fa-solid fa-graduation-cap text-white text-sm"></i>
                 </div>
                 <div>
-                    <h1 class="text-md font-bold text-white tracking-wide uppercase">Alim's Workspace</h1>
-                    <p class="text-[10px] text-gray-400 font-medium tracking-wider">CIVIL ENGINEERING & DEPLOYMENT ARCHITECTURE</p>
+                    <h1 class="main-title text-base font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">CORE SYSTEM</h1>
+                    <p class="text-[10px] tracking-widest text-indigo-400 uppercase font-bold">Personal Progress Tracker</p>
                 </div>
             </div>
             
-            <div class="flex items-center gap-1.5 overflow-x-auto max-w-full custom-scrollbar p-0.5">
-                <button onclick="switchWorkspaceActiveTab('workspace')" id="tab-workspace" class="tab-btn active text-xs font-semibold px-4 py-2 rounded-xl text-gray-300 flex items-center gap-1.5 whitespace-nowrap cursor-pointer"><i class="fa-solid fa-calendar-check text-[11px]"></i> Routine Hub</button>
-                <button onclick="switchWorkspaceActiveTab('injector')" id="tab-injector" class="tab-btn text-xs font-semibold px-4 py-2 rounded-xl text-gray-400 hover:text-white flex items-center gap-1.5 whitespace-nowrap cursor-pointer"><i class="fa-solid fa-circle-plus text-[11px]"></i> Inject Vector</button>
-                <button onclick="switchWorkspaceActiveTab('scheduler')" id="tab-scheduler" class="tab-btn text-xs font-semibold px-4 py-2 rounded-xl text-gray-400 hover:text-white flex items-center gap-1.5 whitespace-nowrap cursor-pointer"><i class="fa-solid fa-sliders text-[11px]"></i> Edit Blueprint</button>
-                <button onclick="switchWorkspaceActiveTab('analytics')" id="tab-analytics" class="tab-btn text-xs font-semibold px-4 py-2 rounded-xl text-gray-400 hover:text-white flex items-center gap-1.5 whitespace-nowrap cursor-pointer"><i class="fa-solid fa-chart-pie text-[11px]"></i> Analytics</button>
-                <button onclick="switchWorkspaceActiveTab('history')" id="tab-history" class="tab-btn text-xs font-semibold px-4 py-2 rounded-xl text-gray-400 hover:text-white flex items-center gap-1.5 whitespace-nowrap cursor-pointer"><i class="fa-solid fa-database text-[11px]"></i> Archive</button>
+            <div class="flex items-center gap-4 text-xs font-semibold">
+                <div id="sync-indicator" class="opacity-0 transition-opacity bg-indigo-950 text-indigo-300 px-3 py-1.5 rounded-lg border border-indigo-900/50 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-notch animate-spin text-indigo-400"></i> <span id="sync-text">Saving data...</span>
+                </div>
+                <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-gray-900 text-gray-400 flex items-center gap-2">
+                    <i class="fa-regular fa-calendar text-indigo-400"></i> <input type="date" id="date-picker" onchange="onDateChanged()" class="bg-transparent text-white border-none outline-none font-bold text-xs cursor-pointer">
+                </div>
             </div>
         </div>
     </header>
 
+    <nav class="max-w-7xl mx-auto px-4 mt-6">
+        <div class="bg-[#090d22] border border-gray-900/60 p-1.5 rounded-xl grid grid-cols-3 gap-2">
+            <button onclick="switchTab('workbench')" id="btn-workbench" class="tab-btn active px-4 py-2.5 rounded-lg font-bold text-xs flex items-center justify-center gap-2 cursor-pointer">
+                <i class="fa-solid fa-cubes"></i> Workbench
+            </button>
+            <button onclick="switchTab('progress')" id="btn-progress" class="tab-btn px-4 py-2.5 rounded-lg font-bold text-xs flex items-center justify-center gap-2 cursor-pointer">
+                <i class="fa-solid fa-chart-pie"></i> Analytics & Goals
+            </button>
+            <button onclick="switchTab('routine')" id="btn-routine" class="tab-btn px-4 py-2.5 rounded-lg font-bold text-xs flex items-center justify-center gap-2 cursor-pointer">
+                <i class="fa-solid fa-calendar-days"></i> Master Routine
+            </button>
+        </div>
+    </nav>
+
     <main class="max-w-7xl mx-auto px-4 mt-6">
-        
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div class="glass-card rounded-2xl p-4 border border-gray-900/40 text-center md:text-left">
-                <span class="text-[9px] uppercase font-bold text-gray-500 tracking-widest block mb-1">Today's Remaining</span>
-                <div class="text-xl font-black text-rose-400" id="stat-pending-counter">0</div>
-            </div>
-            <div class="glass-card rounded-2xl p-4 border border-gray-900/40 text-center md:text-left">
-                <span class="text-[9px] uppercase font-bold text-gray-500 tracking-widest block mb-1">Total Finished Matrix</span>
-                <div class="text-xl font-black text-emerald-400" id="stat-completed-counter">0</div>
-            </div>
-            <div class="glass-card rounded-2xl p-4 border border-gray-900/40 text-center md:text-left">
-                <span class="text-[9px] uppercase font-bold text-gray-500 tracking-widest block mb-1">Yield Efficiency Ratio</span>
-                <div class="text-xl font-black text-blue-400" id="stat-efficiency-ratio">0%</div>
-            </div>
-            <div class="glass-card rounded-2xl p-4 border border-gray-900/40 text-center md:text-left">
-                <span class="text-[9px] uppercase font-bold text-gray-500 tracking-widest block mb-1">Ecosystem Log Rows</span>
-                <div class="text-xl font-black text-indigo-400" id="stat-total-records">0</div>
+
+        <div id="view-workbench" class="tab-view block space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <div class="lg:col-span-1 bg-[#090d22] border border-gray-900 p-5 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-xs font-black uppercase tracking-widest text-indigo-400">Daily Injector</h2>
+                            <span id="current-day-label" class="text-[10px] font-bold bg-slate-900 text-gray-300 px-2 py-0.5 rounded border border-gray-800">...</span>
+                        </div>
+                        <p class="text-[11px] text-gray-500 mb-4">আজকের রুটিনে নির্ধারিত ক্লাস বা টপিকগুলো নিচে দেখুন। এক ক্লিকে সেগুলোকে ট্র্যাকিং লিস্টে যুক্ত করতে পারবেন।</p>
+                        <div id="injector-slots-area" class="space-y-2.5">
+                            </div>
+                    </div>
+                    
+                    <div class="mt-6 pt-4 border-t border-gray-900/60">
+                        <h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2">Custom Topic Add</h3>
+                        <div class="space-y-2 text-xs">
+                            <select id="manual-cat" onchange="populateInjectorSubjects()" class="w-full bg-slate-950 border border-gray-900 rounded-lg px-3 py-2 text-white outline-none focus:border-indigo-500"></select>
+                            <select id="manual-sub" class="w-full bg-slate-950 border border-gray-900 rounded-lg px-3 py-2 text-white outline-none focus:border-indigo-500"></select>
+                            <input type="text" id="manual-name" placeholder="Topic name / Lecture detail" class="w-full bg-slate-950 border border-gray-900 rounded-lg px-3 py-2 text-white outline-none focus:border-indigo-500">
+                            <button onclick="injectCustomTopic()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg cursor-pointer transition-all">Add to Today's Logs</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 bg-[#090d22] border border-gray-900 p-5 rounded-2xl">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h2 class="text-xs font-black uppercase tracking-widest text-indigo-400">Active Logging Matrix</h2>
+                            <p class="text-[11px] text-gray-500">আজকের দিনে যোগ করা পড়ার টপিকগুলোর তালিকা</p>
+                        </div>
+                        <span id="matrix-counter-badge" class="text-xs bg-indigo-950 text-indigo-300 border border-indigo-900/50 px-2.5 py-1 rounded-lg font-black">0 Topics</span>
+                    </div>
+                    
+                    <div id="active-matrix-list" class="space-y-3 max-h-[500px] overflow-y-auto custom-scrollbar pr-1">
+                        </div>
+                </div>
+
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <div id="view-progress" class="tab-view hidden space-y-8">
             
-            <div class="lg:col-span-4 space-y-6">
-                
-                <div class="glass-card p-4.5 rounded-2xl border border-gray-900/40 shadow-xl">
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-calendar-day text-blue-500 mr-1"></i> Context Node Focus</span>
-                        <button onclick="syncCalendarTimelineFocusToPresentTimeDate()" class="text-[9px] text-blue-400 font-bold tracking-tight hover:underline uppercase bg-blue-950/40 border border-blue-900/30 px-2 py-0.5 rounded-md">Today</button>
+            <div class="bg-gradient-to-r from-[#0b132b] to-[#080d1f] border border-indigo-950 p-6 rounded-2xl shadow-2xl">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
+                    <div>
+                        <h3 class="text-sm font-black uppercase tracking-widest text-indigo-400 flex items-center gap-2">
+                            <i class="fa-solid fa-flag-checkered text-rose-500 animate-pulse"></i> Category-wise Race to Finish Line
+                        </h3>
+                        <p class="text-[11px] text-gray-500">প্রতিটি ক্যাটাগরির ফিনিশ ফ্ল্যাগে পৌঁছাতে আপনার অগ্রগতি এবং দূরত্ব লাইভ ট্র্যাক করুন।</p>
                     </div>
-                    <div class="grid grid-cols-4 gap-2 text-center" id="calendar-render-grid-cells">
+                    <button onclick="openGoalManagerModal()" class="px-4 py-2 bg-indigo-600/20 border border-indigo-500/30 hover:bg-indigo-600 hover:text-white text-indigo-300 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
+                        <i class="fa-solid fa-gear"></i> Manage Goals
+                    </button>
+                </div>
+                
+                <div id="goal-tracking-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="bg-slate-950 border border-gray-900 p-4 rounded-xl text-center">
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-gray-500 block mb-1">Total Topics Logged</span>
+                    <span id="stat-total" class="text-2xl font-black text-white">0</span>
+                </div>
+                <div class="bg-slate-950 border border-gray-900 p-4 rounded-xl text-center">
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-emerald-500 block mb-1">Completed Topics</span>
+                    <span id="stat-complete" class="text-2xl font-black text-emerald-400">0</span>
+                </div>
+                <div class="bg-slate-950 border border-gray-900 p-4 rounded-xl text-center">
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-rose-500 block mb-1">Pending Standby</span>
+                    <span id="stat-pending" class="text-2xl font-black text-rose-400">0</span>
+                </div>
+                <div class="bg-slate-950 border border-gray-900 p-4 rounded-xl text-center">
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-indigo-400 block mb-1">Success Ratio</span>
+                    <span id="stat-ratio" class="text-2xl font-black text-indigo-400">0%</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-[#090d22] border border-gray-900 p-5 rounded-2xl lg:col-span-1">
+                    <h3 class="text-xs font-black uppercase tracking-widest text-orange-400 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Retention Review Queue
+                    </h3>
+                    <p class="text-[11px] text-gray-500 mb-4">স্পেসড রিপিটিশন অনুযায়ী যে টপিকগুলো আজ রিভিশন দেওয়া দরকার:</p>
+                    <div id="review-queue-box" class="space-y-2.5 max-h-[350px] overflow-y-auto custom-scrollbar pr-1">
                         </div>
                 </div>
 
-                <div class="glass-card p-5 rounded-2xl border border-gray-900/40 shadow-xl space-y-4">
-                    <h3 class="text-xs font-black tracking-widest uppercase text-blue-400 border-b border-gray-900 pb-2 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Operational Node Params</h3>
+                <div class="bg-[#090d22] border border-gray-900 p-5 rounded-2xl lg:col-span-2">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
+                        <div>
+                            <h3 class="text-xs font-black uppercase tracking-widest text-indigo-400">Chronological Database Logs</h3>
+                            <p class="text-[11px] text-gray-500">যেকোনো তারিখ সিলেক্ট করে আগের সমস্ত রেকর্ড হিস্ট্রি দেখুন</p>
+                        </div>
+                        <input type="date" id="history-date-picker" onchange="loadHistoryDateLog()" class="bg-slate-950 border border-gray-900 font-bold text-xs text-white px-3 py-1.5 rounded-lg outline-none cursor-pointer">
+                    </div>
                     
-                    <div class="space-y-3.5 text-xs">
-                        <div>
-                            <label class="block mb-1 text-gray-400 font-medium">Target Context Execution Date</label>
-                            <input type="date" id="form-field-date" class="w-full bg-[#040613] border border-gray-800/80 rounded-xl p-2.5 text-white font-mono outline-none focus:border-blue-500 transition shadow-inner">
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-400 font-medium">Domain Classification Category Layout</label>
-                            <select id="form-field-category" onchange="syncLinkedCategorySubjectsMappingDropdownPresets()" class="w-full bg-[#040613] border border-gray-800/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition shadow-inner">
-                                <option value="AI & Code">AI & Code</option>
-                                <option value="Civil Engr">Civil Engr</option>
-                                <option value="BCS & Job Prep">BCS & Job Prep</option>
-                                <option value="Skills Vector">Skills Vector</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-400 font-medium">Core Bound Structural Subject Index</label>
-                            <select id="form-field-subject" class="w-full bg-[#040613] border border-gray-800/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition shadow-inner">
-                                </select>
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-400 font-medium">Topic Definition Statement</label>
-                            <input type="text" id="form-field-topic" class="w-full bg-[#040613] border border-gray-800/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition shadow-inner placeholder:text-gray-700" placeholder="e.g. Frame Matrix Method Evaluation">
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-400 font-medium">External Cloud Resource URI</label>
-                            <input type="url" id="form-field-url" class="w-full bg-[#040613] border border-gray-800/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition shadow-inner placeholder:text-gray-700" placeholder="https://drive.google.com/...">
-                        </div>
-                        
-                        <div class="bg-[#030510]/80 border border-gray-900/80 p-3 rounded-xl space-y-2">
-                            <span class="text-[9px] uppercase font-bold text-gray-500 tracking-wider block">Anki Spacing Buffer Logic Pipeline</span>
-                            <div class="grid grid-cols-2 gap-2 text-[10px]">
-                                <label class="flex items-center gap-1.5 cursor-pointer text-gray-300">
-                                    <input type="radio" name="spacing-mode" value="standard" checked onchange="toggleIntervalCustomModeDisplayState()" class="accent-blue-500"> Standard (1,3,7,14,30)
-                                </label>
-                                <label class="flex items-center gap-1.5 cursor-pointer text-gray-300">
-                                    <input type="radio" name="spacing-mode" value="custom" onchange="toggleIntervalCustomModeDisplayState()" class="accent-blue-500"> Custom Delta Offset
-                                </label>
+                    <div class="bg-slate-950 border border-gray-900/60 p-4 rounded-xl">
+                        <h4 id="history-box-title" class="text-xs font-bold text-gray-400 mb-3">Topics Logged on: None</h4>
+                        <div id="history-box-content" class="space-y-2 max-h-[250px] overflow-y-auto custom-scrollbar pr-1">
                             </div>
-                            <div id="custom-interval-input-row" class="hidden pt-1">
-                                <input type="number" id="form-field-custom-interval" min="1" max="180" class="w-full bg-[#06091f] border border-gray-800 rounded-lg p-2 text-white font-mono text-center outline-none" placeholder="Days Interval Sequence">
-                            </div>
-                        </div>
-
-                        <button onclick="commitInjectedTopicDataRowToCluster()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 shadow-lg shadow-blue-900/20 py-2.5 rounded-xl text-white font-bold tracking-wide transition transform active:scale-98 cursor-pointer">Commit Transaction Log Node</button>
                     </div>
                 </div>
-
             </div>
+        </div>
 
-            <div class="lg:col-span-8">
+        <div id="view-routine" class="tab-view hidden space-y-4">
+            <div class="bg-[#090d22] border border-gray-900 p-5 rounded-2xl">
+                <div class="flex justify-between items-center mb-3">
+                    <div>
+                        <h2 class="text-xs font-black uppercase tracking-widest text-indigo-400">Routine Engine Settings</h2>
+                        <p class="text-[11px] text-gray-500">আপনার ৭ দিনের মাস্টার ক্লাসরুম/পড়ার রুটিন এডিট বা কনফিগার করুন</p>
+                    </div>
+                    <button onclick="saveRoutineEngine()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs flex items-center gap-2 transition-all cursor-pointer">
+                        <i class="fa-solid fa-floppy-disk"></i> Save Routine Layout
+                    </button>
+                </div>
                 
-                <div id="viewport-workspace" class="workspace-view-node space-y-6">
-                    <div class="glass-card p-5 rounded-2xl border border-gray-900/40 shadow-2xl">
-                        <div class="flex justify-between items-center mb-4 border-b border-gray-900 pb-3">
-                            <div>
-                                <h2 class="text-base font-bold main-title text-white tracking-wide" id="workspace-card-header-date">Workspace Logging Cluster...</h2>
-                                <p class="text-[10px] text-gray-400 font-mono tracking-tight uppercase" id="workspace-card-header-dayname">Baseline Day Index Tag</p>
-                            </div>
-                            <span class="text-[9px] font-mono font-bold uppercase tracking-widest px-2.5 py-1 rounded-md bg-blue-950/60 border border-blue-900/40 text-blue-400">Live Context Data Engine</span>
-                        </div>
-
-                        <div class="space-y-3.5" id="workspace-render-target-list">
-                            </div>
-                    </div>
+                <div class="overflow-x-auto custom-scrollbar border border-gray-900 rounded-xl">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-950 text-gray-400 font-bold uppercase text-[10px] tracking-wider border-b border-gray-900">
+                                <th class="p-3 border-r border-gray-900">Day Name</th>
+                                <th class="p-3 border-r border-gray-900 text-center">Slot 1 (8-10)</th>
+                                <th class="p-3 border-r border-gray-900 text-center">Slot 2 (10-12)</th>
+                                <th class="p-3 border-r border-gray-900 text-center">Slot 3 (2-4)</th>
+                                <th class="p-3 border-r border-gray-900 text-center">Slot 4 (4-6)</th>
+                                <th class="p-3 border-r border-gray-900 text-center">Slot 5 (7-9)</th>
+                                <th class="p-3 text-center">Slot 6 (9-11)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="routine-table-body" class="divide-y divide-gray-900 text-gray-300">
+                            </tbody>
+                    </table>
                 </div>
-
-                <div id="viewport-injector" class="workspace-view-node hidden">
-                    <div class="glass-card p-5 rounded-2xl border border-gray-900/40 shadow-2xl">
-                        <h2 class="text-sm font-bold uppercase tracking-wider mb-3 text-indigo-400"><i class="fa-solid fa-list-check"></i> Pending Transaction Buffers Sequence</h2>
-                        <div class="space-y-2.5 max-h-[500px] overflow-y-auto custom-scrollbar pr-1" id="injector-pending-render-target">
-                            </div>
-                    </div>
-                </div>
-
-                <div id="viewport-scheduler" class="workspace-view-node hidden">
-                    <div class="glass-card p-5 rounded-2xl border border-gray-900/40 shadow-2xl">
-                        <div class="flex justify-between items-center mb-4 border-b border-gray-900 pb-3">
-                            <div>
-                                <h2 class="text-sm font-bold text-white uppercase tracking-wider">Baseline Blueprint Routine Layout Matrix</h2>
-                                <p class="text-[10px] text-gray-500">Static template architecture parameters config profiles</p>
-                            </div>
-                            <button onclick="commitStaticRoutineTemplateMatrixToCluster()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-1.5 rounded-lg text-xs tracking-tight transition cursor-pointer">Save Blueprint</button>
-                        </div>
-                        <div class="space-y-4 max-h-[500px] overflow-y-auto custom-scrollbar pr-1" id="scheduler-render-matrix-target">
-                            </div>
-                    </div>
-                </div>
-
-                <div id="viewport-analytics" class="workspace-view-node hidden">
-                    <div class="glass-card p-5 rounded-2xl border border-gray-900/40 shadow-2xl space-y-6">
-                        <h2 class="text-sm font-bold uppercase text-blue-400 tracking-wider"><i class="fa-solid fa-chart-line"></i> Category Yield Velocity Tracking Graph Metrics</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="analytics-progress-tab-cards-target">
-                            </div>
-                    </div>
-                </div>
-
-                <div id="viewport-history" class="workspace-view-node hidden space-y-4">
-                    <div class="glass-card p-4 rounded-xl border border-gray-900/30 flex gap-3 items-center">
-                        <i class="fa-solid fa-magnifying-glass text-gray-600 text-xs pl-1"></i>
-                        <input type="text" id="archive-search-field-query" oninput="executeArchiveLogsFilteringSearch()" class="w-full bg-transparent border-none text-xs text-white outline-none placeholder:text-gray-700 font-medium" placeholder="Query historical statements, database tags, or structural subject indices match parameter logs...">
-                    </div>
-                    <div class="glass-card p-5 rounded-2xl border border-gray-900/40 shadow-2xl">
-                        <h3 class="text-xs font-bold font-mono uppercase tracking-wider text-gray-400 mb-3" id="history-box-title">Historical Backlog Tracker</h3>
-                        <div class="space-y-2.5 max-h-[400px] overflow-y-auto custom-scrollbar pr-1" id="archive-logs-render-target">
-                            </div>
-                    </div>
-                </div>
-
             </div>
-
         </div>
 
     </main>
 
+    <div id="edit-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-[#0c122c] border border-indigo-950 rounded-2xl w-full max-w-md p-6 shadow-2xl modal-animate">
+            <h3 class="text-sm font-black text-indigo-400 uppercase tracking-wider mb-4"><i class="fa-solid fa-pen-to-square"></i> Modify Log Entry</h3>
+            <div class="space-y-4 text-xs">
+                <div>
+                    <label class="block text-gray-400 font-bold mb-1">Topic Name</label>
+                    <input type="text" id="modal-topic-name" class="w-full bg-slate-950 border border-gray-800 rounded-lg px-3 py-2 text-white outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-gray-400 font-bold mb-1">External Note / Drive Resource URL</label>
+                    <input type="url" id="modal-note-url" placeholder="https://..." class="w-full bg-slate-950 border border-gray-800 rounded-lg px-3 py-2 text-cyan-400 outline-none focus:border-indigo-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3 bg-slate-950 p-3 rounded-xl border border-gray-900">
+                    <div>
+                        <label class="block text-[10px] uppercase font-bold text-gray-500 mb-1">Custom Review</label>
+                        <select id="modal-custom-review-select" onchange="toggleCustomReviewFields()" class="w-full bg-[#070b1a] border border-gray-800 rounded-lg px-2 py-1.5 text-white text-[11px] outline-none">
+                            <option value="none">No custom review</option>
+                            <option value="set">Set Interval</option>
+                        </select>
+                    </div>
+                    <div id="modal-custom-days-wrapper" class="hidden">
+                        <label class="block text-[10px] uppercase font-bold text-gray-500 mb-1">Interval Days</label>
+                        <input type="number" id="modal-custom-days" min="1" placeholder="e.g. 5" class="w-full bg-[#070b1a] border border-gray-800 rounded-lg px-2 py-1.5 text-white text-[11px] outline-none text-center">
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-between items-center mt-6 border-t border-gray-900 pt-4">
+                <button onclick="deleteTopicAction()" class="px-3 py-2 bg-rose-950/40 border border-rose-900/30 hover:bg-rose-600 text-rose-400 hover:text-white font-bold text-xs rounded-xl cursor-pointer transition-all">Delete Entry</button>
+                <div class="flex gap-2">
+                    <button onclick="closeEditModal()" class="px-4 py-2 text-xs font-medium text-gray-400 cursor-pointer">Cancel</button>
+                    <button onclick="saveTopicAction()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl cursor-pointer">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="goal-manager-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-[#0c122c] border border-indigo-950 rounded-2xl w-full max-w-md p-6 shadow-2xl modal-animate">
+            <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-sliders text-indigo-400"></i> Setup Target Finish Lines
+            </h3>
+            <p class="text-xs text-gray-400 mb-4">প্রতিটি ক্যাটাগরির জন্য কতটি টপিক শেষ করতে চান (Goal Target) তা নির্ধারণ করুন।</p>
+            
+            <div id="goal-inputs-container" class="space-y-3 max-h-[300px] overflow-y-auto custom-scrollbar pr-1">
+                </div>
+            
+            <div class="flex justify-end gap-3 mt-6 border-t border-gray-900 pt-4">
+                <button onclick="closeGoalManagerModal()" class="px-4 py-2 text-xs font-medium text-gray-400 cursor-pointer">Cancel</button>
+                <button onclick="saveGoalTargets()" class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-indigo-600 text-white font-bold text-xs rounded-xl shadow-lg cursor-pointer">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Targets
+                </button>
+            </div>
+        </div>
+    </div>
+
+
     <script>
-        const API_BASE_ENDPOINT_URI = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:5000' : '';
+        const API_BASE = window.location.origin + '/api';
 
-        // RUNTIME STATE REGISTRIES
-        let dbTopics = {};
-        let dbRoutine = {};
-        let selectedTimelineContextDateStr = new Date().toISOString().split('T')[0];
-
-        // STATIC HARDCODED DATA STRUCT PRESETS MAP MATCH REFERENCES
-        const clusterCategorySubjectsPresetsMatrixMap = {
-            "AI & Code": ["AI Engineering – L2", "JavaScript", "Typing Practice", "Programming Frameworks", "Software systems matrix"],
-            "Civil Engr": ["Transportation", "Earth Quake Engineering", "Structure–I", "Residential Design", "Civil structural analysis"],
-            "BCS & Job Prep": ["Geography", "English", "BCS General", "Analytical Struct"],
-            "Skills Vector": ["Freehand Writing", "Excel", "Research Class"]
+        // STATIC SYSTEM TAXONOMY Configuration
+        const dataset = {
+            "Programming": ["JavaScript", "Python / ML", "Database SQL/NoSQL", "Data Structure / Algo"],
+            "Academic / Gov Job": ["Structure–I", "Earth Quake Engineering", "Transportation", "Water Resource", "Foundation & Soil"],
+            "BCS": ["Geography", "History & Bangladesh", "General Science", "International Affairs"],
+            "English": ["Freehand Writing", "Vocabulary Core", "Grammar Structure"],
+            "Software": ["Excel", "ETABS", "AutoCAD Building Design"],
+            "Research / ML": ["Research Class", "AI Engineering – L2", "Typing Practice"]
         };
 
-        const spacingRepetitionTimelineDeltaIntervalArraysMap = [1, 3, 7, 14, 30];
+        const cats = Object.keys(dataset);
+        const cssClasses = ["indigo", "emerald", "rose", "amber", "cyan", "fuchsia"];
+        const days = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
-        // LIFECYCLE HOOKS ROOT INITS ENTRY LINE PIPELINE
-        window.addEventListener('DOMContentLoaded', async () => {
-            document.getElementById('form-field-date').value = selectedTimelineContextDateStr;
-            syncLinkedCategorySubjectsMappingDropdownPresets();
-            await synchronizeDatabaseClusterEcosystemPayload();
-            renderDynamicTimelineCalendarNavigationSliderMatrix();
-            executeActiveWorkspaceEngineRenderViewLoop();
-            switchWorkspaceActiveTab('workspace');
-        });
+        const defaultRoutine = {
+            "Saturday": [["AI Engineering – L2", "JavaScript", "Typing Practice"], ["Transportation", "Earth Quake Engineering", "Structure–I"], ["Geography", "English"], ["Freehand Writing"], ["Excel"], ["Research Class"]],
+            "Sunday": [["AI Engineering – L2", "JavaScript", "Typing Practice"], ["Transportation", "Earth Quake Engineering", "Structure–I"], ["Geography", "English"], ["Freehand Writing"], ["Excel"], ["Research Class"]],
+            "Monday": [["AI Engineering – L2", "JavaScript", "Typing Practice"], ["Transportation", "Earth Quake Engineering", "Structure–I"], ["Geography", "English"], ["Freehand Writing"], ["Excel"], ["Research Class"]],
+            "Tuesday": [["AI Engineering – L2", "JavaScript", "Typing Practice"], ["Transportation", "Earth Quake Engineering", "Structure–I"], ["Geography", "English"], ["Freehand Writing"], ["Excel"], ["Research Class"]],
+            "Wednesday": [["AI Engineering – L2", "JavaScript", "Typing Practice"], ["Transportation", "Earth Quake Engineering", "Structure–I"], ["Geography", "English"], ["Freehand Writing"], ["Excel"], ["Research Class"]],
+            "Thursday": [["AI Engineering – L2", "JavaScript", "Typing Practice"], ["Transportation", "Earth Quake Engineering", "Structure–I"], [], ["Freehand Writing"], ["Excel"], ["Research Class"]],
+            "Friday": [[], [], ["Geography", "English"], [], [], []]
+        };
 
-        // 1. ASYNC DATA FETCH PIPELINE SYNCHRONIZER
-        async function synchronizeDatabaseClusterEcosystemPayload() {
-            try {
-                const responseTopics = await fetch(`${API_BASE_ENDPOINT_URI}/api/topics`);
-                const payloadTopics = await responseTopics.json();
-                dbTopics = {};
-                if(payloadTopics.success && payloadTopics.data) {
-                    payloadTopics.data.forEach(topicRow => {
-                        if(!dbTopics[topicRow.date]) dbTopics[topicRow.date] = [];
-                        dbTopics[topicRow.date].push(topicRow);
-                    });
-                }
+        // GLOBAL IN-MEMORY DATABASE STATES
+        let dbRoutine = {};
+        let dbTopics = {};
+        let dbGoals = {}; // নতুন যুক্ত করা হয়েছে
+        let activeDate = getTodayDateStr();
+        let currentEditingId = null;
 
-                const responseRoutine = await fetch(`${API_BASE_ENDPOINT_URI}/api/routine`);
-                const payloadRoutine = await responseRoutine.json();
-                if(payloadRoutine.success) {
-                    dbRoutine = payloadRoutine.data;
-                }
-                executeGlobalDashboardStatsCountersEngineCalculation();
-            } catch (err) {
-                console.error("Critical connection failure maps interface data cluster.", err);
-            }
+        // HELPER: AJAX API CALLS
+        async function apiGet(endpoint) {
+            const res = await fetch(API_BASE + endpoint);
+            const json = await res.json();
+            return json.success ? json.data : null;
         }
-
-        // 2. COUNTERS DASHBOARD PIPELINE COMPONENT MANAGEMENT MATRIX CALCULATOR
-        function executeGlobalDashboardStatsCountersEngineCalculation() {
-            let pendingCount = 0, completedCount = 0, totalRecordsCount = 0;
-            
-            Object.keys(dbTopics).forEach(dateKey => {
-                dbTopics[dateKey].forEach(t => {
-                    totalRecordsCount++;
-                    if(t.status === 'Complete') completedCount++;
-                    else {
-                        let todayStr = new Date().toISOString().split('T')[0];
-                        if(t.date <= todayStr) pendingCount++;
-                    }
-                });
+        async function apiPost(endpoint, data) {
+            const res = await fetch(API_BASE + endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
             });
-
-            document.getElementById('stat-pending-counter').innerText = pendingCount;
-            document.getElementById('stat-completed-counter').innerText = completedCount;
-            document.getElementById('stat-total-records').innerText = totalRecordsCount;
-            
-            let ratio = totalRecordsCount > 0 ? Math.round((completedCount / totalRecordsCount) * 100) : 0;
-            document.getElementById('stat-efficiency-ratio').innerText = `${ratio}%`;
+            const json = await res.json();
+            return json.success ? json.data : null;
         }
-
-        // 3. SELECTION DROP DOWN SYNC MATRIX
-        function syncLinkedCategorySubjectsMappingDropdownPresets() {
-            const activeCategory = document.getElementById('form-field-category').value;
-            const targetSubjectDropdown = document.getElementById('form-field-subject');
-            targetSubjectDropdown.innerHTML = '';
-            
-            const linkedSubjectsArray = clusterCategorySubjectsPresetsMatrixMap[activeCategory] || [];
-            linkedSubjectsArray.forEach(subjectNameString => {
-                targetSubjectDropdown.innerHTML += `<option value="${subjectNameString}">${subjectNameString}</option>`;
+        async function apiPut(endpoint, data) {
+            const res = await fetch(API_BASE + endpoint, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
             });
+            const json = await res.json();
+            return json.success ? json.data : null;
+        }
+        async function apiDelete(endpointWithQuery) {
+            const res = await fetch(API_BASE + endpointWithQuery, { method: 'DELETE' });
+            const json = await res.json();
+            return json.success;
         }
 
-        function toggleIntervalCustomModeDisplayState() {
-            const activeSelectionValue = document.querySelector('input[name="spacing-mode"]:checked').value;
-            const containerRowInput = document.getElementById('custom-interval-input-row');
-            if(activeSelectionValue === 'custom') {
-                containerRowInput.classList.remove('hidden');
-            } else {
-                containerRowInput.classList.add('hidden');
-            }
-        }
-
-        // 4. TIMELINE CONTROLS AND VISUAL DATE SLIDER GRIDS DECK
-        function renderDynamicTimelineCalendarNavigationSliderMatrix() {
-            const calendarTargetContainer = document.getElementById('calendar-render-grid-cells');
-            calendarTargetContainer.innerHTML = '';
-
-            let operationalCursorDate = new Date(selectedTimelineContextDateStr);
-            operationalCursorDate.setDate(operationalCursorDate.getDate() - 4);
-
-            for (let cellIndex = 0; cellIndex < 8; cellIndex++) {
-                let loopingDateStringKey = operationalCursorDate.toISOString().split('T')[0];
-                let isCurrentTargetContextSelection = loopingDateStringKey === selectedTimelineContextDateStr;
-                let dayWeekdayShortNameStr = operationalCursorDate.toLocaleDateString('en-US', { weekday: 'short' });
-                let dayOfMonthNumericValue = operationalCursorDate.getDate();
-
-                let pendingItemsIndicatorFlagBadge = "";
-                let dateDayTopicsList = dbTopics[loopingDateStringKey] || [];
-                let activePendingInjectedItemsCount = dateDayTopicsList.filter(x => x.status === 'Pending').length;
-                if(activePendingInjectedItemsCount > 0) {
-                    pendingItemsIndicatorFlagBadge = `<span class="absolute top-1 right-1 h-1.5 w-1.5 bg-rose-500 rounded-full animate-pulse"></span>`;
-                }
-
-                calendarTargetContainer.innerHTML += `
-                    <div onclick="updateSelectedTimelineFocusContextDateStringKey('${loopingDateStringKey}')" class="day-grid-cell relative p-2 rounded-xl cursor-pointer text-center transition ${isCurrentTargetContextSelection ? 'active-day text-white font-bold' : 'text-gray-400'}">
-                        ${pendingItemsIndicatorFlagBadge}
-                        <span class="block text-[8px] uppercase tracking-widest font-mono">${dayWeekdayShortNameStr}</span>
-                        <span class="text-xs font-black block mt-0.5">${dayOfMonthNumericValue}</span>
-                    </div>
-                `;
-                operationalCursorDate.setDate(operationalCursorDate.getDate() + 1);
-            }
-        }
-
-        function updateSelectedTimelineFocusContextDateStringKey(newTargetDateKeyStr) {
-            selectedTimelineContextDateStr = newTargetDateKeyStr;
-            document.getElementById('form-field-date').value = newTargetDateKeyStr;
-            renderDynamicTimelineCalendarNavigationSliderMatrix();
-            executeActiveWorkspaceEngineRenderViewLoop();
-        }
-
-        function syncCalendarTimelineFocusToPresentTimeDate() {
-            let presentTodayStrKey = new Date().toISOString().split('T')[0];
-            updateSelectedTimelineFocusContextDateStringKey(presentTodayStrKey);
-        }
-
-        // 5. VIEWPORTS LAYOUT MANAGEMENT TABS SWITCH ENGINE
-        function switchWorkspaceActiveTab(targetViewportId) {
-            document.querySelectorAll('.workspace-view-node').forEach(nodeSectionElement => {
-                nodeSectionElement.classList.add('hidden');
-            });
-            document.querySelectorAll('.tab-btn').forEach(btnNodeElement => {
-                btnNodeElement.classList.remove('active');
-            });
-
-            const targetSectionNode = document.getElementById(`viewport-${targetViewportId}`);
-            const targetButtonNode = document.getElementById(`tab-${targetViewportId}`);
-            if(targetSectionNode) targetSectionNode.classList.remove('hidden');
-            if(targetButtonNode) targetButtonNode.classList.add('active');
-
-            if(targetViewportId === 'injector') executeInjectorViewportPendingListsViewLoop();
-            if(targetViewportId === 'scheduler') executeSchedulerStaticTemplateMatrixFormBuilderRender();
-            if(targetViewportId === 'analytics') executeAnalyticsDashboardProgressChartsEngineRender();
-            if(targetViewportId === 'history') executeArchiveLogsFilteringSearch();
-        }
-
-        // 6. MAIN WORKSPACE ENGINE RENDER VIEW LOOP
-        function executeActiveWorkspaceEngineRenderViewLoop() {
-            const contextFocusedDateObj = new Date(selectedTimelineContextDateStr);
-            const contextFocusedDayOfWeekLongNameStr = contextFocusedDateObj.toLocaleDateString('en-US', { weekday: 'long' });
-
-            document.getElementById('workspace-card-header-date').innerText = contextFocusedDateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-            document.getElementById('workspace-card-header-dayname').innerText = `Baseline Day Profile Grid Node Index — ${contextFocusedDayOfWeekLongNameStr}`;
-
-            const workspaceRenderListTargetContainer = document.getElementById('workspace-render-target-list');
-            workspaceRenderListTargetContainer.innerHTML = '';
-
-            // Sub-stream Alpha: Injected Data Records matching explicit selection context constraints keys arrays
-            let operationalDateContextTopicsList = dbTopics[selectedTimelineContextDateStr] || [];
-            if(operationalDateContextTopicsList.length > 0) {
-                workspaceRenderListTargetContainer.innerHTML += `<h4 class="text-[9px] font-black text-blue-400 uppercase tracking-widest mt-1 mb-1.5 opacity-90"><i class="fa-solid fa-code-branch"></i> Injected Execution Buffer Nodes</h4>`;
-                operationalDateContextTopicsList.forEach(topicRowDataStruct => {
-                    let isCompleted = topicRowDataStruct.status === 'Complete';
-                    let linkedHrefAnchorNode = topicRowDataStruct.noteUrl ? `<a href="${topicRowDataStruct.noteUrl}" target="_blank" class="inline-flex items-center gap-1 text-cyan-400 hover:underline text-[9px] font-semibold mt-1 bg-cyan-950/40 border border-cyan-900/30 px-2 py-0.5 rounded"><i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i> Linked Notebook Source</a>` : '';
+        // BACKWARD COMPATIBILITY: AUTOMATIC LOCALSTORAGE MIGRATION LOGIC
+        async function migrateFromLocalStorageIfNeeded() {
+            if(localStorage.getItem('routine_db_topics')) {
+                try {
+                    const localTopics = JSON.parse(localStorage.getItem('routine_db_topics') || '{}');
+                    const localRoutine = JSON.parse(localStorage.getItem('routine_db_layout') || 'null');
                     
-                    workspaceRenderListTargetContainer.innerHTML += `
-                        <div class="bg-[#090e29] border border-gray-900/80 rounded-xl p-3.5 flex justify-between items-center transition hover:border-gray-800 text-xs shadow-md">
-                            <div class="space-y-0.5">
-                                <span class="text-[9px] uppercase font-black text-indigo-400 tracking-wider block">${topicRowDataStruct.subject}</span>
-                                <p class="text-gray-100 font-bold">${topicRowDataStruct.topicName}</p>
-                                ${linkedHrefAnchorNode}
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <button onclick="toggleTransactionRowStatusStatePropertyValue(${topicRowDataStruct.id}, '${topicRowDataStruct.status}')" class="px-3 py-1 rounded-lg text-[9px] font-black uppercase font-mono tracking-wider cursor-pointer border transition ${isCompleted ? 'bg-emerald-950/80 text-emerald-400 border-emerald-900/50' : 'bg-rose-950/80 text-rose-400 border-rose-900/50'}">${topicRowDataStruct.status}</button>
-                                <button onclick="purgeTopicDataRowFromClusterCollection(${topicRowDataStruct.id})" class="text-gray-600 hover:text-rose-400 transition cursor-pointer text-xs p-1"><i class="fa-solid fa-trash-can"></i></button>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-
-            // Sub-stream Beta: Baseline Static Routine Template structural layouts parameters map lists
-            let operationalStaticDayRoutineTemplateBlueprintArray = dbRoutine[contextFocusedDayOfWeekLongNameStr] || [];
-            if(operationalStaticDayRoutineTemplateBlueprintArray.length > 0) {
-                workspaceRenderListTargetContainer.innerHTML += `<h4 class="text-[9px] font-black text-gray-500 uppercase tracking-widest mt-4 mb-1.5 opacity-90"><i class="fa-solid fa-layer-group"></i> Static Baseline Routine Blueprints</h4>`;
-                operationalStaticDayRoutineTemplateBlueprintArray.forEach((timeSlotSubjectsArrayData, loopSlotIndexValue) => {
-                    if(!timeSlotSubjectsArrayData || timeSlotSubjectsArrayData.length === 0) return;
-                    workspaceRenderListTargetContainer.innerHTML += `
-                        <div class="bg-[#050817] border border-gray-950 rounded-xl p-3 flex justify-between items-center text-xs opacity-60 hover:opacity-90 transition">
-                            <div>
-                                <span class="text-[8px] uppercase tracking-wider font-bold text-gray-500 block font-mono">Routine Slot Target Matrix Position ${loopSlotIndexValue + 1}</span>
-                                <p class="text-gray-300 font-medium mt-0.5">${timeSlotSubjectsArrayData.join(' &nbsp;•&nbsp; ')}</p>
-                            </div>
-                            <i class="fa-solid fa-circle-nodes text-gray-800/80 text-xs"></i>
-                        </div>
-                    `;
-                });
-            }
-
-            if(operationalDateContextTopicsList.length === 0 && operationalStaticDayRoutineTemplateBlueprintArray.every(slot => slot.length === 0)) {
-                workspaceRenderListTargetContainer.innerHTML = `
-                    <div class="text-center py-10 text-gray-600 text-xs border border-dashed border-gray-900 rounded-xl">
-                        <i class="fa-solid fa-box-open text-xl block mb-2 text-gray-800"></i>
-                        No operational task sequences mapped or blueprint elements bound to current timeline coordinate metrics.
-                    </div>
-                `;
+                    let flatArray = [];
+                    Object.keys(localTopics).forEach(d => {
+                        localTopics[d].forEach(t => { flatArray.push(t); });
+                    });
+                    if(flatArray.length > 0) {
+                        await apiPost('/topics', flatArray);
+                    }
+                    if(localRoutine) {
+                        await apiPut('/routine', localRoutine);
+                    }
+                    localStorage.clear(); // Clear all to avoid double mig
+                    console.log("✅ LocalStorage migration successful!");
+                } catch(err) {
+                    console.error("Migration failed:", err);
+                }
             }
         }
 
-        // 7. TRANSACTION WRITE HOOK PIPELINE: COMMIT TOPIC DATA NODE
-        async function commitInjectedTopicDataRowToCluster() {
-            const targetExecutionDateKeyStr = document.getElementById('form-field-date').value;
-            const categoryValueStr = document.getElementById('form-field-category').value;
-            const subjectValueStr = document.getElementById('form-field-subject').value;
-            const topicValueStatementStr = document.getElementById('form-field-topic').value.trim();
-            const resourceUrlStr = document.getElementById('form-field-url').value.trim();
+        // INITIAL LIFE-CYCLE BOOTLOADER
+        window.onload = async function() {
+            document.getElementById('date-picker').value = activeDate;
+            showSyncIndicator("Loading database...");
+            try {
+                await migrateFromLocalStorageIfNeeded();
+                const [routineData, topicsData, goalsData] = await Promise.all([
+                    apiGet('/routine'),
+                    apiGet('/topics'),
+                    apiGet('/goals')
+                ]);
+                dbRoutine = routineData || defaultRoutine;
+                dbTopics = topicsData || {};
+                dbGoals = goalsData || {};
+            } catch(e) {
+                console.error('Initial load failed:', e);
+                dbRoutine = defaultRoutine;
+                dbTopics = {};
+                dbGoals = { "Programming": 20, "Academic / Gov Job": 20, "BCS": 20, "English": 20, "Software": 20, "Research / ML": 20 };
+            }
+            hideSyncIndicator();
+            renderRoutineTable();
+            setupInjectorOptions();
+            renderDailyLog();
+        };
+
+        function showSyncIndicator(msg) {
+            const ind = document.getElementById('sync-indicator');
+            document.getElementById('sync-text').innerText = msg;
+            ind.classList.remove('opacity-0');
+        }
+        function hideSyncIndicator() {
+            document.getElementById('sync-indicator').classList.add('opacity-0');
+        }
+
+        // TIME UTILITY FUNCTIONS
+        function getTodayDateStr() {
+            const d = new Date();
+            return d.toISOString().split('T')[0];
+        }
+        function getDayNameFromDate(dateStr) {
+            const d = new Date(dateStr);
+            return days[d.getDay() === 6 ? 0 : d.getDay() + 1]; 
+        }
+        function addDays(dateStr, daysCount) {
+            const result = new Date(dateStr);
+            result.setDate(result.getDate() + daysCount);
+            return result.toISOString().split('T')[0];
+        }
+
+        // ROUTER TAB SWITCHING ENGINE
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-view').forEach(el => el.classList.replace('block', 'hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             
-            const spacingIntervalEngineModeSetting = document.querySelector('input[name="spacing-mode"]:checked').value;
+            document.getElementById('view-' + tabId).classList.replace('hidden', 'block');
+            document.getElementById('btn-' + tabId).classList.add('active');
 
-            if(!topicValueStatementStr) return alert("Define Topic parameter value bounds.");
+            if(tabId === 'progress') {
+                renderProgressTab();
+                renderGoalTrackingDashboard(); // ট্যাব সুইচে গোল ড্যাশবোর্ড রেন্ডার
+            }
+        }
 
-            const transactionLogPacketPayload = {
+        function onDateChanged() {
+            activeDate = document.getElementById('date-picker').value;
+            renderDailyLog();
+        }
+
+        // ==================== 🛠️ ENGINE LOGIC: WORKBENCH ====================
+        function setupInjectorOptions() {
+            const catSel = document.getElementById('manual-cat');
+            catSel.innerHTML = '';
+            cats.forEach(c => { catSel.innerHTML += `<option value="${c}">${c}</option>`; });
+            populateInjectorSubjects();
+        }
+
+        function populateInjectorSubjects() {
+            const cat = document.getElementById('manual-cat').value;
+            const subSel = document.getElementById('manual-sub');
+            subSel.innerHTML = '';
+            (dataset[cat] || []).forEach(s => { subSel.innerHTML += `<option value="${s}">${s}</option>`; });
+        }
+
+        function renderDailyLog() {
+            const dayName = getDayNameFromDate(activeDate);
+            document.getElementById('current-day-label').innerText = activeDate + " (" + dayName + ")";
+            
+            // Render Injector Slots
+            const slots = dbRoutine[dayName] || [[],[],[],[],[],[]];
+            const injectorArea = document.getElementById('injector-slots-area');
+            injectorArea.innerHTML = '';
+
+            let hasSlots = false;
+            slots.forEach((slotArr, idx) => {
+                if(!slotArr || slotArr.length === 0) return;
+                hasSlots = true;
+                let subjectsText = slotArr.join(', ');
+                injectorArea.innerHTML += `
+                    <div class="bg-slate-950 p-3 rounded-xl border border-gray-900 flex justify-between items-center group">
+                        <div class="overflow-hidden pr-2">
+                            <span class="text-[9px] font-black tracking-wider text-indigo-400 block uppercase">SLOT ${idx+1}</span>
+                            <span class="text-xs font-semibold text-gray-300 block truncate">${subjectsText}</span>
+                        </div>
+                        <button onclick="injectSlotGroup('${dayName}', ${idx})" class="p-2 bg-indigo-600/10 hover:bg-indigo-600 text-indigo-400 hover:text-white rounded-lg text-[11px] font-bold transition-all whitespace-nowrap cursor-pointer">
+                            <i class="fa-solid fa-bolt"></i> Inject
+                        </button>
+                    </div>`;
+            });
+
+            if(!hasSlots) {
+                injectorArea.innerHTML = `<p class="text-gray-600 text-xs py-6 text-center">আজকের জন্য রুটিনে কোনো স্লট কনফিগার করা নেই।</p>`;
+            }
+
+            // Render Active Logging Matrix
+            const activeMatrix = document.getElementById('active-matrix-list');
+            activeMatrix.innerHTML = '';
+            const activeList = dbTopics[activeDate] || [];
+            
+            document.getElementById('matrix-counter-badge').innerText = `${activeList.length} Topics`;
+
+            if(activeList.length === 0) {
+                activeMatrix.innerHTML = `
+                    <div class="py-12 text-center border border-dashed border-gray-900 rounded-2xl">
+                        <i class="fa-solid fa-folder-open text-gray-700 text-xl mb-2 block"></i>
+                        <p class="text-gray-500 text-xs">আজকের কোনো পড়ার টপিক রেকর্ড করা হয়নি। ইনজেক্টর ব্যবহার করুন।</p>
+                    </div>`;
+                return;
+            }
+
+            activeList.forEach((t) => {
+                const isComplete = t.status === 'Complete';
+                const noteBtn = t.noteUrl ? `<a href="${t.noteUrl}" target="_blank" class="text-cyan-400 hover:underline text-[10px] flex items-center gap-1"><i class="fa-solid fa-link"></i> Note</a>` : '';
+                
+                // Spaced Repetition Tags
+                let revBadge = '';
+                if(isComplete) {
+                    let totalR = t.reviewsDone ? t.reviewsDone.length : 0;
+                    revBadge = `<span class="text-[9px] font-black bg-slate-950 text-amber-500 border border-gray-900 px-1.5 py-0.5 rounded">R${totalR}</span>`;
+                }
+
+                activeMatrix.innerHTML += `
+                    <div class="p-3 rounded-xl border ${isComplete ? 'bg-emerald-950/20 border-emerald-900/40' : 'bg-slate-950 border-gray-900/80'} flex justify-between items-center gap-3 group transition-all">
+                        <div class="flex items-start gap-3 overflow-hidden">
+                            <button onclick="toggleTopicStatus(${t.id})" class="mt-0.5 h-4 w-4 rounded-md border ${isComplete ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-gray-700 hover:border-indigo-500'} flex items-center justify-center text-[10px] transition-all cursor-pointer">
+                                ${isComplete ? '<i class="fa-solid fa-check"></i>' : ''}
+                            </button>
+                            <div class="overflow-hidden">
+                                <div class="flex items-center gap-2 mb-0.5 flex-wrap">
+                                    <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded uppercase tracking-wider bg-indigo-950/60 text-indigo-400 border border-indigo-900/30">${t.category}</span>
+                                    <span class="text-[10px] font-bold text-gray-400">${t.subject}</span>
+                                    ${revBadge}
+                                </div>
+                                <h4 class="text-xs font-semibold ${isComplete ? 'text-gray-400 line-through' : 'text-gray-200'} truncate">${t.topicName}</h4>
+                                ${noteBtn}
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button onclick="openEditModal(${t.id})" class="opacity-0 group-hover:opacity-100 p-2 text-gray-500 hover:text-indigo-400 rounded-lg text-xs transition-all cursor-pointer">
+                                <i class="fa-solid fa-sliders"></i>
+                            </button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        async function injectSlotGroup(dayName, slotIdx) {
+            const subjects = dbRoutine[dayName][slotIdx] || [];
+            if(subjects.length === 0) return;
+
+            showSyncIndicator("Injecting topics...");
+            let timestamp = Date.now();
+            let newItems = [];
+
+            subjects.forEach((sub, i) => {
+                // Find matching category
+                let matchedCat = "Programming";
+                for (let c in dataset) {
+                    if (dataset[c].includes(sub)) { matchedCat = c; break; }
+                }
+
+                newItems.push({
+                    id: timestamp + i,
+                    date: activeDate,
+                    originDate: activeDate,
+                    completionDate: null,
+                    category: matchedCat,
+                    subject: sub,
+                    topicName: `Lecture / Class System Reading`,
+                    noteUrl: null,
+                    status: 'Pending',
+                    reviewsDone: [],
+                    reviewHistoryStamps: {},
+                    customRevPendingOn: null,
+                    customReviewIntervalDays: null
+                });
+            });
+
+            try {
+                const saved = await apiPost('/topics', newItems);
+                if(!dbTopics[activeDate]) dbTopics[activeDate] = [];
+                dbTopics[activeDate] = dbTopics[activeDate].concat(saved);
+                renderDailyLog();
+                renderGoalTrackingDashboard(); // রি-রেন্ডার গোল
+            } catch(e) { console.error(e); }
+            hideSyncIndicator();
+        }
+
+        async function injectCustomTopic() {
+            const cat = document.getElementById('manual-cat').value;
+            const sub = document.getElementById('manual-sub').value;
+            const name = document.getElementById('manual-name').value.trim();
+
+            if(!name) { alert("Please type a valid topic description."); return; }
+
+            showSyncIndicator("Adding topic...");
+            const item = {
                 id: Date.now(),
-                date: targetExecutionDateKeyStr,
-                originDate: targetExecutionDateKeyStr,
-                category: categoryValueStr,
-                subject: subjectValueStr,
-                topicName: topicValueStatementStr,
-                noteUrl: resourceUrlStr || null,
+                date: activeDate,
+                originDate: activeDate,
+                completionDate: null,
+                category: cat,
+                subject: sub,
+                topicName: name,
+                noteUrl: null,
                 status: 'Pending',
                 reviewsDone: [],
-                reviewHistoryStamps: {}
+                reviewHistoryStamps: {},
+                customRevPendingOn: null,
+                customReviewIntervalDays: null
             };
 
-            // Calculate spacing intervals algorithms matrix schedules parameters maps pipeline
-            let calculatedIntervalOffsetDeltaValuesArray = [];
-            if(spacingIntervalEngineModeSetting === 'custom') {
-                const rawCustomIntervalInputVal = parseInt(document.getElementById('form-field-custom-interval').value);
-                if(isNaN(rawCustomIntervalInputVal) || rawCustomIntervalInputVal < 1) {
-                    return alert("Define valid custom interval step metrics value configurations.");
-                }
-                transactionLogPacketPayload.customReviewInterval = rawCustomIntervalInputVal;
-                calculatedIntervalOffsetDeltaValuesArray.push(rawCustomIntervalInputVal);
-            } else {
-                calculatedIntervalOffsetDeltaValuesArray = [...spacingRepetitionTimelineDeltaIntervalArraysMap];
-            }
-
             try {
-                // Write primary instance row entry node
-                let primaryResponseNode = await fetch(`${API_BASE_ENDPOINT_URI}/api/topics`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(transactionLogPacketPayload)
-                });
-                let primaryResponseData = await primaryResponseNode.json();
+                const saved = await apiPost('/topics', [item]);
+                if(!dbTopics[activeDate]) dbTopics[activeDate] = [];
+                dbTopics[activeDate].push(saved[0]);
+                document.getElementById('manual-name').value = '';
+                renderDailyLog();
+                renderGoalTrackingDashboard(); // রি-রেন্ডার গোল
+            } catch(e) { console.error(e); }
+            hideSyncIndicator();
+        }
+
+        async function toggleTopicStatus(id) {
+            let found = null;
+            let targetDate = null;
+
+            // Find cross-date if needed, but activeDate is typical
+            Object.keys(dbTopics).forEach(d => {
+                let idx = dbTopics[d].findIndex(t => t.id === id);
+                if(idx !== -1) { found = dbTopics[d][idx]; targetDate = d; }
+            });
+
+            if(!found) return;
+
+            showSyncIndicator("Updating item...");
+            const newStatus = found.status === 'Pending' ? 'Complete' : 'Pending';
+            found.status = newStatus;
+            found.completionDate = (newStatus === 'Complete') ? activeDate : null;
+
+            // Setup automated spaced reviews if completed
+            if(newStatus === 'Complete') {
+                found.reviewsDone = [];
+                found.reviewHistoryStamps = {};
                 
-                if(primaryResponseData.success) {
-                    if(!dbTopics[targetExecutionDateKeyStr]) dbTopics[targetExecutionDateKeyStr] = [];
-                    dbTopics[targetExecutionDateKeyStr].push(primaryResponseData.data);
-
-                    // Execute Anki pipeline allocations entries
-                    let calculationsCursorBaseDateObj = new Date(targetExecutionDateKeyStr);
-                    for(let loopStep = 0; loopStep < calculatedIntervalOffsetDeltaValuesArray.length; loopStep++) {
-                        let stepDeltaDaysValue = calculatedIntervalOffsetDeltaValuesArray[loopStep];
-                        calculationsCursorBaseDateObj.setDate(calculationsCursorBaseDateObj.getDate() + stepDeltaDaysValue);
-                        
-                        let forwardScheduledDateKeyStringValue = calculationsCursorBaseDateObj.toISOString().split('T')[0];
-                        let recurrentCloneDataPayloadPacket = {
-                            ...transactionLogPacketPayload,
-                            id: Date.now() + loopStep + 1,
-                            date: forwardScheduledDateKeyStringValue,
-                            customRevPendingOn: forwardScheduledDateKeyStringValue
-                        };
-
-                        await fetch(`${API_BASE_ENDPOINT_URI}/api/topics`, {
-                            method: 'POST',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify(recurrentCloneDataPayloadPacket)
-                        });
-                    }
-
-                    // Reset form configurations values references
-                    document.getElementById('form-field-topic').value = '';
-                    document.getElementById('form-field-url').value = '';
-                    
-                    confetti({ particleCount: 40, spread: 60, origin: { y: 0.8 } });
-                    await synchronizeDatabaseClusterEcosystemPayload();
-                    renderDynamicTimelineCalendarNavigationSliderMatrix();
-                    executeActiveWorkspaceEngineRenderViewLoop();
-                }
-            } catch (err) {
-                console.error("Failure processing data transaction entries write ops pipelines.", err);
-            }
-        }
-
-        // 8. UPDATE STATE LOG NODE PROPERTY VALUES
-        async function toggleTransactionRowStatusStatePropertyValue(idParameterKeyValue, currentStatusStringValue) {
-            let targetedRowObjectReference = null;
-            let targetedDateKeyIdentifierStr = null;
-
-            Object.keys(dbTopics).forEach(dateKey => {
-                let targetMatch = dbTopics[dateKey].find(x => x.id === idParameterKeyValue);
-                if(targetMatch) {
-                    targetedRowObjectReference = targetMatch;
-                    targetedDateKeyIdentifierStr = dateKey;
-                }
-            });
-
-            if(!targetedRowObjectReference) return;
-
-            let updatedStatusStringTargetValue = currentStatusStringValue === 'Pending' ? 'Complete' : 'Pending';
-            targetedRowObjectReference.status = updatedStatusStringTargetValue;
-            targetedRowObjectReference.completionDate = updatedStatusStringTargetValue === 'Complete' ? new Date().toISOString().split('T')[0] : null;
-
-            try {
-                let updateResponseNode = await fetch(`${API_BASE_ENDPOINT_URI}/api/topics/${idParameterKeyValue}`, {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(targetedRowObjectReference)
-                });
-                let updateResponseData = await updateResponseNode.json();
-                if(updateResponseData.success) {
-                    if(updatedStatusStringTargetValue === 'Complete') {
-                        confetti({ particleCount: 25, angle: 60, spread: 55, origin: { x: 0 } });
-                        confetti({ particleCount: 25, angle: 120, spread: 55, origin: { x: 1 } });
-                    }
-                    await synchronizeDatabaseClusterEcosystemPayload();
-                    renderDynamicTimelineCalendarNavigationSliderMatrix();
-                    executeActiveWorkspaceEngineRenderViewLoop();
-                }
-            } catch(e) {
-                console.error(e);
-            }
-        }
-
-        // 9. DELETE OPERATION HOOK DATA MATRIX PIPELINE
-        async function purgeTopicDataRowFromClusterCollection(idParameterKeyValue) {
-            if(!confirm("Purge selected data entry transaction logs row from cluster?")) return;
-            try {
-                let deleteResponseNode = await fetch(`${API_BASE_ENDPOINT_URI}/api/topics/${idParameterKeyValue}`, { method: 'DELETE' });
-                let deleteResponseData = await deleteResponseNode.json();
-                if(deleteResponseData.success) {
-                    Object.keys(dbTopics).forEach(dateKey => {
-                        dbTopics[dateKey] = dbTopics[dateKey].filter(x => x.id !== idParameterKeyValue);
-                    });
-                    await synchronizeDatabaseClusterEcosystemPayload();
-                    renderDynamicTimelineCalendarNavigationSliderMatrix();
-                    executeActiveWorkspaceEngineRenderViewLoop();
-                }
-            } catch (err) {
-                console.error(err);
-            }
-        }
-
-        // 10. INJECTOR TRACKING WORKSPACE CONTROLLERS
-        function executeInjectorViewportPendingListsViewLoop() {
-            const targetContainer = document.getElementById('injector-pending-render-target');
-            targetContainer.innerHTML = '';
-
-            let todayStrKey = new Date().toISOString().split('T')[0];
-            let matchingAccumulatedRowsArray = [];
-
-            Object.keys(dbTopics).forEach(dateKey => {
-                dbTopics[dateKey].forEach(t => {
-                    if(t.status === 'Pending' && t.date <= todayStrKey) {
-                        matchingAccumulatedRowsArray.push(t);
-                    }
-                });
-            });
-
-            matchingAccumulatedRowsArray.sort((alpha, beta) => alpha.date.localeCompare(beta.date));
-
-            if(matchingAccumulatedRowsArray.length === 0) {
-                targetContainer.innerHTML = `<p class="text-gray-600 text-xs text-center py-6">All injected operational criteria status nodes cleared successfully!</p>`;
-                return;
-            }
-
-            matchingAccumulatedRowsArray.forEach(t => {
-                targetContainer.innerHTML += `
-                    <div class="bg-[#090d24] border border-gray-900 rounded-xl p-3 flex justify-between items-center text-xs">
-                        <div>
-                            <span class="text-[8px] font-mono font-bold uppercase text-rose-400 block tracking-tight">Due Execution Date Context: ${t.date}</span>
-                            <h5 class="text-gray-200 font-bold mt-0.5">${t.topicName}</h5>
-                            <span class="text-[9px] text-gray-500 font-medium block uppercase">${t.subject} &nbsp;•&nbsp; ${t.category}</span>
-                        </div>
-                        <button onclick="toggleTransactionRowStatusStatePropertyValue(${t.id}, 'Pending')" class="bg-blue-950 text-blue-400 border border-blue-900/60 font-bold uppercase font-mono tracking-wide px-2.5 py-1 rounded text-[9px] hover:bg-blue-900 hover:text-white transition cursor-pointer">Check Complete</button>
-                    </div>
-                `;
-            });
-        }
-
-        // 11. SCHEDULER STATIC ARCHITECTURE MODULE FORM GENERATION MATRIX
-        function executeSchedulerStaticTemplateMatrixFormBuilderRender() {
-            const targetContainer = document.getElementById('scheduler-render-matrix-target');
-            targetContainer.innerHTML = '';
-
-            const dayKeysIndexSequenceArray = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-            
-            dayKeysIndexSequenceArray.forEach(dayNameKeyString => {
-                let slotSegmentsDataArray = dbRoutine[dayNameKeyString] || [[],[],[],[],[],[]];
-                let inputRowsMatrixHTMLString = "";
-
-                for(let segmentIndex = 0; segmentIndex < 6; segmentIndex++) {
-                    let textJoinedValue = slotSegmentsDataArray[segmentIndex] ? slotSegmentsDataArray[segmentIndex].join(', ') : "";
-                    inputRowsMatrixHTMLString += `
-                        <div>
-                            <label class="block text-[8px] uppercase tracking-wider text-gray-600 font-mono">Segment Slot Node Position ${segmentIndex + 1}</label>
-                            <input type="text" data-day="${dayNameKeyString}" data-slot="${segmentIndex}" class="blueprint-matrix-input-field w-full bg-[#030511] border border-gray-900 rounded-lg p-2 text-xs font-semibold text-gray-300 outline-none focus:border-indigo-900 mt-0.5 placeholder:text-gray-800" placeholder="e.g. Subject Alpha, Subject Beta" value="${textJoinedValue}">
-                        </div>
-                    `;
-                }
-
-                targetContainer.innerHTML += `
-                    <div class="bg-[#070a20]/60 border border-gray-900/60 rounded-xl p-4 space-y-3">
-                        <h4 class="text-xs font-black text-indigo-400 tracking-wider uppercase border-b border-gray-950 pb-1.5"><i class="fa-solid fa-calendar-days text-[10px]"></i> ${dayNameKeyString} Template Blueprint Config</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                            ${inputRowsMatrixHTMLString}
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        async function commitStaticRoutineTemplateMatrixToCluster() {
-            const compiledRoutineBuildMatrixPayload = {
-                "Saturday": [[],[],[],[],[],[]], "Sunday": [[],[],[],[],[],[]], "Monday": [[],[],[],[],[],[]],
-                "Tuesday": [[],[],[],[],[],[]], "Wednesday": [[],[],[],[],[],[]], "Thursday": [[],[],[],[],[],[]], "Friday": [[],[],[],[],[],[]]
-            };
-
-            const inputElementsNodeCollection = document.querySelectorAll('.blueprint-matrix-input-field');
-            inputElementsNodeCollection.forEach(inputNode => {
-                let targetDay = inputNode.getAttribute('data-day');
-                let targetSlotIdx = parseInt(inputNode.getAttribute('data-slot'));
-                let stringRawValue = inputNode.value.trim();
-
-                if(stringRawValue) {
-                    let splittedSubjectsArray = stringRawValue.split(',').map(s => s.trim()).filter(s => s.length > 0);
-                    compiledRoutineBuildMatrixPayload[targetDay][targetSlotIdx] = splittedSubjectsArray;
+                if(found.customReviewIntervalDays) {
+                    found.customRevPendingOn = addDays(activeDate, found.customReviewIntervalDays);
                 } else {
-                    compiledRoutineBuildMatrixPayload[targetDay][targetSlotIdx] = [];
+                    found.customRevPendingOn = null;
+                }
+                
+                // Success celebration confetti blast animation
+                confetti({ particleCount: 80, spread: 50, origin: { y: 0.7 } });
+            } else {
+                found.customRevPendingOn = null;
+            }
+
+            try {
+                await apiPut('/topics', found);
+                renderDailyLog();
+                renderGoalTrackingDashboard(); // ইনস্ট্যান্ট প্রোগ্রেস আপডেট
+            } catch(e) { console.error(e); }
+            hideSyncIndicator();
+        }
+
+        // ==================== ⚙️ EDIT & UPDATE MODAL LOGIC ====================
+        function openEditModal(id) {
+            currentEditingId = id;
+            let found = null;
+            Object.keys(dbTopics).forEach(d => {
+                let item = dbTopics[d].find(t => t.id === id);
+                if(item) found = item;
+            });
+
+            if(!found) return;
+
+            document.getElementById('modal-topic-name').value = found.topicName;
+            document.getElementById('modal-note-url').value = found.noteUrl || '';
+            
+            if(found.customReviewIntervalDays) {
+                document.getElementById('modal-custom-review-select').value = 'set';
+                document.getElementById('modal-custom-days').value = found.customReviewIntervalDays;
+            } else {
+                document.getElementById('modal-custom-review-select').value = 'none';
+                document.getElementById('modal-custom-days').value = '';
+            }
+
+            toggleCustomReviewFields();
+            document.getElementById('edit-modal').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+            currentEditingId = null;
+        }
+
+        function toggleCustomReviewFields() {
+            const type = document.getElementById('modal-custom-review-select').value;
+            const w = document.getElementById('modal-custom-days-wrapper');
+            if(type === 'set') w.classList.remove('hidden');
+            else w.classList.add('hidden');
+        }
+
+        async function saveTopicAction() {
+            if(!currentEditingId) return;
+            
+            let found = null;
+            let targetDate = null;
+            Object.keys(dbTopics).forEach(d => {
+                let idx = dbTopics[d].findIndex(t => t.id === currentEditingId);
+                if(idx !== -1) { found = dbTopics[d][idx]; targetDate = d; }
+            });
+
+            if(!found) return;
+
+            showSyncIndicator("Saving topic changes...");
+            found.topicName = document.getElementById('modal-topic-name').value.trim();
+            let rawUrl = document.getElementById('modal-note-url').value.trim();
+            found.noteUrl = rawUrl === '' ? null : rawUrl;
+
+            const rType = document.getElementById('modal-custom-review-select').value;
+            if(rType === 'set') {
+                let daysVal = parseInt(document.getElementById('modal-custom-days').value);
+                found.customReviewIntervalDays = (isNaN(daysVal) || daysVal <= 0) ? null : daysVal;
+                if(found.status === 'Complete' && found.customReviewIntervalDays) {
+                    let base = found.completionDate || activeDate;
+                    found.customRevPendingOn = addDays(base, found.customReviewIntervalDays);
+                }
+            } else {
+                found.customReviewIntervalDays = null;
+                found.customRevPendingOn = null;
+            }
+
+            try {
+                await apiPut('/topics', found);
+                closeEditModal();
+                renderDailyLog();
+                renderGoalTrackingDashboard(); // গোল রি-রেন্ডার
+            } catch(e) { console.error(e); }
+            hideSyncIndicator();
+        }
+
+        async function deleteTopicAction() {
+            if(!currentEditingId) return;
+            if(!confirm("Are you absolutely sure you want to delete this log permanently?")) return;
+
+            showSyncIndicator("Deleting topic...");
+            try {
+                const ok = await apiDelete(`/topics?id=${currentEditingId}`);
+                if(ok) {
+                    Object.keys(dbTopics).forEach(d => {
+                        dbTopics[d] = dbTopics[d].filter(t => t.id !== currentEditingId);
+                    });
+                    closeEditModal();
+                    renderDailyLog();
+                    renderGoalTrackingDashboard(); // গোল রি-রেন্ডার
+                }
+            } catch(e) { console.error(e); }
+            hideSyncIndicator();
+        }
+
+        // ==================== 📊 ENGINE LOGIC: ANALYTICS & REVIEWS ====================
+        function renderProgressTab() {
+            let total = 0, complete = 0, pending = 0;
+            let reviewQueue = [];
+
+            Object.keys(dbTopics).forEach(d => {
+                dbTopics[d].forEach(t => {
+                    total++;
+                    if(t.status === 'Complete') {
+                        complete++;
+                        
+                        // Calculate Spaced Repetition Requirements
+                        let baseDate = t.completionDate || t.date;
+                        let rDone = t.reviewsDone || [];
+
+                        // Default interval algorithm milestones: 1 day, 3 days, 7 days, 14 days, 30 days
+                        let standardIntervals = [1, 3, 7, 14, 30];
+                        let nextOffset = standardIntervals[Math.min(rDone.length, standardIntervals.length - 1)];
+                        let standardPendingDate = addDays(baseDate, nextOffset);
+
+                        let isOverdue = false;
+                        if(standardPendingDate <= activeDate && rDone.length < 5) {
+                            isOverdue = true;
+                        }
+                        // Overwrite with custom interval logic if active
+                        if(t.customRevPendingOn) {
+                            isOverdue = (t.customRevPendingOn <= activeDate);
+                        }
+
+                        if(isOverdue) {
+                            reviewQueue.push(t);
+                        }
+                    } else {
+                        pending++;
+                    }
+                });
+            });
+
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-complete').innerText = complete;
+            document.getElementById('stat-pending').innerText = pending;
+            document.getElementById('stat-ratio').innerText = total === 0 ? "0%" : Math.round((complete/total)*100) + "%";
+
+            // Render Review List Queue UI Box
+            const qBox = document.getElementById('review-queue-box');
+            qBox.innerHTML = '';
+
+            if(reviewQueue.length === 0) {
+                qBox.innerHTML = `<p class="text-gray-600 text-xs py-4 text-center">আজকের কোনো রিভিশন ওভারডিউ পেন্ডিং নেই। চমৎকার ধারণ ক্ষমতা!</p>`;
+            } else {
+                reviewQueue.forEach(t => {
+                    let rCount = t.reviewsDone ? t.reviewsDone.length : 0;
+                    let typeLabel = t.customReviewIntervalDays ? `Custom (${t.customReviewIntervalDays}d)` : `Milestone ${rCount+1}`;
+                    
+                    qBox.innerHTML += `
+                        <div class="bg-slate-950 p-3 rounded-xl border border-orange-950/40 flex justify-between items-center gap-2">
+                            <div class="overflow-hidden">
+                                <span class="text-[9px] font-bold text-orange-400 block uppercase">${t.subject} • ${typeLabel}</span>
+                                <h4 class="text-xs text-gray-300 truncate font-semibold">${t.topicName}</h4>
+                            </div>
+                            <button onclick="triggerReviewClear(${t.id})" class="px-2.5 py-1.5 bg-orange-600/10 hover:bg-orange-600 text-orange-400 hover:text-white font-bold rounded-lg text-[10px] whitespace-nowrap transition-all cursor-pointer">
+                                <i class="fa-solid fa-square-check"></i> Clear
+                            </button>
+                        </div>`;
+                });
+            }
+
+            // Set default date for history viewer if empty
+            if(!document.getElementById('history-date-picker').value) {
+                document.getElementById('history-date-picker').value = activeDate;
+                loadHistoryDateLog();
+            }
+        }
+
+        async function triggerReviewClear(id) {
+            let found = null;
+            Object.keys(dbTopics).forEach(d => {
+                let item = dbTopics[d].find(t => t.id === id);
+                if(item) found = item;
+            });
+
+            if(!found) return;
+
+            showSyncIndicator("Saving review stamp...");
+            if(!found.reviewsDone) found.reviewsDone = [];
+            if(!found.reviewHistoryStamps) found.reviewHistoryStamps = {};
+
+            let nextIndex = found.reviewsDone.length + 1;
+            let stampKey = `Review_${nextIndex}`;
+            found.reviewsDone.push(activeDate);
+            found.reviewHistoryStamps[stampKey] = activeDate;
+
+            // Recalculate next custom interval if activated
+            if(found.customReviewIntervalDays) {
+                found.customRevPendingOn = addDays(activeDate, found.customReviewIntervalDays);
+            } else {
+                found.customRevPendingOn = null; 
+            }
+
+            try {
+                await apiPut('/topics', found);
+                renderProgressTab();
+                renderGoalTrackingDashboard(); // গোল রি-রেন্ডার
+                confetti({ particleCount: 30, spread: 20, origin: { y: 0.6 } });
+            } catch(e) { console.error(e); }
+            hideSyncIndicator();
+        }
+
+        function loadHistoryDateLog() {
+            const dateStr = document.getElementById('history-date-picker').value;
+            const content = document.getElementById('history-box-content');
+            if(!dateStr) return;
+
+            document.getElementById('history-box-title').innerText = `Topics Logged on: ${dateStr}`;
+            content.innerHTML = '';
+            
+            let list = dbTopics[dateStr] || [];
+            if(list.length === 0) {
+                content.innerHTML = `<p class="text-gray-600 text-xs py-2">এই তারিখে কোনো টপিক রেকর্ড করা হয়নি।</p>`;
+            } else {
+                list.forEach(t => {
+                    let isC = t.status === 'Complete';
+                    let linked = t.noteUrl ? `<a href="${t.noteUrl}" target="_blank" class="text-cyan-400 block mt-1 hover:underline text-[10px]"><i class="fa-solid fa-link"></i> Linked Note</a>` : "";
+                    content.innerHTML += `
+                        <div class="bg-[#070b1e] p-3 rounded-lg border border-gray-900 flex justify-between items-center">
+                            <div>
+                                <span class="text-[9px] font-bold text-indigo-400 block uppercase">${t.subject}</span>
+                                <span class="text-xs text-gray-300">${t.topicName}</span>
+                                ${linked}
+                            </div>
+                            <span class="text-[9px] font-bold uppercase px-2 py-0.5 rounded ${isC ? 'bg-emerald-950 text-emerald-400' : 'bg-rose-950 text-rose-400'}">${t.status}</span>
+                        </div>`;
+                });
+            }
+        }
+
+
+        // ===================== 🏎️ LIVE GOAL TRACKING ENGINE LOGIC (নতুন যুক্ত করা হয়েছে) =====================
+
+        function renderGoalTrackingDashboard() {
+            const grid = document.getElementById('goal-tracking-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            // ক্যাটাগরি ওয়াইজ অলরেডি কমপ্লিট হওয়া টপিক কাউন্ট বের করা
+            const completedCounts = {};
+            cats.forEach(c => completedCounts[c] = 0);
+
+            Object.keys(dbTopics).forEach(date => {
+                dbTopics[date].forEach(t => {
+                    if (t.status === 'Complete' && completedCounts[t.category] !== undefined) {
+                        completedCounts[t.category]++;
+                    }
+                });
+            });
+
+            // প্রতিটি ক্যাটাগরির জন্য প্রোগ্রেস বার এবং অ্যানিমেটেড ইউআই জেনারেট করা
+            cats.forEach((cat, idx) => {
+                const completed = completedCounts[cat];
+                const target = dbGoals[cat] || 20; 
+                let percent = Math.min(Math.round((completed / target) * 100), 100);
+                const remaining = Math.max(target - completed, 0);
+
+                const isGoalAchieved = completed >= target;
+                const statusBadge = isGoalAchieved 
+                    ? `<span class="text-[9px] font-black bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30 tracking-widest animate-bounce"><i class="fa-solid fa-crown"></i> FINISHED</span>`
+                    : `<span class="text-[9px] font-bold bg-indigo-950 text-indigo-400 px-2 py-0.5 rounded border border-indigo-900/40 tracking-wider">RACING</span>`;
+
+                grid.innerHTML += `
+                    <div class="bg-[#05091a] border border-gray-900/60 p-4 rounded-xl relative overflow-hidden transition-all duration-300 hover:border-indigo-500/20 hover:shadow-[0_0_25px_rgba(99,102,241,0.05)]">
+                        <div class="absolute -right-10 -top-10 w-24 h-24 bg-indigo-600/5 blur-[50px] pointer-events-none"></div>
+                        
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-extrabold text-gray-200">${cat}</span>
+                            ${statusBadge}
+                        </div>
+
+                        <div class="flex items-baseline gap-1 mb-4">
+                            <span class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">${completed}</span>
+                            <span class="text-gray-600 text-xs font-bold">/ ${target} Topics</span>
+                        </div>
+
+                        <div class="relative w-full h-3 bg-slate-950 rounded-full border border-gray-950 p-[2px] mb-3">
+                            <div class="h-full rounded-full bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-500 shadow-[0_0_10px_rgba(168,85,247,0.4)] transition-all duration-1000 ease-out" style="width: ${percent}%"></div>
+                            
+                            <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 mr-2 text-[10px] ${isGoalAchieved ? 'text-emerald-400 scale-125' : 'text-gray-600'} transition-all">
+                                <i class="fa-solid fa-flag-checkered"></i>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center text-[10px] font-medium">
+                            <span class="text-gray-500">Progress: <strong class="text-indigo-400">${percent}%</strong></span>
+                            ${isGoalAchieved 
+                                ? `<span class="text-emerald-400 font-bold"><i class="fa-solid fa-circle-check"></i> Target Met!</span>`
+                                : `<span class="text-gray-400">Remaining: <strong class="text-rose-400">${remaining}</strong> more</span>`
+                            }
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function openGoalManagerModal() {
+            const container = document.getElementById('goal-inputs-container');
+            container.innerHTML = '';
+            
+            cats.forEach(cat => {
+                const currentTarget = dbGoals[cat] || 20;
+                container.innerHTML += `
+                    <div class="bg-slate-950 border border-gray-900 p-3 rounded-xl flex justify-between items-center gap-4">
+                        <label class="text-xs font-bold text-gray-300 block">${cat}</label>
+                        <div class="w-32">
+                            <input type="number" id="goal-input-${cat}" value="${currentTarget}" min="1" class="w-full bg-[#0a0f24] border border-gray-800 rounded-lg px-3 py-1.5 text-xs text-white text-center font-bold outline-none focus:border-indigo-500">
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('goal-manager-modal').classList.remove('hidden');
+        }
+
+        function closeGoalManagerModal() {
+            document.getElementById('goal-manager-modal').classList.add('hidden');
+        }
+
+        async function saveGoalTargets() {
+            const updatedGoals = {};
+            cats.forEach(cat => {
+                const val = parseInt(document.getElementById(`goal-input-${cat}`).value);
+                updatedGoals[cat] = isNaN(val) || val <= 0 ? 20 : val;
+            });
+
+            closeGoalManagerModal();
+            showSyncIndicator("Updating finish lines...");
+
+            try {
+                dbGoals = await apiPut('/goals', updatedGoals);
+                renderGoalTrackingDashboard();
+                confetti({ particleCount: 60, spread: 40, origin: { y: 0.8 } });
+            } catch(e) {
+                console.error('Failed to save goals:', e);
+            } finally {
+                hideSyncIndicator();
+            }
+        }
+
+
+        // ==================== 📅 ENGINE LOGIC: MASTER ROUTINE SETTINGS ====================
+        function renderRoutineTable() {
+            const tbody = document.getElementById('routine-table-body');
+            tbody.innerHTML = '';
+
+            days.forEach(day => {
+                let rowHtml = `<tr class="hover:bg-slate-900/40 transition-colors">
+                    <td class="p-3 font-bold text-indigo-400 border-r border-gray-900 bg-slate-950/40">${day}</td>`;
+                
+                const daySlots = dbRoutine[day] || [[],[],[],[],[],[]];
+                
+                // Construct standard 6 slots inputs
+                for(let i=0; i<6; i++) {
+                    let slotSubjects = daySlots[i] || [];
+                    let valueText = slotSubjects.join(', ');
+
+                    rowHtml += `
+                        <td class="p-2 border-r border-gray-900 text-center">
+                            <input type="text" id="cell-${day}-${i}" value="${valueText}" placeholder="e.g. Excel, JavaScript" class="w-full bg-[#070b1a] border border-gray-950 rounded px-2 py-1 text-center font-medium text-white outline-none focus:border-indigo-600 text-xs">
+                        </td>`;
+                }
+
+                rowHtml += `</tr>`;
+                tbody.innerHTML += rowHtml;
+            });
+        }
+
+        async function saveRoutineEngine() {
+            showSyncIndicator("Saving master layout...");
+            const newLayout = {};
+
+            days.forEach(day => {
+                newLayout[day] = [];
+                for(let i=0; i<6; i++) {
+                    let rawVal = document.getElementById(`cell-${day}-${i}`).value.trim();
+                    if(rawVal === '') {
+                        newLayout[day].push([]);
+                    } else {
+                        // Split by comma and clean spaces
+                        let cleanArr = rawVal.split(',').map(s => s.trim()).filter(s => s !== '');
+                        newLayout[day].push(cleanArr);
+                    }
                 }
             });
 
             try {
-                let responseNode = await fetch(`${API_BASE_ENDPOINT_URI}/api/routine`, {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(compiledRoutineBuildMatrixPayload)
-                });
-                let responseData = await responseNode.json();
-                if(responseData.success) {
-                    alert("Ecosystem Routine Blueprint Matrix configurations committed successfully!");
-                    await synchronizeDatabaseClusterEcosystemPayload();
-                    executeActiveWorkspaceEngineRenderViewLoop();
-                    switchWorkspaceActiveTab('workspace');
-                }
-            } catch (err) {
-                console.error(err);
-            }
+                dbRoutine = await apiPut('/routine', newLayout);
+                renderDailyLog();
+                alert("Master routine template synchronization completed successfully!");
+            } catch(e) { console.error(e); }
+            hideSyncIndicator();
         }
-
-        // 12. PERFORMANCE VELOCITY METRICS PROGRESS PANEL GENERATION
-        function executeAnalyticsDashboardProgressChartsEngineRender() {
-            const targetContainer = document.getElementById('analytics-progress-tab-cards-target');
-            targetContainer.innerHTML = '';
-
-            const operationalSubjectCategoriesKeysArray = ["AI & Code", "Civil Engr", "BCS & Job Prep", "Skills Vector"];
-            
-            operationalSubjectCategoriesKeysArray.forEach(categoryKeyString => {
-                let categoryTotalCount = 0, categoryCompletedCount = 0;
-
-                Object.keys(dbTopics).forEach(dateKey => {
-                    dbTopics[dateKey].forEach(t => {
-                        if(t.category === categoryKeyString) {
-                            categoryTotalCount++;
-                            if(t.status === 'Complete') categoryCompletedCount++;
-                        }
-                    });
-                });
-
-                let completionPercentageRatio = categoryTotalCount > 0 ? Math.round((categoryCompletedCount / categoryTotalCount) * 100) : 0;
-
-                targetContainer.innerHTML += `
-                    <div class="bg-[#080c24] border border-gray-900 rounded-2xl p-4 space-y-3 shadow-md">
-                        <div class="flex justify-between items-center font-bold">
-                            <span class="text-xs text-white uppercase tracking-wide">${categoryKeyString}</span>
-                            <span class="text-[11px] font-mono text-indigo-400 bg-indigo-950/40 border border-indigo-900/40 px-2 py-0.5 rounded-md">${categoryCompletedCount} / ${categoryTotalCount} Done</span>
-                        </div>
-                        <div class="w-full bg-[#040614] h-2 rounded-full overflow-hidden border border-gray-950 shadow-inner">
-                            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full transition-all duration-500" style="width: ${completionPercentageRatio}%"></div>
-                        </div>
-                        <div class="flex justify-between items-center text-[10px] font-mono text-gray-500">
-                            <span>Performance Efficiency Yield</span>
-                            <span class="font-bold text-gray-300">${completionPercentageRatio}%</span>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        // 13. HISTORICAL ARCHIVE STREAM SEARCH MATRICES
-        function executeArchiveLogsFilteringSearch() {
-            const searchQueryValueString = document.getElementById('archive-search-field-query').value.trim().toLowerCase();
-            const archiveRenderContainer = document.getElementById('archive-logs-render-target');
-            archiveRenderContainer.innerHTML = '';
-
-            let flatAccumulatedAllTopicsRowsArray = [];
-            Object.keys(dbTopics).forEach(dateKey => {
-                dbTopics[dateKey].forEach(t => {
-                    flatAccumulatedAllTopicsRowsArray.push(t);
-                });
-            });
-
-            flatAccumulatedAllTopicsRowsArray.sort((alpha, beta) => beta.date.localeCompare(alpha.date));
-
-            let filteredResultsRowsArray = flatAccumulatedAllTopicsRowsArray.filter(t => {
-                if(!searchQueryValueString) return true;
-                return t.topicName.toLowerCase().includes(searchQueryValueString) || 
-                       t.subject.toLowerCase().includes(searchQueryValueString) || 
-                       t.category.toLowerCase().includes(searchQueryValueString) ||
-                       t.date.includes(searchQueryValueString);
-            });
-
-            document.getElementById('history-box-title').innerText = `Historical Archive Logs Collection Matrix (${filteredResultsRowsArray.length} Elements Mapped)`;
-
-            if(filteredResultsRowsArray.length === 0) {
-                archiveRenderContainer.innerHTML = `<p class="text-center text-gray-700 text-xs py-6">No historical transaction rows match active search criteria strings parameters maps.</p>`;
-                return;
-            }
-
-            filteredResultsRowsArray.forEach(t => {
-                let isC = t.status === 'Complete';
-                let resourceBadgeElement = t.noteUrl ? `<a href="${t.noteUrl}" target="_blank" class="text-cyan-400 hover:underline text-[9px] block font-mono"><i class="fa-solid fa-link text-[8px]"></i> Resource Linked</a>` : '';
-                
-                archiveRenderContainer.innerHTML += `
-                    <div class="bg-[#050819] p-3 rounded-xl border border-gray-950 flex justify-between items-center text-xs opacity-85 hover:opacity-100 transition">
-                        <div class="space-y-0.5">
-                            <span class="text-[8px] font-mono font-bold text-gray-500 uppercase block">${t.date} &nbsp;•&nbsp; ${t.category}</span>
-                            <h6 class="text-gray-300 font-semibold">${t.topicName}</h6>
-                            <p class="text-[10px] text-gray-500 font-medium">${t.subject}</p>
-                            ${resourceBadgeElement}
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <span class="text-[9px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 border rounded-md ${isC ? 'bg-emerald-950/40 text-emerald-400 border-emerald-900/30' : 'bg-rose-950/40 text-rose-400 border-rose-900/30'}">${t.status}</span>
-                            <button onclick="purgeTopicDataRowFromClusterCollection(${t.id})" class="text-gray-700 hover:text-rose-400 transition cursor-pointer p-1"><i class="fa-solid fa-trash-can text-[11px]"></i></button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
     </script>
 </body>
 </html>
