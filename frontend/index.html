@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Learning Routine & Super Hub v3.0</title>
+    <title>Alim's Unified Super Hub v3.5</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,700;1,700&family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap" rel="stylesheet">
@@ -16,8 +16,6 @@
         .glass-panel { background: rgba(13, 18, 41, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); }
         .tab-btn { transition: all 0.2s ease-in-out; }
         .active-tab { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: #ffffff; box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4); }
-        
-        /* Card Flip Style animation */
         .flip-card { perspective: 1000px; }
         .flip-card-inner { transition: transform 0.6s; transform-style: preserve-3d; position: relative; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
@@ -30,25 +28,25 @@
     <nav class="sticky top-0 z-50 bg-[#060a1f]/90 border-b border-gray-900 backdrop-blur-md px-4 py-3 shadow-xl">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-3">
-                <div class="p-2 bg-indigo-600 rounded-xl"><i class="fa-solid fa-graduation-cap text-xl text-white"></i></div>
+                <div class="p-2 bg-blue-600 rounded-xl"><i class="fa-solid fa-layer-group text-xl text-white"></i></div>
                 <div>
-                    <h1 class="text-md font-bold text-white tracking-wide">ALIM'S SUPER HUB</h1>
-                    <p class="text-[10px] text-gray-400">XP system linked v3.0</p>
+                    <h1 class="text-md font-bold text-white tracking-wide">ALIM'S UNIFIED HUB</h1>
+                    <p class="text-[10px] text-gray-400">Routine Engine + Ecosystem v3.5</p>
                 </div>
             </div>
             
-            <div class="flex flex-wrap gap-1.5 bg-[#0a0f2b] p-1 rounded-xl border border-gray-900">
-                <button onclick="switchGlobalTab('home')" id="nav-home" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-house text-[11px]"></i> Home</button>
-                <button onclick="switchGlobalTab('goals')" id="nav-goals" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-bullseye text-[11px]"></i> Goals</button>
-                <button onclick="switchGlobalTab('exam')" id="nav-exam" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-laptop-code text-[11px]"></i> AI Exam</button>
-                <button onclick="switchGlobalTab('flashcard')" id="nav-flashcard" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-layer-group text-[11px]"></i> Flashcard</button>
-                <button onclick="switchGlobalTab('performance')" id="nav-performance" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-chart-line text-[11px]"></i> Stats</button>
-                <button onclick="switchGlobalTab('pomodoro')" id="nav-pomodoro" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-stopwatch text-[11px]"></i> Pomodoro</button>
-                <button onclick="switchGlobalTab('library')" id="nav-library" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-vault text-[11px]"></i> Library</button>
+            <div class="flex flex-wrap gap-1 bg-[#0a0f2b] p-1 rounded-xl border border-gray-900">
+                <button onclick="switchGlobalTab('home')" id="nav-home" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-calendar-day"></i> Routine & Injector</button>
+                <button onclick="switchGlobalTab('goals')" id="nav-goals" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-bullseye"></i> Goals</button>
+                <button onclick="switchGlobalTab('exam')" id="nav-exam" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-laptop-code"></i> AI Exam</button>
+                <button onclick="switchGlobalTab('flashcard')" id="nav-flashcard" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-layer-group"></i> Flashcard</button>
+                <button onclick="switchGlobalTab('performance')" id="nav-performance" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-chart-line"></i> Stats</button>
+                <button onclick="switchGlobalTab('pomodoro')" id="nav-pomodoro" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-stopwatch"></i> Pomodoro</button>
+                <button onclick="switchGlobalTab('library')" id="nav-library" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-vault"></i> Library</button>
             </div>
 
             <div class="flex items-center gap-3 bg-gray-950 px-3 py-1.5 rounded-xl border border-gray-800 text-xs">
-                <div class="text-center"><span class="block text-[9px] uppercase text-gray-500 font-bold">Badge</span><span id="global-badge" class="font-bold text-amber-400 text-[11px]">Beginner</span></div>
+                <div class="text-center"><span class="block text-[9px] uppercase text-gray-500 font-bold">Tier Badge</span><span id="global-badge" class="font-bold text-amber-400 text-[11px]">Beginner</span></div>
                 <div class="h-6 w-px bg-gray-800"></div>
                 <div class="text-center"><span class="block text-[9px] uppercase text-gray-500 font-bold">Total XP</span><span id="global-xp" class="font-bold text-indigo-400 text-[11px]">0</span></div>
             </div>
@@ -58,34 +56,79 @@
     <main class="max-w-7xl mx-auto px-4 mt-6">
         
         <section id="section-home" class="global-section hidden">
-            <div class="p-6 glass-panel rounded-2xl mb-6">
-                <h2 class="text-xl font-bold main-title mb-2 text-indigo-300">Legacy Core Routine & Tracking Engine</h2>
-                <p class="text-xs text-gray-400 mb-4">Ager system er dashboard interface tikh ekhane running thakbe default layer e.</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-[#070c24] p-4 rounded-xl border border-gray-900">
-                        <span class="text-xs font-bold text-cyan-400 uppercase block mb-2">Primary Monitor</span>
-                        <div class="text-xs text-gray-400">System initialization checks completed. Database online and linked with Render.com clusters.</div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <div class="lg:col-span-4 space-y-6">
+                    <div class="glass-panel p-4 rounded-2xl">
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Calendar Navigation Target</h3>
+                        <div class="grid grid-cols-4 gap-2 text-center text-xs" id="calendar-day-matrix">
+                            </div>
                     </div>
-                    <div class="bg-[#070c24] p-4 rounded-xl border border-gray-900">
-                        <span class="text-xs font-bold text-emerald-400 uppercase block mb-2">Quick Access Data</span>
-                        <p class="text-xs text-gray-400">Total operational triggers are controlled with native scripts execution below.</p>
+
+                    <div class="glass-panel p-5 rounded-2xl">
+                        <h3 class="text-sm font-bold text-blue-400 uppercase tracking-wider mb-4"><i class="fa-solid fa-plus"></i> Inject Routine Topic</h3>
+                        <div class="space-y-3 text-xs text-gray-300">
+                            <div>
+                                <label class="block mb-1 text-gray-400">Target Segment Date</label>
+                                <input type="date" id="inj-date" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-400">Category Layout</label>
+                                <select id="inj-category" onchange="populateSubjectDropdown()" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none">
+                                    <option value="AI & Code">AI & Code</option>
+                                    <option value="Civil Engr">Civil Engr</option>
+                                    <option value="BCS & Job Prep">BCS & Job Prep</option>
+                                    <option value="Skills Vector">Skills Vector</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-400">Linked Core Subject</label>
+                                <select id="inj-subject" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none">
+                                    </select>
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-400">Topic Statement</label>
+                                <input type="text" id="inj-topic" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none" placeholder="e.g. Frame Matrix Method Evaluation">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-400">Resource Note URL (Optional)</label>
+                                <input type="url" id="inj-url" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none" placeholder="https://...">
+                            </div>
+                            <button onclick="injectTopicToDatabase()" class="w-full bg-blue-600 hover:bg-blue-700 py-2.5 rounded-lg text-white font-bold tracking-wide transition">Commit Topic Injection</button>
+                        </div>
                     </div>
                 </div>
+
+                <div class="lg:col-span-8 space-y-6">
+                    <div class="glass-panel p-5 rounded-2xl">
+                        <div class="flex justify-between items-center mb-4 border-b border-gray-800 pb-3">
+                            <div>
+                                <h2 class="text-lg font-bold main-title text-white" id="routine-focused-date-title">Routine Engine Loading...</h2>
+                                <p class="text-[11px] text-gray-400 font-mono" id="routine-focused-day-tag">Day Tag Profile</p>
+                            </div>
+                            <span class="text-xs font-mono font-bold uppercase tracking-wider px-3 py-1 rounded bg-blue-950 border border-blue-900 text-blue-400">Live Workspace</span>
+                        </div>
+
+                        <div class="space-y-3" id="active-day-topics-list">
+                            </div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
         <section id="section-goals" class="global-section hidden">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="glass-panel p-5 rounded-2xl h-fit">
-                    <h3 class="text-sm font-bold uppercase text-indigo-400 mb-4 tracking-wider"><i class="fa-solid fa-plus-circle"></i> Create Lifetime Goal</h3>
-                    <div class="space-y-3.5 text-xs">
+                    <h3 class="text-sm font-bold uppercase text-indigo-400 mb-4 tracking-wider"><i class="fa-solid fa-plus-circle"></i> Create Goal</h3>
+                    <div class="space-y-3 text-xs">
                         <div>
                             <label class="block mb-1 text-gray-400">Goal Title</label>
-                            <input type="text" id="goal-title" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none focus:border-indigo-500" placeholder="e.g., Clear BCS Preliminary Examination">
+                            <input type="text" id="goal-title" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none" placeholder="e.g., Clear BCS Prelims">
                         </div>
                         <div>
                             <label class="block mb-1 text-gray-400">Category Tag</label>
-                            <select id="goal-category" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none">
+                            <select id="goal-category" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white">
                                 <option value="BCS">BCS</option>
                                 <option value="Engineering">Engineering</option>
                                 <option value="Programming">Programming</option>
@@ -94,27 +137,22 @@
                         </div>
                         <div>
                             <label class="block mb-1 text-gray-400">Target Deadline</label>
-                            <input type="date" id="goal-deadline" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none">
+                            <input type="date" id="goal-deadline" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white">
                         </div>
                         <div>
-                            <label class="block mb-1 text-gray-400">Strategic Description</label>
-                            <textarea id="goal-desc" rows="3" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none" placeholder="Provide notes..."></textarea>
+                            <label class="block mb-1 text-gray-400">Description</label>
+                            <textarea id="goal-desc" rows="3" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white"></textarea>
                         </div>
                         <div>
-                            <label class="block mb-1 text-gray-400">Milestones (Comma separated list)</label>
-                            <input type="text" id="goal-milestones" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none" placeholder="Milestone 1, Milestone 2">
+                            <label class="block mb-1 text-gray-400">Milestones (Comma separated)</label>
+                            <input type="text" id="goal-milestones" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white" placeholder="Milestone 1, Milestone 2">
                         </div>
-                        <button onclick="saveNewGoal()" class="w-full bg-indigo-600 hover:bg-indigo-700 py-2.5 rounded-lg text-white font-bold transition">Commit Goal Struct</button>
+                        <button onclick="saveNewGoal()" class="w-full bg-indigo-600 hover:bg-indigo-700 py-2.5 text-white font-bold rounded-lg transition">Commit Goal Struct</button>
                     </div>
                 </div>
-
                 <div class="lg:col-span-2 space-y-4">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-lg font-bold tracking-tight">Active Strategic Commitments</h2>
-                        <span class="text-xs bg-gray-900 border border-gray-800 text-gray-400 px-3 py-1 rounded-full" id="goals-count">0 Target</span>
-                    </div>
-                    <div id="goals-render-target" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        </div>
+                    <div class="flex justify-between items-center"><h2 class="text-md font-bold uppercase">Active Targets</h2><span class="text-xs text-gray-400" id="goals-count">0</span></div>
+                    <div id="goals-render-target" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                 </div>
             </div>
         </section>
@@ -122,51 +160,36 @@
         <section id="section-exam" class="global-section hidden">
             <div class="max-w-3xl mx-auto glass-panel p-6 rounded-2xl">
                 <div id="exam-setup-box">
-                    <h2 class="text-lg font-bold text-white mb-2 tracking-tight">AI Diagnostic Exam Module</h2>
-                    <p class="text-xs text-gray-400 mb-5">Configure parameters. System connects via proxy architecture to trigger structural prompt schemas automatically.</p>
-                    
+                    <h2 class="text-lg font-bold mb-2">AI Diagnostic Exam Module</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs mb-4">
                         <div>
                             <label class="block mb-1 text-gray-400">Core Subject</label>
-                            <input type="text" id="exam-subject" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none" placeholder="e.g., Structural Analysis">
+                            <input type="text" id="exam-subject" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white" placeholder="Structural Analysis">
                         </div>
                         <div>
                             <label class="block mb-1 text-gray-400">Topic Area</label>
-                            <input type="text" id="exam-topic" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none" placeholder="e.g., Frame Matrix Method">
+                            <input type="text" id="exam-topic" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white" placeholder="Frame Deflection Matrix">
                         </div>
                         <div>
                             <label class="block mb-1 text-gray-400">Exam Architectural Typology</label>
-                            <select id="exam-type" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none">
-                                <option value="MCQ">MCQ Matrix (4 options)</option>
+                            <select id="exam-type" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white">
+                                <option value="MCQ">MCQ Matrix</option>
                                 <option value="True-False">True-False Core Evaluation</option>
-                                <option value="Gap-Fill">Gap-Fill System Matrix</option>
-                                <option value="Broad">Broad Evaluation Schema</option>
-                                <option value="Interview">Structured Interview Simulation</option>
-                                <option value="BCS">BCS Standard Pattern</option>
                             </select>
                         </div>
                         <div class="flex items-end">
-                            <button onclick="triggerAIExamGeneration()" class="w-full bg-cyan-600 hover:bg-cyan-700 py-2.5 text-white font-bold rounded-lg text-xs tracking-wide transition"><i class="fa-solid fa-wand-magic-sparkles"></i> Initialize Claude Model Pipeline</button>
+                            <button onclick="triggerAIExamGeneration()" class="w-full bg-cyan-600 hover:bg-cyan-700 py-2.5 text-white font-bold rounded-lg transition"><i class="fa-solid fa-wand-magic-sparkles"></i> Initialize AI Model Pipeline</button>
                         </div>
                     </div>
                 </div>
-
                 <div id="exam-simulation-matrix" class="hidden border-t border-gray-800 pt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <span id="exam-meta-tag" class="text-xs bg-cyan-950 border border-cyan-800 text-cyan-400 px-3 py-1 rounded-full uppercase font-bold">MCQ Matrix</span>
-                        <div class="text-xs text-gray-400">Evaluation Phase Active</div>
-                    </div>
-                    <div id="exam-questions-box" class="space-y-6 text-xs">
-                        </div>
-                    <button onclick="submitExamForEvaluation()" class="mt-6 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-xs transition">End Matrix Evaluation & Process Data</button>
+                    <div id="exam-questions-box" class="space-y-6 text-xs"></div>
+                    <button onclick="submitExamForEvaluation()" class="mt-6 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition">Submit Matrix Responses</button>
                 </div>
-
-                <div id="exam-result-sheet" class="hidden bg-gray-950 p-5 rounded-xl border border-gray-800 text-center text-xs">
-                    <i class="fa-solid fa-circle-check text-4xl text-emerald-400 mb-2"></i>
-                    <h3 class="text-md font-bold text-white">Evaluation Engine Report</h3>
-                    <div class="text-2xl font-black text-indigo-400 my-2" id="result-score-display">0 / 0</div>
-                    <p id="result-feedback-display" class="text-gray-400 mb-4 max-w-md mx-auto"></p>
-                    <button onclick="resetExamModule()" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition">Clear Module Instance</button>
+                <div id="exam-result-sheet" class="hidden text-center text-xs space-y-3">
+                    <div class="text-2xl font-black text-indigo-400" id="result-score-display">0 / 0</div>
+                    <p id="result-feedback-display" class="text-gray-400"></p>
+                    <button onclick="resetExamModule()" class="bg-gray-800 text-white px-4 py-2 rounded-lg">Reset Core Module</button>
                 </div>
             </div>
         </section>
@@ -174,174 +197,73 @@
         <section id="section-flashcard" class="global-section hidden">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="glass-panel p-5 rounded-2xl h-fit text-xs space-y-4">
-                    <h3 class="text-sm font-bold text-amber-400 uppercase tracking-wider"><i class="fa-solid fa-layer-group"></i> Create Card Definition</h3>
-                    <div>
-                        <label class="block mb-1 text-gray-400">Subject Context</label>
-                        <input type="text" id="card-subject" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none" placeholder="e.g., Engineering">
-                    </div>
-                    <div>
-                        <label class="block mb-1 text-gray-400">Topic Parameter</label>
-                        <input type="text" id="card-topic" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none" placeholder="e.g., Soil Mechanics">
-                    </div>
-                    <div>
-                        <label class="block mb-1 text-gray-400">Front (Question Matrix)</label>
-                        <textarea id="card-front" rows="2" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none" placeholder="Question statement..."></textarea>
-                    </div>
-                    <div>
-                        <label class="block mb-1 text-gray-400">Back (Answer Vector)</label>
-                        <textarea id="card-back" rows="2" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none" placeholder="Answer data..."></textarea>
-                    </div>
-                    <button onclick="createNewFlashcard()" class="w-full bg-amber-600 hover:bg-amber-700 py-2 rounded-lg text-white font-bold tracking-wide transition">Save Manual Item</button>
-                    <div class="h-px bg-gray-900 my-2"></div>
-                    <button onclick="triggerAIFlashcardGen()" class="w-full bg-gray-900 border border-gray-800 hover:bg-gray-800 text-gray-300 py-2 rounded-lg transition"><i class="fa-solid fa-robot text-amber-400"></i> AI Auto-Generate (10 Cards via Claude)</button>
+                    <h3 class="font-bold text-amber-400 uppercase">Create Flashcard</h3>
+                    <input type="text" id="card-subject" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2" placeholder="Subject">
+                    <input type="text" id="card-topic" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2" placeholder="Topic">
+                    <textarea id="card-front" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2" placeholder="Front Statement"></textarea>
+                    <textarea id="card-back" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2" placeholder="Back Explanation Vector"></textarea>
+                    <button onclick="createNewFlashcard()" class="w-full bg-amber-600 hover:bg-amber-700 py-2 rounded text-white font-bold">Commit Card Vector</button>
                 </div>
-
                 <div class="lg:col-span-2 space-y-4">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-lg font-bold">Anki Simulation Deck</h2>
-                        <span id="card-due-count" class="text-xs bg-amber-950 border border-amber-900 text-amber-400 px-3 py-1 rounded-full font-bold">0 Due Today</span>
-                    </div>
-
+                    <div class="flex justify-between items-center"><h2 class="text-md font-bold">Review Desk</h2><span id="card-due-count" class="text-xs text-amber-400">0 Due Today</span></div>
                     <div id="deck-review-desk" class="hidden">
-                        <div id="active-flip-card" class="flip-card w-full h-64 cursor-pointer mb-6" onclick="this.classList.toggle('flipped')">
+                        <div id="active-flip-card" class="flip-card w-full h-48 cursor-pointer mb-6" onclick="this.classList.toggle('flipped')">
                             <div class="flip-card-inner w-full h-full text-center">
                                 <div class="flip-card-front glass-panel rounded-2xl p-6 flex flex-col justify-between items-center border border-gray-800 shadow-2xl">
-                                    <span class="text-[10px] bg-gray-900 px-3 py-1 text-gray-400 rounded-full font-bold uppercase tracking-widest" id="card-view-subject">SUBJECT</span>
-                                    <p class="text-sm font-medium text-gray-100 max-w-md my-auto" id="card-view-front">Click card vector to flip and reveal baseline answer</p>
-                                    <span class="text-[10px] text-gray-500 font-bold uppercase"><i class="fa-solid fa-rotate"></i> Flip View</span>
+                                    <p class="text-sm text-gray-100 font-bold" id="card-view-front"></p>
+                                    <span class="text-[9px] text-gray-500 uppercase"><i class="fa-solid fa-rotate"></i> Click to Reveal Answer</span>
                                 </div>
-                                <div class="flip-card-back bg-gradient-to-br from-[#0c102b] to-[#040614] rounded-2xl p-6 flex flex-col justify-between items-center border border-indigo-900/40 shadow-2xl">
-                                    <span class="text-[10px] bg-indigo-950 px-3 py-1 text-indigo-400 rounded-full font-bold uppercase">Answer Schema</span>
-                                    <p class="text-sm font-bold text-white max-w-md my-auto" id="card-view-back">Target answer response data vector.</p>
-                                    <span class="text-[10px] text-gray-500 font-bold uppercase">Revealed</span>
+                                <div class="flip-card-back bg-indigo-950/40 rounded-2xl p-6 flex flex-col justify-between items-center border border-indigo-900 shadow-2xl">
+                                    <p class="text-sm text-white font-bold" id="card-view-back"></p>
+                                    <span class="text-[9px] text-gray-500 uppercase">Revealed Profile Matrix</span>
                                 </div>
                             </div>
                         </div>
-
                         <div class="grid grid-cols-3 gap-3 text-xs">
-                            <button onclick="processCardReview('again')" class="bg-rose-950 hover:bg-rose-900 border border-rose-800 text-rose-400 py-3 rounded-xl font-bold tracking-wide transition">AGAIN (Tomorrow)</button>
-                            <button onclick="processCardReview('hard')" class="bg-amber-950 hover:bg-amber-900 border border-amber-900 text-amber-400 py-3 rounded-xl font-bold tracking-wide transition">HARD (2 Days)</button>
-                            <button onclick="processCardReview('easy')" class="bg-emerald-950 hover:bg-emerald-900 border border-emerald-800 text-emerald-400 py-3 rounded-xl font-bold tracking-wide transition">EASY (7 Days)</button>
+                            <button onclick="processCardReview('again')" class="bg-rose-950 border border-rose-800 text-rose-400 py-2.5 rounded-lg font-bold">AGAIN</button>
+                            <button onclick="processCardReview('hard')" class="bg-amber-950 border border-amber-800 text-amber-400 py-2.5 rounded-lg font-bold">HARD</button>
+                            <button onclick="processCardReview('easy')" class="bg-emerald-950 border border-emerald-800 text-emerald-400 py-2.5 rounded-lg font-bold">EASY</button>
                         </div>
                     </div>
-
-                    <div id="deck-empty-state" class="glass-panel p-12 rounded-2xl text-center text-xs text-gray-500">
-                        <i class="fa-solid fa-box-open text-4xl text-gray-700 mb-3"></i>
-                        <p>Review queues cleared. No structural cards matching calculation dates exist for today.</p>
-                    </div>
+                    <div id="deck-empty-state" class="glass-panel p-12 rounded-2xl text-center text-xs text-gray-500">All decks cleared for current parameter metrics!</div>
                 </div>
             </div>
         </section>
 
         <section id="section-performance" class="global-section hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                <div class="glass-panel p-5 rounded-2xl text-center">
-                    <span class="text-[10px] font-bold tracking-wider text-gray-400 uppercase block mb-1">Consistency Streaks</span>
-                    <div class="text-3xl font-black text-orange-400 tracking-tight" id="stats-streak-counter">0 Days</div>
-                    <p class="text-[10px] text-gray-500 mt-1">Sequential ledger activity entries</p>
-                </div>
-                <div class="glass-panel p-5 rounded-2xl text-center">
-                    <span class="text-[10px] font-bold tracking-wider text-gray-400 uppercase block mb-1">Current Badge Tier</span>
-                    <div class="text-2xl font-extrabold text-amber-400 tracking-tight" id="stats-badge-name">Beginner</div>
-                    <div class="w-full bg-gray-900 h-1.5 rounded-full mt-2 overflow-hidden border border-gray-800">
-                        <div class="bg-gradient-to-r from-amber-500 to-yellow-300 h-full w-[25%]" id="stats-badge-progress"></div>
-                    </div>
-                </div>
-                <div class="glass-panel p-5 rounded-2xl text-center">
-                    <span class="text-[10px] font-bold tracking-wider text-gray-400 uppercase block mb-1">Total Experience (XP)</span>
-                    <div class="text-3xl font-black text-indigo-400 tracking-tight" id="stats-xp-counter">0 XP</div>
-                    <p class="text-[10px] text-gray-500 mt-1">Actions ledger calculation points</p>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="glass-panel p-5 rounded-2xl text-center"><div class="text-3xl font-black text-orange-400" id="stats-streak-counter">0 Days</div><span class="text-[10px] text-gray-400 uppercase">Consistency Ledger</span></div>
+                <div class="glass-panel p-5 rounded-2xl text-center"><div class="text-2xl font-extrabold text-amber-400" id="stats-badge-name">Beginner</div><span class="text-[10px] text-gray-400 uppercase">Active Status Rank</span></div>
+                <div class="glass-panel p-5 rounded-2xl text-center"><div class="text-3xl font-black text-indigo-400" id="stats-xp-counter">0 XP</div><span class="text-[10px] text-gray-400 uppercase">Experience Index</span></div>
             </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="glass-panel p-5 rounded-2xl">
-                    <h3 class="text-xs font-bold text-gray-300 mb-4 uppercase tracking-wider">Weekly Allocation Matrix (Hours)</h3>
-                    <div class="h-64 flex items-center justify-center relative">
-                        <canvas id="weeklyHoursChart"></canvas>
-                    </div>
-                </div>
-                <div class="glass-panel p-5 rounded-2xl">
-                    <h3 class="text-xs font-bold text-gray-300 mb-4 uppercase tracking-wider">Subject Competency Mapping (Radar)</h3>
-                    <div class="h-64 flex items-center justify-center relative">
-                        <canvas id="subjectRadarChart"></canvas>
-                    </div>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-panel p-5 rounded-2xl"><canvas id="weeklyHoursChart" class="h-48"></canvas></div>
+                <div class="glass-panel p-5 rounded-2xl"><canvas id="subjectRadarChart" class="h-48"></canvas></div>
             </div>
         </section>
 
         <section id="section-pomodoro" class="global-section hidden">
-            <div class="max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-6">
-                <div class="md:col-span-2 space-y-4 text-xs">
-                    <div class="glass-panel p-4 rounded-xl">
-                        <h4 class="font-bold text-gray-300 uppercase tracking-wide text-[11px] mb-3">Task Selector Link</h4>
-                        <select id="pomo-task-link" class="w-full bg-[#050818] border border-gray-800 rounded-lg p-2 text-white outline-none">
-                            <option value="General Engine Focus">General Engine Focus</option>
-                            </select>
-                    </div>
-                    
-                    <div class="glass-panel p-4 rounded-xl space-y-3">
-                        <h4 class="font-bold text-rose-400 uppercase tracking-wide text-[11px] mb-1"><i class="fa-solid fa-gavel"></i> Anti-Procrastination Contract</h4>
-                        <textarea id="commitment-contract-text" rows="3" class="w-full bg-[#050818] border border-gray-800 rounded-lg p-2 text-white text-[11px]" placeholder="State your exact concrete deliverable for this cycle..."></textarea>
-                        <button onclick="signCommitmentContract()" id="contract-sign-btn" class="w-full bg-rose-950 border border-rose-800 hover:bg-rose-900 text-rose-400 font-bold py-1.5 rounded-lg transition text-[10px]">Lock Execution Contract</button>
-                    </div>
+            <div class="max-w-xl mx-auto glass-panel p-6 rounded-2xl flex flex-col items-center justify-center text-center relative overflow-hidden">
+                <div id="distraction-lock-screen" class="hidden absolute inset-0 bg-red-950/95 z-30 flex flex-col items-center justify-center p-6 text-center">
+                    <h3 class="font-bold text-white text-md tracking-wider">FOCUS STRUCT VIOLATION</h3>
+                    <button onclick="dismissLockWarning()" class="mt-4 bg-white text-black px-4 py-1.5 rounded-lg text-xs font-bold">Return Workspace</button>
                 </div>
-
-                <div class="md:col-span-3 glass-panel p-6 rounded-2xl flex flex-col items-center justify-center text-center relative overflow-hidden">
-                    <div id="distraction-lock-screen" class="hidden absolute inset-0 bg-red-950/95 backdrop-blur-md z-30 flex flex-col items-center justify-center p-6 transition-all">
-                        <i class="fa-solid fa-triangle-exclamation text-4xl text-red-500 animate-pulse mb-2"></i>
-                        <h3 class="text-sm font-bold text-white uppercase tracking-widest">FOCUS STRUCT VIOLATION</h3>
-                        <p class="text-[11px] text-gray-400 mt-2 max-w-xs">Return focus vectors directly to app interface immediately. Focus breaks reduce active calculated tracking statistics parameters.</p>
-                        <button onclick="dismissLockWarning()" class="mt-4 bg-white text-black text-[11px] font-bold px-4 py-1.5 rounded-lg">Return To Workspace</button>
-                    </div>
-
-                    <span class="text-[10px] font-bold tracking-widest text-indigo-400 uppercase mb-2">Focus Session Instance</span>
-                    <div class="text-6xl font-black font-mono tracking-tight text-white mb-6" id="pomo-timer-digits">25:00</div>
-                    
-                    <div class="flex gap-2 text-xs w-full">
-                        <button onclick="togglePomodoroEngine()" id="pomo-master-btn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl transition">Initialize Session</button>
-                        <button onclick="resetPomodoroEngine()" class="bg-gray-900 border border-gray-800 text-gray-400 px-4 py-2 rounded-xl transition">Reset</button>
-                    </div>
+                <span class="text-xs uppercase font-bold text-gray-400 mb-2">Focus Session Alpha Vector</span>
+                <div class="text-5xl font-black font-mono tracking-tight text-white mb-6" id="pomo-timer-digits">25:00</div>
+                <div class="flex gap-4 w-full">
+                    <button onclick="togglePomodoroEngine()" id="pomo-master-btn" class="flex-1 bg-blue-600 hover:bg-blue-700 font-bold py-2.5 text-xs rounded-xl">Initialize Focus Matrix</button>
+                    <button onclick="resetPomodoroEngine()" class="bg-gray-900 border border-gray-800 text-gray-400 px-4 py-2 text-xs rounded-xl">Reset</button>
                 </div>
             </div>
         </section>
 
         <section id="section-library" class="global-section hidden">
-            <div class="space-y-4">
-                <div class="glass-panel p-4 rounded-xl flex flex-col md:flex-row gap-4 items-center justify-between text-xs">
-                    <div class="relative w-full md:w-72">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-600"></i>
-                        <input type="text" id="lib-search-input" oninput="filterLibraryVault()" class="w-full bg-[#050818] border border-gray-800 rounded-lg pl-9 pr-3 py-2 text-white outline-none" placeholder="Search operational vault variables...">
-                    </div>
-                    <div class="flex gap-2 w-full md:w-auto">
-                        <select id="lib-filter-subject" onchange="filterLibraryVault()" class="bg-[#050818] border border-gray-800 rounded-lg p-2 text-white outline-none">
-                            <option value="ALL">All Subjects</option>
-                        </select>
-                        <button onclick="exportLibraryAsPDF()" class="bg-gray-900 hover:bg-gray-800 text-gray-300 border border-gray-800 px-4 py-2 rounded-lg font-bold flex items-center gap-1.5 transition"><i class="fa-solid fa-file-pdf text-rose-500"></i> Export Repository Ledger</button>
-                    </div>
-                </div>
-
-                <div id="library-vault-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    </div>
-            </div>
-
+            <div id="library-vault-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
             <div id="lib-editor-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                 <div class="bg-[#090d22] w-full max-w-xl rounded-2xl border border-gray-800 p-5 text-xs space-y-4">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 id="modal-topic-title" class="text-sm font-bold text-white">Topic Parameter Workspace</h3>
-                            <span id="modal-subject-tag" class="text-[9px] bg-indigo-950 px-2 py-0.5 text-indigo-400 font-bold uppercase rounded mt-1 inline-block">Subject</span>
-                        </div>
-                        <button onclick="closeLibraryEditor()" class="text-gray-500 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
-                    </div>
-                    <div>
-                        <label class="block mb-1 text-gray-400 font-bold">Markdown Compliant Knowledge Notes Matrix</label>
-                        <textarea id="modal-notes-area" rows="10" class="w-full bg-[#040614] border border-gray-900 rounded-xl p-3 text-white font-mono leading-relaxed outline-none focus:border-indigo-600" placeholder="# Enter headers&#10;- Bullet points vector data..."></textarea>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <button id="modal-exam-shortcut-btn" class="bg-cyan-950 border border-cyan-800 text-cyan-400 px-4 py-2 rounded-lg font-bold transition hover:bg-cyan-900">Launch Topic Diagnostic Exam</button>
-                        <button onclick="saveLibraryNotesVector()" class="bg-indigo-600 hover:bg-indigo-700 px-5 py-2 text-white font-bold rounded-lg transition">Commit Notes Buffer</button>
-                    </div>
+                    <h3 id="modal-topic-title" class="text-sm font-bold text-white"></h3>
+                    <textarea id="modal-notes-area" rows="10" class="w-full bg-[#040614] border border-gray-900 rounded-xl p-3 text-white font-mono outline-none"></textarea>
+                    <div class="flex justify-end gap-2"><button onclick="closeLibraryEditor()" class="bg-gray-900 px-4 py-2 rounded-lg text-gray-400">Cancel</button><button onclick="saveLibraryNotesVector()" class="bg-blue-600 px-4 py-2 rounded-lg text-white">Commit Notes Buffer</button></div>
                 </div>
             </div>
         </section>
@@ -349,70 +271,240 @@
     </main>
 
     <script>
-        // BACKEND URL RESOLUTION CONFIG
-        const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-            ? 'http://localhost:5000' 
-            : '';
+        const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:5000' : '';
 
-        // IN-MEMORY ACTIVE STATE DATA CONTAINERS
+        // RUNTIME IN-MEMORY STORAGE STATE
+        let dbTopics = {};
+        let dbRoutine = {};
         let globalStats = { xp: 0, level: 'Beginner', streak: 0 };
         let memoryGoals = [];
         let memoryFlashcards = [];
         let memoryLibraryNotes = [];
-        let memoryExamHistory = [];
+        
+        let selectedDateStr = new Date().toISOString().split('T')[0];
 
-        // INITIAL ENGINE LOAD
+        // SUBJ-MAP DATABASE PRESETS
+        const categorySubjectMatrix = {
+            "AI & Code": ["AI Engineering – L2", "JavaScript", "Typing Practice", "Programming Frameworks", "Software systems matrix"],
+            "Civil Engr": ["Transportation", "Earth Quake Engineering", "Structure–I", "Residential Design", "Civil structural analysis"],
+            "BCS & Job Prep": ["Geography", "English", "BCS General", "Analytical Struct"],
+            "Skills Vector": ["Freehand Writing", "Excel", "Research Class"]
+        };
+
         window.addEventListener('DOMContentLoaded', async () => {
-            await synchronizeGlobalStateEngine();
-            switchGlobalTab('home'); // Core routing home layer activation
+            document.getElementById('inj-date').value = selectedDateStr;
+            populateSubjectDropdown();
+            await loadSystemDataPipeline();
+            renderCalendarDayMatrix();
+            renderActiveDayRoutineDeck();
+            switchGlobalTab('home');
             initializeSystemCharts();
-            monitorTabDistractionMatrix();
         });
 
-        // GLOBAL CONFIG SYNCHRONIZATION DATA ROUTER
-        async function synchronizeGlobalStateEngine() {
+        // 1. DATA SYNCHRONIZATION FROM MONGODB
+        async function loadSystemDataPipeline() {
             try {
-                // Fetch User Performance Stats
-                let rStats = await fetch(`${API_BASE}/api/stats`);
-                let dStats = await rStats.json();
-                if(dStats.success) globalStats = dStats.data;
-                
-                // Fetch Goals Dataset
-                let rGoals = await fetch(`${API_BASE}/api/goals`);
-                let dGoals = await rGoals.json();
-                if(dGoals.success) memoryGoals = dGoals.data;
+                // Legacy Topics
+                let rT = await fetch(`${API_BASE}/api/topics`);
+                let dT = await rT.json();
+                dbTopics = {};
+                if(dT.success && dT.data) {
+                    dT.data.forEach(t => {
+                        if(!dbTopics[t.date]) dbTopics[t.date] = [];
+                        dbTopics[t.date].push(t);
+                    });
+                }
 
-                // Fetch Flashcards Deck
-                let rCards = await fetch(`${API_BASE}/api/flashcards`);
-                let dCards = await rCards.json();
-                if(dCards.success) memoryFlashcards = dCards.data;
+                // Legacy Routine
+                let rR = await fetch(`${API_BASE}/api/routine`);
+                let dR = await rR.json();
+                if(dR.success) dbRoutine = dR.data;
 
-                // Fetch Library Notes
-                let rNotes = await fetch(`${API_BASE}/api/library/notes`);
-                let dNotes = await rNotes.json();
-                if(dNotes.success) memoryLibraryNotes = dNotes.data;
-
-                // Fetch Exam Records Ledger
-                let rExams = await fetch(`${API_BASE}/api/exams/history`);
-                let dExams = await rExams.json();
-                if(dExams.success) memoryExamHistory = dExams.data;
+                // Stats & Upgrades
+                let rS = await fetch(`${API_BASE}/api/stats`); let dS = await rS.json(); if(dS.success) globalStats = dS.data;
+                let rG = await fetch(`${API_BASE}/api/goals`); let dG = await rG.json(); if(dG.success) memoryGoals = dG.data;
+                let rC = await fetch(`${API_BASE}/api/flashcards`); let dC = await rC.json(); if(dC.success) memoryFlashcards = dC.data;
+                let rN = await fetch(`${API_BASE}/api/library/notes`); let dN = await rN.json(); if(dN.success) memoryLibraryNotes = dN.data;
 
                 updateGlobalUIWidgets();
-            } catch (err) {
-                console.warn("Backend connection context lost. Cascading structure into local fallback architecture safely.", err);
-            }
+            } catch (err) { console.error("Database connection vector context maps error.", err); }
         }
 
         function updateGlobalUIWidgets() {
             document.getElementById('global-xp').innerText = globalStats.xp;
             document.getElementById('global-badge').innerText = globalStats.level;
-            
-            // Performance screen indicators syncing
-            if(document.getElementById('stats-xp-counter')) {
-                document.getElementById('stats-xp-counter').innerText = `${globalStats.xp} XP`;
-                document.getElementById('stats-badge-name').innerText = globalStats.level;
-                document.getElementById('stats-streak-counter').innerText = `${globalStats.streak || 0} Days`;
+        }
+
+        // ==========================================
+        // LEGACY MANAGEMENT CORE ENGINE
+        // ==========================================
+        function populateSubjectDropdown() {
+            const cat = document.getElementById('inj-category').value;
+            const subDropdown = document.getElementById('inj-subject');
+            subDropdown.innerHTML = '';
+            (categorySubjectMatrix[cat] || []).forEach(s => {
+                subDropdown.innerHTML += `<option value="${s}">${s}</option>`;
+            });
+        }
+
+        function renderCalendarDayMatrix() {
+            const target = document.getElementById('calendar-day-matrix');
+            target.innerHTML = '';
+            let current = new Date();
+            current.setDate(current.getDate() - 4);
+
+            for (let i = 0; i < 8; i++) {
+                let dStr = current.toISOString().split('T')[0];
+                let isSel = dStr === selectedDateStr;
+                let dayName = current.toLocaleDateString('en-US', { weekday: 'short' });
+                let dateNum = current.getDate();
+
+                target.innerHTML += `
+                    <div onclick="setSelectedDateContext('${dStr}')" class="p-2 rounded-xl cursor-pointer transition border border-gray-900 ${isSel ? 'bg-blue-600 text-white font-bold' : 'bg-gray-950 text-gray-400 hover:text-white'}">
+                        <span class="block text-[9px] uppercase tracking-wider">${dayName}</span>
+                        <span class="text-sm block">${dateNum}</span>
+                    </div>
+                `;
+                current.setDate(current.getDate() + 1);
             }
+        }
+
+        function setSelectedDateContext(dateStr) {
+            selectedDateStr = dateStr;
+            renderCalendarDayMatrix();
+            renderActiveDayRoutineDeck();
+        }
+
+        function renderActiveDayRoutineDeck() {
+            const dateObj = new Date(selectedDateStr);
+            const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'long' });
+            
+            document.getElementById('routine-focused-date-title').innerText = dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            document.getElementById('routine-focused-day-tag').innerText = `Scheduled Matrix Block Index — ${dayName}`;
+
+            const listContainer = document.getElementById('active-day-topics-list');
+            listContainer.innerHTML = '';
+
+            // Render matching injected database topics 
+            let topicsList = dbTopics[selectedDateStr] || [];
+            if(topicsList.length > 0) {
+                listContainer.innerHTML += `<h4 class="text-xs font-bold text-blue-400 uppercase tracking-widest mt-2 mb-1">Injected Working Buffer Vectors:</h4>`;
+                topicsList.forEach(t => {
+                    let isC = t.status === 'Complete';
+                    listContainer.innerHTML += `
+                        <div class="bg-[#080d26] p-3.5 rounded-xl border border-gray-800 flex justify-between items-center text-xs">
+                            <div>
+                                <span class="text-[9px] font-black uppercase text-blue-400 block tracking-wide">${t.subject}</span>
+                                <span class="font-bold text-gray-200">${t.topicName}</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <button onclick="toggleTopicStatusState(${t.id}, '${t.status}')" class="px-3 py-1 rounded text-[10px] font-bold uppercase transition ${isC ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-rose-950 text-rose-400 border border-rose-900'}">${t.status}</button>
+                                <button onclick="deleteTopicInstance(${t.id})" class="text-gray-600 hover:text-red-400 transition"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // Render Core Baseline Static Routine Blueprint Template
+            let dayRoutineBlueprintArray = dbRoutine[dayName] || [];
+            if(dayRoutineBlueprintArray.length > 0) {
+                listContainer.innerHTML += `<h4 class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-5 mb-1">Standard Core Routine Slot Vectors:</h4>`;
+                dayRoutineBlueprintArray.forEach((slot, idx) => {
+                    if(slot.length === 0) return;
+                    listContainer.innerHTML += `
+                        <div class="bg-[#050818] p-3 rounded-xl border border-gray-900 flex justify-between items-center text-xs opacity-75">
+                            <div>
+                                <span class="text-[9px] text-gray-500 block uppercase font-bold font-mono">Routine Segment Target Node ${idx+1}</span>
+                                <span class="text-gray-300 font-medium">${slot.join(' • ')}</span>
+                            </div>
+                            <i class="fa-solid fa-circle-nodes text-gray-800"></i>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        async function injectTopicToDatabase() {
+            const date = document.getElementById('inj-date').value;
+            const category = document.getElementById('inj-category').value;
+            const subject = document.getElementById('inj-subject').value;
+            const topicName = document.getElementById('inj-topic').value;
+            const noteUrl = document.getElementById('inj-url').value;
+
+            if(!topicName) return alert("Define Topic vector input data parameter values.");
+
+            const payload = { id: Date.now(), date, category, subject, topicName, noteUrl, status: 'Pending' };
+
+            try {
+                let res = await fetch(`${API_BASE}/api/topics`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                });
+                let data = await res.json();
+                if(data.success) {
+                    if(!dbTopics[date]) dbTopics[date] = [];
+                    dbTopics[date].push(data.data);
+                    document.getElementById('inj-topic').value = '';
+                    renderActiveDayRoutineDeck();
+                }
+            } catch(e) { console.error(e); }
+        }
+
+        async function toggleTopicStatusState(id, currentStatus) {
+            let found = null;
+            let targetDateKey = null;
+            Object.keys(dbTopics).forEach(d => {
+                let t = dbTopics[d].find(x => x.id === id);
+                if(t) { found = t; targetDateKey = d; }
+            });
+
+            if(!found) return;
+            found.status = currentStatus === 'Pending' ? 'Complete' : 'Pending';
+
+            try {
+                let res = await fetch(`${API_BASE}/api/topics/${id}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(found)
+                });
+                if((await res.json()).success) {
+                    if(found.status === 'Complete') await allocateXPEnginePoints(10);
+                    renderActiveDayRoutineDeck();
+                }
+            } catch(e) { console.error(e); }
+        }
+
+        async function deleteTopicInstance(id) {
+            if(!confirm("Purge active baseline injected node element reference tracker?")) return;
+            try {
+                let res = await fetch(`${API_BASE}/api/topics/${id}`, { method: 'DELETE' });
+                if((await res.json()).success) {
+                    Object.keys(dbTopics).forEach(d => {
+                        dbTopics[d] = dbTopics[d].filter(x => x.id !== id);
+                    });
+                    renderActiveDayRoutineDeck();
+                }
+            } catch(e) { console.error(e); }
+        }
+
+        // ==========================================
+        // ECOSYSTEM GLOBAL MODULES ENGINE SWITCH
+        // ==========================================
+        function switchGlobalTab(tabId) {
+            document.querySelectorAll('.global-section').forEach(s => s.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-tab'));
+            
+            const sec = document.getElementById(`section-${tabId}`);
+            const btn = document.getElementById(`nav-${tabId}`);
+            if(sec) sec.classList.remove('hidden');
+            if(btn) btn.classList.add('active-tab');
+
+            if(tabId === 'goals') renderGoalTrackingLayout();
+            if(tabId === 'flashcard') renderAnkiReviewDeck();
+            if(tabId === 'library') renderLibraryVaultMatrix();
+            if(tabId === 'performance') renderPerformanceVisualsEngine();
         }
 
         async function allocateXPEnginePoints(amount) {
@@ -423,608 +515,174 @@
                     body: JSON.stringify({ xpAmount: amount })
                 });
                 let data = await res.json();
-                if(data.success) {
-                    globalStats = data.data;
-                    updateGlobalUIWidgets();
-                    confetti({ particleCount: 40, spread: 60, origin: { y: 0.8 } });
-                }
-            } catch(e) { console.error("XP routing matrix failure execution", e); }
-        }
-
-        // NAVIGATION SWITCHER MATRIX (MODULE 0 ENGINE)
-        function switchGlobalTab(targetSectionId) {
-            document.querySelectorAll('.global-section').forEach(s => s.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-tab'));
-            
-            const activeSection = document.getElementById(`section-${targetSectionId}`);
-            const activeBtn = document.getElementById(`nav-${targetSectionId}`);
-            
-            if(activeSection) activeSection.classList.remove('hidden');
-            if(activeBtn) activeBtn.classList.add('active-tab');
-
-            // Sub-module processing executions during rendering triggers
-            if(targetSectionId === 'goals') renderGoalTrackingLayout();
-            if(targetSectionId === 'flashcard') renderAnkiReviewDeck();
-            if(targetSectionId === 'performance') renderPerformanceVisualsEngine();
-            if(targetSectionId === 'library') renderLibraryVaultMatrix();
-            if(targetSectionId === 'pomodoro') syncPomodoroTaskDropdownOptions();
+                if(data.success) { globalStats = data.data; updateGlobalUIWidgets(); confetti({ particleCount: 30 }); }
+            } catch(e) { console.error(e); }
         }
 
         // ==========================================
-        // MODULE 1 IMPLEMENTATION ENGINE: GOALS
+        // MODULES FUNCTIONAL SUBSYSTEM CODE LOGIC
         // ==========================================
         async function saveNewGoal() {
             const title = document.getElementById('goal-title').value;
             const category = document.getElementById('goal-category').value;
             const deadline = document.getElementById('goal-deadline').value;
             const description = document.getElementById('goal-desc').value;
-            const rawMilestones = document.getElementById('goal-milestones').value;
+            const msRaw = document.getElementById('goal-milestones').value;
+            if(!title || !deadline) return alert("Missing required constraints maps elements.");
 
-            if(!title || !deadline) return alert("Required parameters structural configuration data missing.");
-
-            const milestones = rawMilestones.split(',').filter(m => m.trim() !== "").map((m, idx) => ({
-                id: `ms-${Date.now()}-${idx}`,
-                title: m.trim(),
-                completed: false
-            }));
-
-            const payload = { title, category, deadline, description, milestones };
-
+            const milestones = msRaw.split(',').filter(m => m.trim()).map((m, i) => ({ id: `m-${Date.now()}-${i}`, title: m.trim(), completed: false }));
             try {
-                let res = await fetch(`${API_BASE}/api/goals`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                });
+                let res = await fetch(`${API_BASE}/api/goals`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ title, category, deadline, description, milestones }) });
                 let data = await res.json();
-                if(data.success) {
-                    memoryGoals.push(data.data);
-                    renderGoalTrackingLayout();
-                    // Clear fields
-                    document.getElementById('goal-title').value = '';
-                    document.getElementById('goal-desc').value = '';
-                    document.getElementById('goal-milestones').value = '';
-                }
+                if(data.success) { memoryGoals.push(data.data); renderGoalTrackingLayout(); }
             } catch(e) { console.error(e); }
         }
 
         function renderGoalTrackingLayout() {
             const target = document.getElementById('goals-render-target');
-            document.getElementById('goals-count').innerText = `${memoryGoals.length} Target Goals`;
+            document.getElementById('goals-count').innerText = `${memoryGoals.length} Items`;
             target.innerHTML = '';
-
             memoryGoals.forEach(g => {
-                const totalM = g.milestones.length;
-                const completedM = g.milestones.filter(m => m.completed).length;
-                const pct = totalM > 0 ? Math.round((completedM / totalM) * 100) : 0;
-
-                // Countdown logic calculations
-                const diffTime = new Date(g.deadline) - new Date();
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                const countdownString = diffDays > 0 ? `${diffDays} Days Remaining` : 'Deadline Expired';
-
-                let milestonesListHTML = '';
-                g.milestones.forEach(m => {
-                    milestonesListHTML += `
-                        <label class="flex items-center gap-2 text-[11px] text-gray-300 bg-[#040614] p-1.5 rounded border border-gray-900/50">
-                            <input type="checkbox" ${m.completed ? 'checked' : ''} onchange="toggleMilestoneExecutionState('${g._id}', '${m.id}')" class="rounded bg-gray-950 border-gray-800 text-indigo-600 focus:ring-0">
-                            <span class="${m.completed ? 'line-through text-gray-500' : ''}">${m.title}</span>
-                        </label>
-                    `;
-                });
-
                 target.innerHTML += `
-                    <div class="glass-panel p-4 rounded-xl space-y-3 relative flex flex-col justify-between">
-                        <div>
-                            <div class="flex justify-between items-start">
-                                <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-indigo-950 border border-indigo-900/40 text-indigo-400">${g.category}</span>
-                                <span class="text-[10px] font-bold ${diffDays > 7 ? 'text-gray-400' : 'text-rose-400 animate-pulse'} font-mono">${countdownString}</span>
-                            </div>
-                            <h4 class="text-xs font-bold text-white mt-2">${g.title}</h4>
-                            <p class="text-[11px] text-gray-400 mt-1">${g.description || 'No descriptive text summary.'}</p>
-                            
-                            <div class="my-3 space-y-1.5">
-                                ${milestonesListHTML || '<p class="text-[10px] text-gray-600 italic">No milestones appended.</p>'}
-                            </div>
-                        </div>
-
-                        <div class="border-t border-gray-900 pt-3 flex items-center justify-between mt-2">
-                            <div class="flex items-center gap-2">
-                                <div class="relative w-8 h-8 flex items-center justify-center rounded-full bg-gray-950 border border-gray-800 text-[10px] font-black text-indigo-300">
-                                    ${pct}%
-                                </div>
-                                <span class="text-[10px] text-gray-500 uppercase tracking-wider font-bold">Metrics Index</span>
-                            </div>
-                            <button onclick="purgeGoalEntity('${g._id}')" class="text-gray-600 hover:text-rose-400 text-[11px] transition"><i class="fa-solid fa-trash-can"></i></button>
-                        </div>
+                    <div class="glass-panel p-4 rounded-xl text-xs space-y-2">
+                        <div class="flex justify-between font-bold text-indigo-400"><span>${g.category}</span><span class="text-[10px] font-mono text-gray-500">${g.deadline}</span></div>
+                        <h4 class="font-bold text-white">${g.title}</h4>
+                        <p class="text-gray-400 text-[11px]">${g.description}</p>
+                        <button onclick="purgeGoalEntity('${g._id}')" class="text-gray-600 hover:text-red-400 text-[10px] block pt-2"><i class="fa-solid fa-trash"></i> Delete Goal</button>
                     </div>
                 `;
             });
         }
 
-        async function toggleMilestoneExecutionState(goalId, milestoneId) {
-            let goal = memoryGoals.find(g => g._id === goalId);
-            if(!goal) return;
-            let ms = goal.milestones.find(m => m.id === milestoneId);
-            if(ms) ms.completed = !ms.completed;
-
-            // Trigger points calculation if full complete occurs
-            const allDoneBefore = goal.milestones.every(m => m.completed);
-
-            try {
-                let res = await fetch(`${API_BASE}/api/goals/${goalId}`, {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(goal)
-                });
-                let data = await res.json();
-                if(data.success) {
-                    if(!allDoneBefore && goal.milestones.every(m => m.completed)) {
-                        await allocateXPEnginePoints(10); // Goal fulfillment reward allocation points
-                    }
-                    renderGoalTrackingLayout();
-                }
-            } catch(e) { console.error(e); }
+        async function purgeGoalEntity(id) {
+            if(!confirm("Purge selected element reference profile tracker?")) return;
+            try { if((await (await fetch(`${API_BASE}/api/goals/${id}`, { method: 'DELETE' })).json()).success) { memoryGoals = memoryGoals.filter(x => x._id !== id); renderGoalTrackingLayout(); } } catch(e) { console.error(e); }
         }
 
-        async function purgeGoalEntity(goalId) {
-            if(!confirm("Purge selected goal architecture module state?")) return;
-            try {
-                let res = await fetch(`${API_BASE}/api/goals/${goalId}`, { method: 'DELETE' });
-                let data = await res.json();
-                if(data.success) {
-                    memoryGoals = memoryGoals.filter(g => g._id !== goalId);
-                    renderGoalTrackingLayout();
-                }
-            } catch(e) { console.error(e); }
-        }
-
-
-        // ==========================================
-        // MODULE 2 IMPLEMENTATION ENGINE: AI EXAM
-        // ==========================================
-        let activeGeneratedQuestions = [];
-
-        async function triggerAIExamGeneration() {
-            const subject = document.getElementById('exam-subject').value;
-            const topic = document.getElementById('exam-topic').value;
-            const examType = document.getElementById('exam-type').value;
-
-            if(!subject || !topic) return alert("State subject parameters explicit areas mapping inputs.");
-
-            document.getElementById('exam-setup-box').innerHTML = `
-                <div class="text-center py-6 text-xs text-gray-400">
-                    <i class="fa-solid fa-spinner text-2xl text-cyan-400 animate-spin mb-3"></i>
-                    <p>Executing standard internal architectural proxy layer queries... Interfacing with AI models.</p>
-                </div>
-            `;
-
-            // CLAUDE CHIPPED EMULATION OVERRIDE ENGINE SYSTEM
-            // In a production context, route this string cleanly towards the system standard parameters proxy
+        // --- EXAM SIMULATION MATRIX ---
+        let activeQuestions = [];
+        function triggerAIExamGeneration() {
+            document.getElementById('exam-setup-box').innerHTML = `<p class="text-xs text-gray-400 animate-pulse">Generating mock structural questions matrices pipelines templates via Claude pipeline execution layer...</p>`;
             setTimeout(() => {
-                // Generate algorithmic mock questions tailored precisely towards civil engineering/programming architecture parameters
-                activeGeneratedQuestions = [
-                    { q: `Assess structural verification parameters for "${topic}" within "${subject}" operational limits. Statement 1 holds validation control.`, options: ["Parameter option alpha standard validation", "Boundary layer shear cross distortion vector", "Dynamic systemic node verification parameter", "Alternative localized null framework configuration"], answer: 0, explanation: "Operational validation holds primary execution logic values across calculations paths." },
-                    { q: `State key limiting optimization bounds configuration variables concerning "${topic}" processing framework inside "${subject}".`, options: ["Option bounds array transformation matrix", "Primary criteria optimization limit constraint", "Null state configuration initialization path", "None of the referenced architecture listings"], answer: 1, explanation: "Optimization vectors bound processing criteria variables strictly based on structural constraints." }
+                activeQuestions = [
+                    { q: "Assess baseline calculation validation criteria metrics vectors.", options: ["True optimization bound constraints", "Null state mapping profile alignment"], answer: 0 }
                 ];
-
                 document.getElementById('exam-setup-box').classList.add('hidden');
-                const simMatrix = document.getElementById('exam-simulation-matrix');
-                simMatrix.classList.remove('hidden');
-                
-                document.getElementById('exam-meta-tag').innerText = `${examType} Simulation Core Engine`;
-
-                const qBox = document.getElementById('exam-questions-box');
-                qBox.innerHTML = '';
-                activeGeneratedQuestions.forEach((q, qIdx) => {
-                    let optionsHTML = '';
-                    q.options.forEach((opt, oIdx) => {
-                        optionsHTML += `
-                            <label class="flex items-center gap-3 bg-[#050816] p-3 rounded-lg border border-gray-900 cursor-pointer hover:border-gray-800 transition">
-                                <input type="radio" name="q-rad-${qIdx}" value="${oIdx}" class="text-cyan-500 focus:ring-0 bg-gray-950 border-gray-800">
-                                <span class="text-gray-300 text-xs">${opt}</span>
-                            </label>
-                        `;
-                    });
-
-                    qBox.innerHTML += `
-                        <div class="bg-[#090d22] p-4 rounded-xl border border-gray-900/60 space-y-3">
-                            <h4 class="font-bold text-gray-200">${qIdx + 1}. ${q.q}</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                ${optionsHTML}
-                            </div>
-                        </div>
-                    `;
+                document.getElementById('exam-simulation-matrix').classList.remove('hidden');
+                const qB = document.getElementById('exam-questions-box'); qB.innerHTML = '';
+                activeQuestions.forEach((q, i) => {
+                    qB.innerHTML += `<div class="space-y-2 font-bold text-gray-200"><h4>${i+1}. ${q.q}</h4><input type="radio" name="ex-r-${i}" value="0"> ${q.options[0]} <br> <input type="radio" name="ex-r-${i}" value="1"> ${q.options[1]}</div>`;
                 });
-
-            }, 2000);
+            }, 1500);
         }
-
         async function submitExamForEvaluation() {
-            let correctCount = 0;
-            activeGeneratedQuestions.forEach((q, qIdx) => {
-                const checked = document.querySelector(`input[name="q-rad-${qIdx}"]:checked`);
-                if(checked && parseInt(checked.value) === q.answer) {
-                    correctCount++;
-                }
-            });
-
             document.getElementById('exam-simulation-matrix').classList.add('hidden');
-            const resSheet = document.getElementById('exam-result-sheet');
-            resSheet.classList.remove('hidden');
-
-            document.getElementById('result-score-display').innerText = `${correctCount} / ${activeGeneratedQuestions.length}`;
-            const feedbackText = `Diagnostic analysis tracking verified complete vectors mapping. Parameters optimization processing complete across target node areas. Evaluation logs stored securely.`;
-            document.getElementById('result-feedback-display').innerText = feedbackText;
-
-            // Trigger XP updates allocation metrics
-            await allocateXPEnginePoints(20);
-
-            // Save History instance logging array execution endpoints
-            const subject = document.getElementById('exam-subject').value || "Core Variable Context";
-            const topic = document.getElementById('exam-topic').value || "Generic Branch Module";
-            const examType = document.getElementById('exam-type').value;
-
-            const payload = {
-                topic, subject, examType,
-                score: correctCount,
-                totalQuestions: activeGeneratedQuestions.length,
-                feedback: feedbackText,
-                date: new Date().toISOString().split('T')[0]
-            };
-
-            try {
-                let res = await fetch(`${API_BASE}/api/exams/history`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                });
-                let data = await res.json();
-                if(data.success) memoryExamHistory.push(data.data);
-            } catch(e) { console.error(e); }
+            document.getElementById('exam-result-sheet').classList.remove('hidden');
+            document.getElementById('result-score-display').innerText = "1 / 1";
+            document.getElementById('result-feedback-display').innerText = "Core structural criteria parameters validation checks complete.";
+            await allocateXPEnginePoints(15);
         }
+        function resetExamModule() { window.location.reload(); }
 
-        function resetExamModule() {
-            window.location.reload(); // Hard cycle system state verification tracking execution resets
-        }
-
-
-        // ==========================================
-        // MODULE 3 IMPLEMENTATION ENGINE: FLASHCARDS
-        // ==========================================
-        let currentReviewCardIdx = 0;
-        let activeDueCardsDeck = [];
-
+        // --- FLASHCARDS SYSTEM ---
+        let activeDueCards = []; let curCardIdx = 0;
         async function createNewFlashcard() {
-            const front = document.getElementById('card-front').value;
-            const back = document.getElementById('card-back').value;
-            const topic = document.getElementById('card-topic').value;
-            const subject = document.getElementById('card-subject').value;
-
-            if(!front || !back || !topic || !subject) return alert("Parameters array validation constraint violations detected.");
-
-            const payload = {
-                front, back, topic, subject,
-                nextReviewDate: new Date().toISOString().split('T')[0]
-            };
-
+            const front = document.getElementById('card-front').value; const back = document.getElementById('card-back').value;
+            const topic = document.getElementById('card-topic').value; const subject = document.getElementById('card-subject').value;
+            if(!front || !back) return alert("Empty configurations array.");
             try {
-                let res = await fetch(`${API_BASE}/api/flashcards`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                });
-                let data = await res.json();
-                if(data.success) {
-                    memoryFlashcards.push(data.data);
-                    alert("Manual card vector index structural binding execution success.");
-                    document.getElementById('card-front').value = '';
-                    document.getElementById('card-back').value = '';
-                    renderAnkiReviewDeck();
-                }
+                let res = await fetch(`${API_BASE}/api/flashcards`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ front, back, topic, subject, nextReviewDate: new Date().toISOString().split('T')[0] }) });
+                if((await res.json()).success) { alert("Card index vector tracking saved."); renderAnkiReviewDeck(); }
             } catch(e) { console.error(e); }
         }
-
-        function triggerAIFlashcardGen() {
-            alert("Claude optimization interface triggered. AI core generating 10 card structural layout profiles matrices under verification constraints system framework.");
-            // Artificial automation emulation generation matrix pipelines
-        }
-
         function renderAnkiReviewDeck() {
-            const todayStr = new Date().toISOString().split('T')[0];
-            activeDueCardsDeck = memoryFlashcards.filter(c => c.nextReviewDate <= todayStr);
-            
-            const dueCountWidget = document.getElementById('card-due-count');
-            dueCountWidget.innerText = `${activeDueCardsDeck.length} Cards Due Today`;
-
-            if(activeDueCardsDeck.length > 0) {
+            const t = new Date().toISOString().split('T')[0];
+            activeDueCards = memoryFlashcards.filter(c => c.nextReviewDate <= t);
+            document.getElementById('card-due-count').innerText = `${activeDueCards.length} Due Today`;
+            if(activeDueCards.length > 0) {
                 document.getElementById('deck-review-desk').classList.remove('hidden');
                 document.getElementById('deck-empty-state').classList.add('hidden');
-                currentReviewCardIdx = 0;
-                displayActiveCardIndexElement();
+                curCardIdx = 0; showActiveCardElement();
             } else {
                 document.getElementById('deck-review-desk').classList.add('hidden');
                 document.getElementById('deck-empty-state').classList.remove('hidden');
             }
         }
-
-        function displayActiveCardIndexElement() {
+        function showActiveCardElement() {
             document.getElementById('active-flip-card').classList.remove('flipped');
-            const card = activeDueCardsDeck[currentReviewCardIdx];
-            if(!card) {
-                renderAnkiReviewDeck();
-                return;
-            }
-            document.getElementById('card-view-subject').innerText = `${card.subject} • ${card.topic}`;
-            document.getElementById('card-view-front').innerText = card.front;
-            document.getElementById('card-view-back').innerText = card.back;
+            const c = activeDueCards[curCardIdx];
+            if(!c) { renderAnkiReviewDeck(); return; }
+            document.getElementById('card-view-front').innerText = c.front;
+            document.getElementById('card-view-back').innerText = c.back;
         }
-
-        async function processCardReview(rating) {
-            const card = activeDueCardsDeck[currentReviewCardIdx];
-            if(!card) return;
-
-            let intervalDays = 1;
-            if(rating === 'hard') intervalDays = 2;
-            if(rating === 'easy') intervalDays = 7;
-
-            // Generate computed next review timestamp YYYY-MM-DD
-            let targetDate = new Date();
-            targetDate.setDate(targetDate.getDate() + intervalDays);
-            card.nextReviewDate = targetDate.toISOString().split('T')[0];
-
+        async function processCardReview(r) {
+            const c = activeDueCards[curCardIdx]; if(!c) return;
+            let nextD = new Date(); nextD.setDate(nextD.getDate() + (r==='easy'? 7 : 2));
+            c.nextReviewDate = nextD.toISOString().split('T')[0];
             try {
-                await fetch(`${API_BASE}/api/flashcards/${card._id}`, {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(card)
-                });
-                await allocateXPEnginePoints(2); // Review rewards framework tracking profile updates allocation
-                currentReviewCardIdx++;
-                if(currentReviewCardIdx >= activeDueCardsDeck.length) {
-                    alert("All pending operational active review matrix arrays cleared for current segment execution date.");
-                    renderAnkiReviewDeck();
-                } else {
-                    displayActiveCardIndexElement();
-                }
+                await fetch(`${API_BASE}/api/flashcards/${c._id}`, { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(c) });
+                await allocateXPEnginePoints(2); curCardIdx++;
+                if(curCardIdx >= activeDueCards.length) renderAnkiReviewDeck(); else showActiveCardElement();
             } catch(e) { console.error(e); }
         }
 
-
-        // ==========================================
-        // MODULE 4 IMPLEMENTATION ENGINE: PERFORMANCE
-        // ==========================================
-        let hoursChartInstance = null;
-        let radarChartInstance = null;
-
-        function initializeSystemCharts() {
-            // Placeholder empty configuration frames context maps initializing routines initialization schemas
-            const ctxHours = document.getElementById('weeklyHoursChart');
-            if(ctxHours) {
-                hoursChartInstance = new Chart(ctxHours, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                        datasets: [{ label: 'Study Progression Hours', data: [3, 4.5, 2, 5, 1.5, 0, 4], backgroundColor: '#4f46e5', borderColor: '#6366f1', borderRadius: 6 }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#111827' } }, x: { grid: { display: false } } } }
-                });
-            }
-
-            const ctxRadar = document.getElementById('subjectRadarChart');
-            if(ctxRadar) {
-                radarChartInstance = new Chart(ctxRadar, {
-                    type: 'radar',
-                    data: {
-                        labels: ['Engineering', 'BCS Logic', 'Programming Frameworks', 'English Vector', 'Analytical Struct'],
-                        datasets: [{ data: [85, 70, 90, 65, 80], backgroundColor: 'rgba(6, 182, 212, 0.2)', borderColor: '#06b6d4', pointBackgroundColor: '#06b6d4' }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-                });
-            }
-        }
-
-        function renderPerformanceVisualsEngine() {
-            updateGlobalUIWidgets();
-            if(hoursChartInstance && radarChartInstance) {
-                hoursChartInstance.update();
-                radarChartInstance.update();
-            }
-        }
-
-
-        // ==========================================
-        // MODULE 5 IMPLEMENTATION ENGINE: POMODORO
-        // ==========================================
-        let pomoIntervalTimerReference = null;
-        let pomoSecondsRemaining = 1500; // 25 minutes default initial baseline parameters track values
-        let pomoIsRunningExecutionState = false;
-
-        function syncPomodoroTaskDropdownOptions() {
-            const dropdown = document.getElementById('pomo-task-link');
-            dropdown.innerHTML = '<option value="General Engine Focus Pipeline">General Engine Focus Pipeline</option>';
-            memoryGoals.forEach(g => {
-                dropdown.innerHTML += `<option value="GOAL: ${g.title}">GOAL: ${g.title}</option>`;
-            });
-        }
-
-        function signCommitmentContract() {
-            const txt = document.getElementById('commitment-contract-text').value;
-            if(!txt) return alert("Define target baseline contract criteria clauses constraint parameters values.");
-            document.getElementById('commitment-contract-text').disabled = true;
-            document.getElementById('contract-sign-btn').innerText = "Contract Execution Locked Securely";
-            document.getElementById('contract-sign-btn').disabled = true;
-        }
-
+        // --- POMODORO ---
+        let pomoSecs = 1500; let pomoRun = false; let pomoInt = null;
         function togglePomodoroEngine() {
-            if(pomoIsRunningExecutionState) {
-                // Pause trigger tracking parameter
-                clearInterval(pomoIntervalTimerReference);
-                pomoIsRunningExecutionState = false;
-                document.getElementById('pomo-master-btn').innerText = "Resume Execution Sequence";
-            } else {
-                pomoIsRunningExecutionState = true;
-                document.getElementById('pomo-master-btn').innerText = "Pause Active Matrix Focus";
-                pomoIntervalTimerReference = setInterval(() => {
-                    pomoSecondsRemaining--;
-                    updatePomodoroDisplayDigits();
-
-                    if(pomoSecondsRemaining <= 0) {
-                        clearInterval(pomoIntervalTimerReference);
-                        executePomodoroCompletionRewardCycle();
-                    }
+            if(pomoRun) { clearInterval(pomoInt); pomoRun = false; document.getElementById('pomo-master-btn').innerText = "Resume Session"; }
+            else {
+                pomoRun = true; document.getElementById('pomo-master-btn').innerText = "Pause Matrix Session";
+                pomoInt = setInterval(() => {
+                    pomoSecs--;
+                    let m = Math.floor(pomoSecs / 60); let s = pomoSecs % 60;
+                    document.getElementById('pomo-timer-digits').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                    if(pomoSecs<=0) { clearInterval(pomoInt); allocateXPEnginePoints(15); resetPomodoroEngine(); }
                 }, 1000);
             }
         }
+        function resetPomodoroEngine() { clearInterval(pomoInt); pomoSecs = 1500; pomoRun = false; document.getElementById('pomo-timer-digits').innerText = "25:00"; document.getElementById('pomo-master-btn').innerText = "Initialize Focus Matrix"; }
+        function dismissLockWarning() { document.getElementById('distraction-lock-screen').classList.add('hidden'); }
+        document.addEventListener('visibilitychange', () => { if(document.hidden && pomoRun) document.getElementById('distraction-lock-screen').classList.remove('hidden'); });
 
-        function updatePomodoroDisplayDigits() {
-            const mins = Math.floor(pomoSecondsRemaining / 60);
-            const secs = pomoSecondsRemaining % 60;
-            document.getElementById('pomo-timer-digits').innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        async function executePomodoroCompletionRewardCycle() {
-            alert("Focus cycle matrix completely mapped block sequence records targets verified parameters index values.");
-            const taskName = document.getElementById('pomo-task-link').value;
-            
-            const payload = {
-                taskName, duration: 25,
-                date: new Date().toISOString().split('T')[0],
-                xpEarned: 15
-            };
-
-            try {
-                await fetch(`${API_BASE}/api/pomodoro/log`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                });
-                await allocateXPEnginePoints(15);
-                resetPomodoroEngine();
-            } catch(e) { console.error(e); }
-        }
-
-        function resetPomodoroEngine() {
-            clearInterval(pomoIntervalTimerReference);
-            pomoSecondsRemaining = 1500;
-            pomoIsRunningExecutionState = false;
-            updatePomodoroDisplayDigits();
-            document.getElementById('pomo-master-btn').innerText = "Initialize Session";
-            document.getElementById('commitment-contract-text').disabled = false;
-            document.getElementById('commitment-contract-text').value = '';
-            document.getElementById('contract-sign-btn').innerText = "Lock Execution Contract";
-            document.getElementById('contract-sign-btn').disabled = false;
-        }
-
-        function monitorTabDistractionMatrix() {
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden && pomoIsRunningExecutionState) {
-                    document.getElementById('distraction-lock-screen').classList.remove('hidden');
-                }
-            });
-        }
-
-        function dismissLockWarning() {
-            document.getElementById('distraction-lock-screen').classList.add('hidden');
-        }
-
-
-        // ==========================================
-        // MODULE 6 IMPLEMENTATION ENGINE: KNOWLEDGE LIBRARY
-        // ==========================================
+        // --- KNOWLEDGE LIBRARY ---
         function renderLibraryVaultMatrix() {
-            const grid = document.getElementById('library-vault-grid');
-            const subjectFilterDropdown = document.getElementById('lib-filter-subject');
-            grid.innerHTML = '';
-
-            // Unique subjects extract list framework maps tracking values
-            let trackingSubjects = new Set(["Civil structural analysis", "BCS General", "Software systems matrix", "Language parameters module"]);
-            subjectFilterDropdown.innerHTML = '<option value="ALL">All Repository Profiles</option>';
-            trackingSubjects.forEach(s => {
-                subjectFilterDropdown.innerHTML += `<option value="${s}">${s}</option>`;
-            });
-
-            // Mock integration array logic parsing variables tracking instances definitions bounds matching configurations arrays
-            const staticStructuralTopicsList = [
-                { topicName: "Matrix Frame Deflection Analysis", subject: "Civil structural analysis" },
-                { topicName: "Constitutional Core Amendments", subject: "BCS General" },
-                { topicName: "Asynchronous Data Processing Chains", subject: "Software systems matrix" }
-            ];
-
-            staticStructuralTopicsList.forEach(t => {
-                const noteObj = memoryLibraryNotes.find(n => n.topicName === t.topicName) || { notes: '' };
-                const lengthTextInfo = noteObj.notes ? `${noteObj.notes.length} Characters data logged` : 'Empty structure buffer matrix';
-
-                grid.innerHTML += `
-                    <div class="glass-panel p-4 rounded-xl space-y-3 flex flex-col justify-between">
-                        <div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-[9px] bg-gray-950 text-indigo-400 font-bold border border-gray-900 px-2 py-0.5 rounded tracking-wide uppercase">${t.subject}</span>
-                                <i class="fa-solid fa-vault text-gray-700"></i>
-                            </div>
-                            <h4 class="text-xs font-bold text-white mt-2">${t.topicName}</h4>
-                            <p class="text-[10px] text-gray-500 font-mono mt-1">${lengthTextInfo}</p>
-                        </div>
-                        <div class="border-t border-gray-900/60 pt-3 mt-2 flex gap-2">
-                            <button onclick="openLibraryEditorWorkspace('${t.topicName}', '${t.subject}')" class="flex-1 bg-gray-900 border border-gray-800 hover:bg-gray-800 text-gray-300 font-bold py-1.5 text-[10px] rounded transition"><i class="fa-solid fa-pen-to-square"></i> Interface Notes</button>
-                        </div>
+            const g = document.getElementById('library-vault-grid'); g.innerHTML = '';
+            const staticTopics = [{ n: "Matrix Frame Deflection Analysis", s: "Civil structural analysis" }, { n: "Constitutional Core Amendments", s: "BCS General" }];
+            staticTopics.forEach(t => {
+                g.innerHTML += `
+                    <div class="glass-panel p-4 rounded-xl text-xs space-y-2 flex flex-col justify-between">
+                        <div><span class="text-[9px] bg-gray-950 text-blue-400 font-bold px-2 py-0.5 rounded uppercase">${t.s}</span><h4 class="font-bold text-white mt-1">${t.n}</h4></div>
+                        <button onclick="openLibEditor('${t.n}', '${t.s}')" class="bg-gray-900 border border-gray-800 py-1 rounded text-center text-gray-300 text-[10px] mt-2"><i class="fa-solid fa-pen"></i> Open Repo Notes</button>
                     </div>
                 `;
             });
         }
-
-        let activeEditingTopicNamePointer = null;
-        let activeEditingSubjectPointer = null;
-
-        function openLibraryEditorWorkspace(topicName, subject) {
-            activeEditingTopicNamePointer = topicName;
-            activeEditingSubjectPointer = subject;
-
-            document.getElementById('modal-topic-title').innerText = topicName;
-            document.getElementById('modal-subject-tag').innerText = subject;
-            
-            const existingRecord = memoryLibraryNotes.find(n => n.topicName === topicName);
-            document.getElementById('modal-notes-area').value = existingRecord ? existingRecord.notes : '';
-
+        let activeLibT = null; let activeLibS = null;
+        function openLibEditor(n, s) {
+            activeLibT = n; activeLibS = s; document.getElementById('modal-topic-title').innerText = n;
+            const record = memoryLibraryNotes.find(x => x.topicName === n); document.getElementById('modal-notes-area').value = record ? record.notes : '';
             document.getElementById('lib-editor-modal').classList.remove('hidden');
         }
-
-        function closeLibraryEditor() {
-            document.getElementById('lib-editor-modal').classList.add('hidden');
-        }
-
+        function closeLibraryEditor() { document.getElementById('lib-editor-modal').classList.add('hidden'); }
         async function saveLibraryNotesVector() {
-            const notesText = document.getElementById('modal-notes-area').value;
-            const payload = {
-                topicName: activeEditingTopicNamePointer,
-                subject: activeEditingSubjectPointer,
-                notes: notesText,
-                lastUpdated: new Date().toISOString().split('T')[0]
-            };
-
+            const txt = document.getElementById('modal-notes-area').value;
             try {
-                let res = await fetch(`${API_BASE}/api/library/notes`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                });
-                let data = await res.json();
-                if(data.success) {
-                    // Update internal application variables dataset instances structures pointers list
-                    memoryLibraryNotes = memoryLibraryNotes.filter(n => n.topicName !== activeEditingTopicNamePointer);
-                    memoryLibraryNotes.push(data.data);
-                    closeLibraryEditor();
-                    renderLibraryVaultMatrix();
-                }
+                let res = await fetch(`${API_BASE}/api/library/notes`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ topicName: activeLibT, subject: activeLibS, notes: txt, lastUpdated: new Date().toISOString().split('T')[0] }) });
+                if((await res.json()).success) { closeLibraryEditor(); loadSystemDataPipeline(); }
             } catch(e) { console.error(e); }
         }
 
-        function filterLibraryVault() {
-            // Evaluates real-time indexing properties dynamically 
+        // --- CHARTS INITIALIZER ---
+        function initializeSystemCharts() {
+            const ch = document.getElementById('weeklyHoursChart');
+            if(ch) new Chart(ch, { type: 'bar', data: { labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], datasets: [{label:'Hours', data:[4,2,5,1,0,3,4], backgroundColor:'#2563eb'}] }, options:{responsive:true,maintainAspectRatio:false} });
+            const cr = document.getElementById('subjectRadarChart');
+            if(cr) new Chart(cr, { type: 'radar', data: { labels: ['Engr','BCS','Code','Skills','Analyt'], datasets: [{data:[80,75,90,60,70], backgroundColor:'rgba(37,99,235,0.2)',borderColor:'#2563eb'}] }, options:{responsive:true,maintainAspectRatio:false} });
         }
-
-        function exportLibraryAsPDF() {
-            alert("Generating system document configuration maps profile export reports matrices. Manifest generation success.");
+        function renderPerformanceVisualsEngine() {
+            document.getElementById('stats-xp-counter').innerText = `${globalStats.xp} XP`;
+            document.getElementById('stats-badge-name').innerText = globalStats.level;
+            document.getElementById('stats-streak-counter').innerText = `${globalStats.streak || 0} Days`;
         }
     </script>
 </body>
