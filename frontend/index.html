@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Learning Routine - Legacy Edition v21.0</title>
+    <title>My Learning Routine - Premium Edition v21.0</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,700;1,700&family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap" rel="stylesheet">
@@ -15,14 +15,12 @@
         .tab-btn.active { background: #6366f1; color: white; box-shadow: 0 0 20px rgba(99, 102, 241, 0.4); }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
-        .routine-cell:hover .edit-icon { opacity: 1; }
-        .edit-icon { opacity: 0; transition: opacity 0.2s; }
+        
         @keyframes slideDown { 0% { transform: translateY(-50px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
         .surprise-alert { animation: slideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         @keyframes scaleUp { 0% { transform: scale(0.95); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         .modal-animate { animation: scaleUp 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
 
-        /* VIBRANT PREMIUM COLORFUL RE-INJECTION SCHEME */
         .cat-prog { border-color: rgba(99, 102, 241, 0.2) !important; color: #a5b4fc !important; background: rgba(99, 102, 241, 0.04); }
         .cat-acad { border-color: rgba(244, 63, 94, 0.2) !important; color: #fca5a5 !important; background: rgba(244, 63, 94, 0.04); }
         .cat-bcs { border-color: rgba(251, 191, 36, 0.2) !important; color: #fde047 !important; background: rgba(251, 191, 36, 0.03); }
@@ -30,16 +28,34 @@
         .cat-soft { border-color: rgba(56, 189, 248, 0.2) !important; color: #7dd3fc !important; background: rgba(56, 189, 248, 0.04); }
         .cat-res { border-color: rgba(244, 114, 182, 0.2) !important; color: #f9a8d4 !important; background: rgba(244, 114, 182, 0.04); }
 
-        /* GOAL PATH ANIMATIONS */
-        @keyframes dash { to { stroke-dashoffset: 0; } }
-        .goal-line-animated { stroke-dasharray: 8; animation: dash 30s linear infinite; }
-        .node-pulse { animation: pulseGlow 2s infinite alternate; }
-        @keyframes pulseGlow { 0% { r: 6; opacity: 0.7; } 100% { r: 10; opacity: 1; } }
+        /* PATHWAY SYSTEM ANIMATIONS */
+        @keyframes pulseGlow {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+        }
+        .active-node-glow { animation: pulseGlow 2s infinite ease-in-out; }
+        
+        @keyframes dash { to { stroke-dashoffset: -40; } }
+        .animated-svg-line { stroke-dasharray: 8, 4; animation: dash 2s linear infinite; }
+        @keyframes flagWave { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(10deg); } }
+        .flag-wave-icon { animation: flagWave 1.5s ease-in-out infinite; }
     </style>
 </head>
 <body class="p-4 md:p-8 min-h-screen">
 
     <div id="surprise-toast-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm px-4 pointer-events-none"></div>
+
+    <div id="custom-alert-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-[100]">
+        <div class="bg-[#0f1430] border border-amber-500/30 rounded-2xl w-full max-w-sm p-6 shadow-2xl modal-animate text-center">
+            <div class="mx-auto w-12 h-12 bg-amber-950/40 border border-amber-500/40 text-amber-400 text-xl rounded-full flex items-center justify-center mb-3">
+                <i id="custom-alert-icon" class="fa-solid fa-circle-exclamation"></i>
+            </div>
+            <h4 id="custom-alert-title" class="text-sm font-black text-white uppercase tracking-wider mb-1">Attention Required</h4>
+            <p id="custom-alert-message" class="text-xs text-gray-400 leading-relaxed px-2 mb-5">Message dynamic mapping information goes here.</p>
+            <button onclick="closeCustomAlert()" class="w-full py-2 bg-gradient-to-r from-amber-600 to-indigo-600 hover:from-amber-500 hover:to-indigo-500 text-white font-bold text-xs rounded-xl shadow-lg cursor-pointer">Acknowledge</button>
+        </div>
+    </div>
 
     <div class="max-w-7xl mx-auto text-center mt-4 mb-10">
         <p class="text-[11px] uppercase tracking-widest text-emerald-400 font-bold mb-2">📚 Lifetime Achievement Engine</p>
@@ -47,15 +63,12 @@
             My Learning Routine
         </h1>
         
-        <div class="flex justify-center flex-wrap gap-3 mt-8">
+        <div class="flex justify-center gap-3 mt-8">
             <button onclick="switchTab('routine')" id="tab-routine" class="tab-btn active text-xs font-semibold px-5 py-2.5 rounded-xl cursor-pointer flex items-center gap-2">
                 <i class="fa-solid fa-table"></i> Routine
             </button>
             <button onclick="switchTab('daily')" id="tab-daily" class="tab-btn text-xs font-semibold px-5 py-2.5 rounded-xl cursor-pointer flex items-center gap-2">
                 <i class="fa-solid fa-pen"></i> Daily Log & Workbench
-            </button>
-            <button onclick="switchTab('goals')" id="tab-goals" class="tab-btn text-xs font-semibold px-5 py-2.5 rounded-xl cursor-pointer flex items-center gap-2">
-                <i class="fa-solid fa-map-location-dot text-amber-400"></i> Dynamic Goal Path Tracker
             </button>
             <button onclick="switchTab('progress')" id="tab-progress" class="tab-btn text-xs font-semibold px-5 py-2.5 rounded-xl cursor-pointer flex items-center gap-2">
                 <i class="fa-solid fa-trophy"></i> Progress & Legacy Ledger
@@ -96,8 +109,27 @@
                 </div>
             </div>
 
+            <div class="mb-8 bg-[#070c25] border border-indigo-950 rounded-2xl p-6 relative overflow-hidden shadow-xl">
+                <div class="flex justify-between items-center mb-4 border-b border-gray-900 pb-3">
+                    <div>
+                        <h3 class="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-indigo-300 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-map-location-dot"></i> Dynamic Milestone Pathway Radar
+                        </h3>
+                        <p class="text-[11px] text-gray-400 mt-0.5">Goals are processed sequentially day-by-day. Complete dynamic task lines to reach the destination flag.</p>
+                    </div>
+                    <button onclick="openGoalCreatorModal()" class="bg-indigo-950 text-indigo-400 hover:bg-indigo-900 px-3 py-1.5 rounded-xl border border-indigo-800/40 font-bold text-xs cursor-pointer flex items-center gap-1">
+                        <i class="fa-solid fa-plus-circle"></i> Define Strategy Goal
+                    </button>
+                </div>
+
+                <div class="relative min-h-[140px] flex items-center justify-between px-4" id="goal-canvas-wrapper">
+                    <div id="goal-nodes-container" class="w-full flex justify-between items-center relative z-10"></div>
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 <div class="lg:col-span-7 space-y-6">
+                    
                     <div class="bg-slate-950 border border-gray-900 p-5 rounded-2xl shadow-xl">
                         <h3 class="text-xs font-bold text-indigo-400 uppercase tracking-wider mb-4 flex items-center gap-2">
                             <i class="fa-solid fa-circle-plus"></i> Add New Topic Entry
@@ -145,58 +177,10 @@
                         <h3 class="text-amber-400 font-bold text-sm mb-1 flex items-center gap-2">
                             <i class="fa-solid fa-circle-nodes"></i> Spaced & Custom Revision Radar
                         </h3>
-                        <p class="text-[11px] text-gray-500 mb-4">অটোমেটিক মাইলস্টোন (১, ৩, ৭, ৩০ দিন) অথবা ম্যানুয়ালি পুশ করা কাস্টম রিভিশন রিকোয়েস্টগুলো এখানে লাইভ টাস্ক হিসেবে জমা হয়।</p>
+                        <p class="text-[11px] text-gray-500 mb-4">অটোমেটিক মাইলস্টোন অথবা ম্যানুয়ালি পুশ করা কাস্টম রিভিশন রিকোয়েস্টগুলো এখানে লাইভ টাস্ক হিসেবে জমা হয়।</p>
                         <div id="automatic-revision-list" class="space-y-3 max-h-[550px] overflow-y-auto custom-scrollbar pr-2"></div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div id="view-goals" class="tab-view hidden space-y-6">
-            <div class="bg-gradient-to-b from-slate-950 to-[#070b1e] border border-gray-900 rounded-2xl p-6 shadow-2xl">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-                    <div>
-                        <h2 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-indigo-200 to-cyan-300">🎯 Custom Roadmap & Goal Path Engine</h2>
-                        <p class="text-xs text-gray-500 mt-1">আপনার যেকোনো নির্দিষ্ট বিষয়ের জন্য নিদিষ্ট দিনের গোল পাথ রোডম্যাপ তৈরি করুন। ডেইলি workbench এ টাস্ক কমপ্লিট করার সাথে সাথে গোল পাথ আপডেট হবে।</p>
-                    </div>
-                    <button onclick="toggleGoalForm()" class="px-4 py-2 bg-indigo-600/30 border border-indigo-500/40 text-indigo-300 text-xs font-bold rounded-xl hover:bg-indigo-600 hover:text-white transition-all cursor-pointer">
-                        <i class="fa-solid fa-map-pin"></i> Create New Goal Path
-                    </button>
-                </div>
-
-                <div id="goal-creation-box" class="hidden p-5 bg-[#030612] border border-indigo-950/60 rounded-xl mb-6 modal-animate">
-                    <h3 class="text-xs font-black text-indigo-400 uppercase tracking-widest mb-4">Initialize Goal Roadmap Parameter</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                        <div>
-                            <label class="text-[10px] text-gray-500 uppercase font-bold block mb-1">Goal Campaign Title</label>
-                            <input type="text" id="goal-title-input" placeholder="e.g. Ai Engineering - L2 Core Sprint" class="w-full bg-[#0a0f24] border border-gray-800 rounded-xl px-3 py-2 text-xs text-white outline-none">
-                        </div>
-                        <div>
-                            <label class="text-[10px] text-gray-500 uppercase font-bold block mb-1">Target Category</label>
-                            <select id="goal-cat-select" onchange="populateGoalSubjects()" class="w-full bg-[#0a0f24] border border-gray-800 rounded-xl px-3 py-2 text-xs text-gray-300 outline-none"></select>
-                        </div>
-                        <div>
-                            <label class="text-[10px] text-gray-500 uppercase font-bold block mb-1">Target Subject Node</label>
-                            <select id="goal-sub-select" class="w-full bg-[#0a0f24] border border-gray-800 rounded-xl px-3 py-2 text-xs text-gray-300 outline-none"></select>
-                        </div>
-                    </div>
-                    <div class="mb-4">
-                        <label class="text-[10px] text-gray-500 uppercase font-bold block mb-1">Duration Cycle (Days)</label>
-                        <input type="number" id="goal-duration-input" value="7" min="2" max="30" oninput="generateGoalTopicInputs()" class="w-full max-w-[120px] bg-[#0a0f24] border border-gray-800 rounded-xl px-3 py-2 text-xs text-white outline-none">
-                    </div>
-                    
-                    <div class="border-t border-gray-900/50 pt-4">
-                        <span class="text-[10px] text-gray-400 uppercase font-black block mb-3">Define Sequential Day Topics</span>
-                        <div id="goal-topics-fields-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[250px] overflow-y-auto custom-scrollbar pr-2"></div>
-                    </div>
-
-                    <div class="flex justify-end gap-3 mt-5 pt-3 border-t border-gray-900/50">
-                        <button onclick="toggleGoalForm()" class="px-4 py-2 text-xs font-bold text-gray-500 cursor-pointer">Cancel</button>
-                        <button onclick="submitNewGoalPath()" class="px-6 py-2 bg-gradient-to-r from-amber-500 to-indigo-600 text-white font-extrabold text-xs rounded-xl shadow-lg cursor-pointer">🚀 Launch Roadmap Path</button>
-                    </div>
-                </div>
-
-                <div id="active-goal-paths-canvas" class="space-y-8"></div>
             </div>
         </div>
 
@@ -235,7 +219,7 @@
                     <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-1 flex items-center gap-2">
                         <i class="fa-solid fa-folder-tree text-amber-400"></i> Lifetime Completed Topics Map
                     </h3>
-                    <p class="text-[11px] text-gray-500 mb-4">আপনার অর্জিত সমস্ত টপিক এখানে <strong>Category ➔ Subject</strong> অনুযায়ী ক্রমানুসারে সাজানো রয়েছে।</p>
+                    <p class="text-[11px] text-gray-500 mb-4">Category ➔ Subject অনুযায়ী ক্রমানুসারে সাজানো রয়েছে।</p>
                     <div id="lifetime-achieved-container" class="space-y-4 max-h-[500px] overflow-y-auto custom-scrollbar pr-2"></div>
                 </div>
 
@@ -243,14 +227,9 @@
                     <h3 class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-1 flex items-center gap-2">
                         <i class="fa-solid fa-clock-rotate-left"></i> Unique Revision Ledger & Timeline
                     </h3>
-                    <p class="text-[11px] text-gray-500 mb-4">আপনার রিভিশন দেওয়া টপিকগুলোও এখন সহজে বোঝার জন্য বাম পাশের মতো <strong>Category ➔ Subject</strong> ওয়াইজ সাজানো রয়েছে।</p>
+                    <p class="text-[11px] text-gray-500 mb-4">রিভিশন দেওয়া টপিকগুলোর হিস্টোরি টাইমলাইন।</p>
                     <div id="lifetime-unique-revision-container" class="space-y-4 max-h-[500px] overflow-y-auto custom-scrollbar pr-2"></div>
                 </div>
-            </div>
-
-            <div>
-                <h3 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Topic Completion Overview By Category</h3>
-                <div id="category-summary-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </div>
 
             <div class="bg-[#070b1e] border border-rose-950/30 rounded-2xl p-6 shadow-2xl">
@@ -258,7 +237,6 @@
                     <h3 class="text-sm font-bold text-rose-400 flex items-center gap-2">
                         <i class="fa-solid fa-broom"></i> Master Log & Data Cleaner
                     </h3>
-                    <p class="text-xs text-gray-500 mt-1">ভুলবশত উল্টাপাল্টা টপিক অ্যাড বা কমপ্লিট করা হয়ে গেলে এখান থেকে ডিলিট করে দিন।</p>
                 </div>
                 <div class="overflow-x-auto max-h-[300px] overflow-y-auto custom-scrollbar border border-gray-900 rounded-xl">
                     <table class="w-full text-left border-collapse text-xs">
@@ -268,7 +246,6 @@
                                 <th class="p-3">Category</th>
                                 <th class="p-3">Subject</th>
                                 <th class="p-3">Topic Detail</th>
-                                <th class="p-3 text-center">Reference Node</th>
                                 <th class="p-3 text-center">Status</th>
                                 <th class="p-3 text-center">Action</th>
                             </tr>
@@ -276,6 +253,44 @@
                         <tbody id="master-cleaner-tbody" class="divide-y divide-gray-900/50 bg-slate-950/20"></tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="goal-creator-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-[#0d1533] border border-gray-800 rounded-2xl w-full max-w-md p-6 shadow-2xl">
+            <h3 class="text-base font-bold text-white mb-2"><i class="fa-solid fa-map-pin text-amber-400"></i> Define Strategy Target Chain</h3>
+            <div class="space-y-4 text-xs">
+                <div>
+                    <label class="text-gray-400 block mb-1">Target Subject Reference</label>
+                    <select id="goal-subject-select" class="w-full bg-[#151f47] border border-gray-700 rounded-xl px-3 py-2 text-white outline-none"></select>
+                </div>
+                <div>
+                    <label class="text-gray-400 block mb-1">Topic Blueprint Name</label>
+                    <input type="text" id="goal-topic-name" placeholder="E.g. Foundation Design Part 1" class="w-full bg-[#151f47] border border-gray-700 rounded-xl px-3 py-2 text-white outline-none">
+                </div>
+                <div>
+                    <label class="text-gray-400 block mb-1">Target Plan Schedule Date</label>
+                    <input type="date" id="goal-date-input" class="w-full bg-[#151f47] border border-gray-700 rounded-xl px-3 py-2 text-white outline-none">
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 mt-6">
+                <button onclick="closeGoalCreatorModal()" class="px-4 py-2 text-xs font-medium text-gray-400 cursor-pointer">Cancel</button>
+                <button onclick="saveStrategyGoal()" class="px-5 py-2.5 bg-amber-600 text-white font-bold text-xs rounded-xl cursor-pointer">Deploy Target</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="reschedule-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-[#0b0f24] border border-indigo-900 rounded-2xl w-full max-w-sm p-6 shadow-xl">
+            <h3 class="text-sm font-bold text-indigo-400 mb-2"><i class="fa-solid fa-calendar-days"></i> Reschedule Pending Element</h3>
+            <div class="mb-4">
+                <label class="text-[10px] text-gray-500 font-bold block mb-1">Select New Target Execution Date</label>
+                <input type="date" id="reschedule-date-input" class="w-full bg-[#12193e] border border-gray-800 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-indigo-500">
+            </div>
+            <div class="flex justify-end gap-2">
+                <button onclick="closeRescheduleModal()" class="px-3 py-1.5 text-xs font-medium text-gray-400">Cancel</button>
+                <button id="reschedule-confirm-btn" class="px-4 py-1.5 bg-indigo-600 text-white font-bold text-xs rounded-xl shadow">Shift Date</button>
             </div>
         </div>
     </div>
@@ -323,18 +338,16 @@
                 <i class="fa-solid fa-triangle-exclamation animate-bounce"></i>
             </div>
             <h3 class="text-base font-black text-rose-400 uppercase tracking-wide mb-1">Purge Record?</h3>
-            <p class="text-xs text-gray-400 leading-relaxed px-2 mb-6">Are you sure you want to completely destroy this logged topic? This action will restore your perfect legacy state immediately.</p>
+            <p class="text-xs text-gray-400 leading-relaxed px-2 mb-6">Are you sure you want to completely destroy this logged topic?</p>
             <div class="flex items-center gap-3">
                 <button onclick="closePurgeModal()" class="flex-1 py-2.5 bg-slate-900 border border-gray-800 text-gray-400 hover:text-white font-bold text-xs rounded-xl transition-all cursor-pointer">Cancel</button>
-                <button id="confirm-purge-btn" class="flex-1 py-2.5 bg-gradient-to-r from-rose-600 to-pink-600 text-white font-extrabold text-xs rounded-xl shadow-lg hover:shadow-rose-500/20 active:scale-98 transition-all cursor-pointer">Yes, Purge It</button>
+                <button id="confirm-purge-btn" class="flex-1 py-2.5 bg-gradient-to-r from-rose-600 to-pink-600 text-white font-extrabold text-xs rounded-xl shadow-lg cursor-pointer">Yes, Purge It</button>
             </div>
         </div>
     </div>
 
     <script>
-        const API_BASE = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
-            ? 'http://localhost:5000/api'
-            : '/api';
+        const API_BASE = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' ? 'http://localhost:5000/api' : '/api';
 
         const defaultRoutine = {
             "Saturday": [["AI Engineering – L2", "JavaScript", "Typing Practice"], ["Structure–II", "R.C.C–II"], ["Geography", "English"], ["English Speaking"], ["QGIS"], ["Machine Learning"]],
@@ -352,34 +365,40 @@
         
         let dbRoutine = defaultRoutine;
         let dbTopics = {};
-        let dbGoals = [];
+        let activeStrategyGoals = [];
 
         const todayDateObj = new Date();
-        const year = todayDateObj.getFullYear();
-        const month = String(todayDateObj.getMonth() + 1).padStart(2, '0');
-        const dayStr = String(todayDateObj.getDate()).padStart(2, '0');
-        const systemTodayStr = `${year}-${month}-${dayStr}`;
+        const systemTodayStr = `${todayDateObj.getFullYear()}-${String(todayDateObj.getMonth() + 1).padStart(2, '0')}-${String(todayDateObj.getDate()).padStart(2, '0')}`;
 
         let activeDate = systemTodayStr;
         let activeEditCell = null;
         let pendingPurgeId = null;
         let pendingCompleteTopicId = null;
+        let pendingRescheduleId = null;
 
         const surprisePool = [
             { title: "🚀 HYPER DRIVE BURST", msg: "Unstoppable momentum! Space elements blasted.", color: "from-amber-500 to-rose-500", type: "fireworks" },
             { title: "👑 LEGENDARY STREAK", msg: "Master engineering tier unlocked for this session!", color: "from-cyan-400 via-indigo-500 to-purple-600", type: "starburst" },
-            { title: "⚡ FOCUS SHOCKWAVE", msg: "Efficiency spike registered on the active radar!", color: "from-emerald-400 to-teal-600", type: "shower" },
-            { title: "🎯 RADAR SUPREMACY", msg: "Perfect conversion! Spaced repetition optimized.", color: "from-pink-500 via-purple-600 to-indigo-700", type: "massive" }
+            { title: "⚡ FOCUS SHOCKWAVE", msg: "Efficiency spike registered on the active radar!", color: "from-emerald-400 to-teal-600", type: "shower" }
         ];
 
+        /* HIGH-TIER REPLACEMENT FOR NATIVE WINDOW.ALERT */
+        function triggerCustomAlert(message, title = "System Notification", iconClass = "fa-circle-exclamation") {
+            document.getElementById('custom-alert-title').innerText = title;
+            document.getElementById('custom-alert-message').innerText = message;
+            document.getElementById('custom-alert-icon').className = `fa-solid ${iconClass}`;
+            document.getElementById('custom-alert-modal').classList.remove('hidden');
+        }
+
+        function closeCustomAlert() {
+            document.getElementById('custom-alert-modal').classList.add('hidden');
+        }
+
         function showSyncIndicator(text = "Syncing...") {
-            let ind = document.getElementById('sync-indicator');
-            if (!ind) {
-                ind = document.createElement('div');
-                ind.id = 'sync-indicator';
-                ind.className = 'fixed bottom-4 right-4 z-50 bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2';
-                document.body.appendChild(ind);
-            }
+            let ind = document.getElementById('sync-indicator') || document.createElement('div');
+            ind.id = 'sync-indicator';
+            ind.className = 'fixed bottom-4 right-4 z-50 bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2';
+            document.body.appendChild(ind);
             ind.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin text-[10px]"></i> ${text}`;
             ind.style.display = 'flex';
         }
@@ -389,58 +408,32 @@
             if (ind) ind.style.display = 'none';
         }
 
-        async function apiGet(endpoint) {
-            const res = await fetch(`${API_BASE}${endpoint}`);
+        async function apiCall(endpoint, method = 'GET', body = null) {
+            const options = { method, headers: { 'Content-Type': 'application/json' } };
+            if (body) options.body = JSON.stringify(body);
+            const res = await fetch(`${API_BASE}${endpoint}`, options);
             const json = await res.json();
-            if (!json.success) throw new Error(json.error || 'API Error');
-            return json.data;
-        }
-
-        async function apiPost(endpoint, body) {
-            const res = await fetch(`${API_BASE}${endpoint}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-            const json = await res.json();
-            if (!json.success) throw new Error(json.error || 'API Error');
-            return json.data;
-        }
-
-        async function apiPut(endpoint, body) {
-            const res = await fetch(`${API_BASE}${endpoint}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-            const json = await res.json();
-            if (!json.success) throw new Error(json.error || 'API Error');
-            return json.data;
-        }
-
-        async function apiDelete(endpoint) {
-            const res = await fetch(`${API_BASE}${endpoint}`, { method: 'DELETE' });
-            const json = await res.json();
-            if (!json.success) throw new Error(json.error || 'API Error');
+            if (!json.success) throw new Error(json.error || 'Database Sync Error');
             return json.data;
         }
 
         window.onload = async function() {
             document.getElementById('date-picker').value = activeDate;
-            showSyncIndicator("Loading engine...");
+            showSyncIndicator("Loading data layers...");
             try {
-                const [routineData, topicsData, goalsData] = await Promise.all([
-                    apiGet('/routine'),
-                    apiGet('/topics'),
-                    apiGet('/goals')
-                ]);
-                dbRoutine = routineData;
-                dbTopics = topicsData;
-                dbGoals = goalsData;
+                const [routineData, topicsData] = await Promise.all([apiCall('/routine'), apiCall('/topics')]);
+                dbRoutine = routineData; dbTopics = topicsData;
             } catch(e) {
-                console.error('Initial load failed:', e);
-                dbRoutine = defaultRoutine;
+                console.error(e);
+                dbRoutine = defaultRoutine; dbTopics = {};
             }
+            activeStrategyGoals = JSON.parse(localStorage.getItem('db_strategy_goals') || '[]');
             hideSyncIndicator();
             renderRoutineTable();
             setupInjectorOptions();
-            setupGoalFormOptions();
             renderDailyLog();
         };
 
-        // Tab routing switcher
         function switchTab(tabId) {
             document.querySelectorAll('.tab-view').forEach(view => view.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -448,10 +441,8 @@
             document.getElementById(`tab-${tabId}`).classList.add('active');
             if(tabId === 'progress') renderProgressTab();
             if(tabId === 'daily') renderDailyLog();
-            if(tabId === 'goals') renderGoalsDashboard();
         }
 
-        // ROUTINE BUILDER
         function renderRoutineTable() {
             const tbody = document.getElementById('routine-table-body');
             tbody.innerHTML = '';
@@ -460,18 +451,16 @@
                 tr.className = "hover:bg-slate-900/40 border-b border-gray-900/50 transition-colors";
                 let html = `<td class="p-4 font-bold text-gray-400 border-r border-gray-900/30">${day}</td>`;
                 dbRoutine[day].forEach((cellArr, idx) => {
-                    let colorfulClass = cssClasses[idx];
-                    html += `<td class="p-4 align-top routine-cell ${colorfulClass} border-r border-gray-900/20 last:border-r-0"><div class="flex flex-col gap-1.5 min-h-[44px]">`;
+                    html += `<td class="p-4 align-top routine-cell ${cssClasses[idx]} border-r border-gray-900/20 last:border-r-0"><div class="flex flex-col gap-1.5 min-h-[44px]">`;
                     if(cellArr.length === 0) html += `<span class="text-gray-700/60 font-medium italic">empty</span>`;
                     else {
                         cellArr.forEach(sub => {
                             html += `<span class="px-2 py-1 bg-slate-950/80 border border-gray-800 rounded text-[10px] font-bold text-gray-200 shadow-sm w-fit">${sub}</span>`;
                         });
                     }
-                    html += `</div><button onclick="openModal('${day}', ${idx})" class="edit-icon text-[10px] text-indigo-400 hover:text-white mt-2 block font-bold cursor-pointer"><i class="fa-regular fa-pen-to-square text-[9px]"></i> Edit</button></td>`;
+                    html += `</div><button onclick="openModal('${day}', ${idx})" class="text-[10px] text-indigo-400 mt-2 block font-bold cursor-pointer"><i class="fa-regular fa-pen-to-square"></i> Edit</button></td>`;
                 });
-                tr.innerHTML = html;
-                tbody.appendChild(tr);
+                tr.innerHTML = html; tbody.appendChild(tr);
             });
         }
 
@@ -487,19 +476,13 @@
         async function saveModalChanges() {
             let val = document.getElementById('modal-input').value;
             dbRoutine[activeEditCell.day][activeEditCell.catIdx] = val.split(',').map(s => s.trim()).filter(s => s.length > 0);
-            closeModal();
-            renderRoutineTable();
-            setupInjectorOptions();
-            setupGoalFormOptions();
-            renderDailyLog();
+            closeModal(); renderRoutineTable(); setupInjectorOptions(); renderDailyLog();
             try {
-                showSyncIndicator("Saving routine...");
-                await apiPut('/routine', dbRoutine);
-            } catch(e) { console.error(e); }
-            finally { hideSyncIndicator(); }
+                showSyncIndicator("Saving routine configurations...");
+                await apiCall('/routine', 'PUT', dbRoutine);
+            } catch(e) { console.error(e); } finally { hideSyncIndicator(); }
         }
 
-        // DAILY SYSTEM DROPDOWN CONFIG
         function setupInjectorOptions() {
             const catSelect = document.getElementById('injector-cat-select');
             catSelect.innerHTML = '';
@@ -516,827 +499,388 @@
             if(routineSubjects.length === 0) {
                 subSelect.innerHTML = `<option value="">-- No Scheduled Subject --</option>`;
             } else {
-                routineSubjects.forEach(sub => {
-                    subSelect.innerHTML += `<option value="${sub}">${sub}</option>`;
-                });
+                routineSubjects.forEach(sub => { subSelect.innerHTML += `<option value="${sub}">${sub}</option>`; });
             }
-        }
-
-        function handleDateChange(val) {
-            activeDate = val;
-            let d = new Date(val);
-            document.getElementById('daily-day-title').innerText = d.toLocaleDateString('en-US', { weekday: 'long' }) + "'s Workbench";
-            document.getElementById('daily-date-subtitle').innerText = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-            populateInjectorSubjects();
-            renderDailyLog();
-        }
-
-        // RENDER LIVE DAILY LOG WORKBENCH
-        function renderDailyLog() {
-            let targetDay = new Date(activeDate).toLocaleDateString('en-US', { weekday: 'long' });
-            document.getElementById('date-picker').value = activeDate;
-            document.getElementById('daily-day-title').innerText = `${targetDay}'s Workbench`;
-            document.getElementById('daily-date-subtitle').innerText = new Date(activeDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-            
-            const liveContainer = document.getElementById('daily-live-topics-container');
-            liveContainer.innerHTML = '';
-
-            // Generate Scheduled Topics Slots from Matrix
-            cats.forEach((cat, catIdx) => {
-                let subs = dbRoutine[targetDay][catIdx] || [];
-                subs.forEach(sub => {
-                    let matchingRecords = (dbTopics[activeDate] || []).filter(t => t.category === cat && t.subject === sub);
-                    if(matchingRecords.length === 0) {
-                        liveContainer.innerHTML += `
-                            <div class="bg-[#090e26] border border-gray-900 rounded-xl p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-                                <div>
-                                    <span class="text-[9px] font-bold text-gray-500 uppercase tracking-wider bg-slate-950 px-2 py-0.5 rounded border border-gray-900">${cat}</span>
-                                    <h4 class="text-xs font-bold text-gray-300 mt-1">${sub}</h4>
-                                    <p class="text-[11px] text-gray-600 italic mt-0.5">No active topic logged for this slot yet.</p>
-                                </div>
-                            </div>`;
-                    } else {
-                        matchingRecords.forEach(rec => {
-                            let isDone = rec.status === 'Complete';
-                            if(!isDone) {
-                                liveContainer.innerHTML += `
-                                    <div class="bg-gradient-to-r from-[#0a0f2b] to-slate-950 border border-indigo-950/70 rounded-xl p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 shadow-md">
-                                        <div class="flex-1">
-                                            <div class="flex items-center gap-2">
-                                                <span class="text-[9px] font-bold text-indigo-400 uppercase bg-indigo-950/40 px-2 py-0.5 rounded border border-indigo-900/50">${rec.category}</span>
-                                                <span class="text-[10px] font-black text-slate-300">➔ ${rec.subject}</span>
-                                            </div>
-                                            <p class="text-xs text-white font-semibold mt-2 bg-[#050818] p-2.5 rounded border border-gray-900 leading-relaxed">${rec.topicName}</p>
-                                        </div>
-                                        <button onclick="triggerCompleteWorkflow(${rec.id})" class="w-full md:w-auto px-4 py-2 bg-gradient-to-r from-emerald-600 to-indigo-600 hover:from-emerald-500 hover:to-indigo-500 text-white font-bold text-xs rounded-lg cursor-pointer transition-all shadow-md shadow-emerald-950/50">
-                                            ✅ Complete Task
-                                        </button>
-                                    </div>`;
-                            }
-                        });
-                    }
-                });
-            });
-
-            // History Completed Box
-            const completedContainer = document.getElementById('daily-completed-topics-container');
-            completedContainer.innerHTML = '';
-            let todayCompleted = (dbTopics[activeDate] || []).filter(t => t.status === 'Complete');
-            if(todayCompleted.length === 0) {
-                completedContainer.innerHTML = `<p class="text-[11px] text-gray-600 italic py-2">No elements finalized on this date node.</p>`;
-            } else {
-                todayCompleted.forEach(t => {
-                    let linked = t.noteUrl ? `<a href="${t.noteUrl}" target="_blank" class="text-cyan-400 font-bold underline ml-2 hover:text-cyan-300"><i class="fa-solid fa-link text-[10px]"></i> Note Attachment</a>` : '';
-                    completedContainer.innerHTML += `
-                        <div class="bg-[#050917]/90 p-3 rounded-xl border border-emerald-950/30 flex justify-between items-center text-xs">
-                            <div>
-                                <span class="text-[9px] font-bold uppercase text-emerald-400 bg-emerald-950/20 border border-emerald-900 px-1.5 py-0.5 rounded">${t.subject}</span>
-                                <span class="text-gray-300 ml-2 font-medium">${t.topicName}</span>
-                                ${linked}
-                            </div>
-                            <span class="text-[10px] font-extrabold text-emerald-400 bg-emerald-950/40 border border-emerald-900 px-2 py-0.5 rounded-full shadow-inner"><i class="fa-solid fa-circle-check"></i> Verified</span>
-                        </div>`;
-                });
-            }
-
-            renderRevisionRadar();
         }
 
         async function handleInjectorSubmit() {
-            const catIdx = document.getElementById('injector-cat-select').value;
-            const sub = document.getElementById('injector-sub-select').value;
-            const name = document.getElementById('injector-topic-name').value.trim();
-
-            if(!sub || !name) { alert('Please choose valid subject configuration and insert description metadata!'); return; }
-
+            const catSelect = document.getElementById('injector-cat-select');
+            const subSelect = document.getElementById('injector-sub-select');
+            const topicInput = document.getElementById('injector-topic-name');
+            let catName = cats[catSelect.value], subName = subSelect.value, topicName = topicInput.value.trim();
+            
+            if(!subName || subName.startsWith('--') || !topicName) {
+                triggerCustomAlert("Please choose a valid subject card from your active matrix blueprint and type topic information details.", "Validation Error", "fa-circle-xclamation");
+                return;
+            }
+            
             let newRecord = {
-                id: Date.now(),
-                date: activeDate,
-                originDate: activeDate,
-                category: cats[catIdx],
-                subject: sub,
-                topicName: name,
-                status: 'Pending',
-                reviewsDone: [],
-                reviewHistoryStamps: {},
-                customRevPendingOn: null,
-                customReviewHistoryDates: []
+                id: Date.now(), date: activeDate, originDate: activeDate, completionDate: null,
+                category: catName, subject: subName, topicName: topicName, noteUrl: null,
+                status: 'Pending', reviewsDone: [], reviewHistoryStamps: {}, customRevPendingOn: null, customReviewHistoryDates: []
+            };
+            topicInput.value = '';
+            if(!dbTopics[activeDate]) dbTopics[activeDate] = [];
+            dbTopics[activeDate].push(newRecord);
+            renderDailyLog();
+            try {
+                showSyncIndicator("Injecting element record node...");
+                dbTopics = await apiCall('/topics', 'POST', newRecord);
+                renderDailyLog();
+            } catch(e) { console.error(e); } finally { hideSyncIndicator(); }
+        }
+
+        function handleDateChange(val) { activeDate = val; populateInjectorSubjects(); renderDailyLog(); }
+
+        /* GOAL CHAIN BLUEPRINTS CONTROLLER MODALS */
+        function openGoalCreatorModal() {
+            const select = document.getElementById('goal-subject-select');
+            select.innerHTML = '';
+            let uniqueSubjects = new Set();
+            days.forEach(d => { dbRoutine[d].forEach(catList => { catList.forEach(s => uniqueSubjects.add(s)); }); });
+            uniqueSubjects.forEach(s => { select.innerHTML += `<option value="${s}">${s}</option>`; });
+            document.getElementById('goal-date-input').value = activeDate;
+            document.getElementById('goal-creator-modal').classList.remove('hidden');
+        }
+
+        function closeGoalCreatorModal() { document.getElementById('goal-creator-modal').classList.add('hidden'); }
+
+        function saveStrategyGoal() {
+            const subject = document.getElementById('goal-subject-select').value;
+            const topic = document.getElementById('goal-topic-name').value.trim();
+            const targetDate = document.getElementById('goal-date-input').value;
+            
+            if(!topic || !targetDate) { 
+                triggerCustomAlert("Please input complete roadmap configuration boundaries.", "Field Required", "fa-circle-exclamation"); 
+                return; 
+            }
+
+            let matchedCat = "Academic / Gov Job";
+            cats.forEach(c => { days.forEach(d => { if(dbRoutine[d].some((arr, idx) => cats[idx] === c && arr.includes(subject))) matchedCat = c; }); });
+
+            let newGoalTask = {
+                id: 'goal-' + Date.now(), date: targetDate, originDate: targetDate, completionDate: null,
+                category: matchedCat, subject: subject, topicName: `[🎯 GOAL] ${topic}`, noteUrl: null, status: 'Pending', isGoalNode: true
             };
 
-            document.getElementById('injector-topic-name').value = '';
-            showSyncIndicator("Injecting element...");
-            try {
-                dbTopics = await apiPost('/topics', newRecord);
-                renderDailyLog();
-                triggerCelebrationToast("💎 NODE ROUTED SUCCESSFULLY", "Topic loaded onto current operational grid.", "from-indigo-600 to-purple-600");
-            } catch(e) { console.error(e); }
-            finally { hideSyncIndicator(); }
+            activeStrategyGoals.push(newGoalTask);
+            localStorage.setItem('db_strategy_goals', JSON.stringify(activeStrategyGoals));
+            closeGoalCreatorModal();
+            document.getElementById('goal-topic-name').value = '';
+            
+            showSyncIndicator("Routing target pathway node...");
+            apiCall('/topics', 'POST', newGoalTask).then(updatedData => {
+                dbTopics = updatedData; renderDailyLog();
+            }).catch(e => console.error(e)).finally(() => hideSyncIndicator());
         }
 
-        // REVISION ENGINE RADAR
-        function renderRevisionRadar() {
-            const container = document.getElementById('automatic-revision-list');
-            container.innerHTML = '';
-            let totalRadarTasks = 0;
+        /* DATA PROCESSING RENDER LOOPS FOR STREAMLINED INTERFACE PANELS */
+        function renderDailyLog() {
+            const liveContainer = document.getElementById('daily-live-topics-container');
+            const compContainer = document.getElementById('daily-completed-topics-container');
+            liveContainer.innerHTML = ''; compContainer.innerHTML = '';
 
-            Object.keys(dbTopics).forEach(dateKey => {
-                dbTopics[dateKey].forEach(topic => {
-                    if(topic.status !== 'Complete') return;
-                    let compDateStr = topic.completionDate || topic.date;
-                    let daysDiff = Math.floor((new Date(activeDate) - new Date(compDateStr)) / (1000*60*60*24));
-                    
-                    let milestoneMatch = false;
-                    let milestoneLabel = "";
+            let list = dbTopics[activeDate] || [];
+            let activePendingCount = 0, activeCompletedCount = 0;
 
-                    if(daysDiff === 1 && !topic.reviewsDone.includes('1 Day')) { milestoneMatch = true; milestoneLabel = "1 Day Milestone"; }
-                    else if(daysDiff === 3 && !topic.reviewsDone.includes('3 Days')) { milestoneMatch = true; milestoneLabel = "3 Days Milestone"; }
-                    else if(daysDiff === 7 && !topic.reviewsDone.includes('7 Days')) { milestoneMatch = true; milestoneLabel = "7 Days Milestone"; }
-                    else if(daysDiff === 30 && !topic.reviewsDone.includes('30 Days')) { milestoneMatch = true; milestoneLabel = "30 Days Milestone"; }
-                    
-                    if(topic.customRevPendingOn === activeDate && !topic.customReviewHistoryDates.includes(activeDate)) {
-                        milestoneMatch = true;
-                        milestoneLabel = "⚠️ CUSTOM REVISION";
-                    }
-
-                    if(milestoneMatch) {
-                        totalRadarTasks++;
-                        container.innerHTML += `
-                            <div class="bg-gradient-to-r from-slate-950 to-[#0e122b] border border-amber-950 p-3.5 rounded-xl text-xs space-y-2 shadow-md">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-[9px] font-black uppercase text-amber-400 bg-amber-950/40 border border-amber-900 px-2 py-0.5 rounded-md tracking-wider">${milestoneLabel}</span>
-                                    <span class="text-[9px] font-bold text-gray-500">Origin Done: ${compDateStr}</span>
-                                </div>
-                                <div class="text-gray-300 bg-[#06091c] p-2 rounded border border-gray-900">
-                                    <span class="text-[9px] block text-indigo-400 font-bold uppercase">${topic.subject}</span>
-                                    <p class="font-medium mt-0.5 text-gray-200">${topic.topicName}</p>
-                                </div>
-                                <div class="flex gap-2 pt-1">
-                                    <button onclick="processRevisionApproval(${topic.id}, '${milestoneLabel}')" class="flex-1 py-1.5 bg-gradient-to-r from-amber-600 to-yellow-600 text-slate-950 font-black rounded-lg text-[10px] uppercase shadow-md cursor-pointer">Approved Revision</button>
-                                    <button onclick="postponeRevisionRequest(${topic.id})" class="px-2 py-1.5 bg-slate-900 border border-gray-800 text-gray-400 hover:text-white rounded-lg text-[10px] font-bold cursor-pointer"><i class="fa-solid fa-clock-rotate-left"></i> +1D</button>
-                                </div>
-                            </div>`;
-                    }
-                });
-            });
-
-            if(totalRadarTasks === 0) {
-                container.innerHTML = `
-                    <div class="p-6 border border-dashed border-gray-900 text-center rounded-xl text-gray-600 text-xs">
-                        <i class="fa-solid fa-radar text-xl opacity-20 mb-2 block"></i>
-                        Radar scanning clear. All spaced iterations optimized perfectly!
+            list.forEach(t => {
+                let isComplete = t.status === 'Complete';
+                let cardHtml = `
+                    <div class="bg-[#0b1026] p-4 rounded-xl border ${isComplete ? 'border-emerald-950/80 bg-emerald-950/5' : 'border-gray-900'} flex justify-between items-center transition-all shadow-md">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-indigo-950 text-indigo-400">${t.category}</span>
+                                <span class="text-[10px] font-bold text-gray-400">${t.subject}</span>
+                            </div>
+                            <p class="text-xs text-white font-medium">${t.topicName}</p>
+                            ${t.noteUrl ? `<a href="${t.noteUrl}" target="_blank" class="text-[10px] text-cyan-400 hover:underline mt-1 block"><i class="fa-solid fa-link"></i> Linked Resource</a>` : ''}
+                        </div>
+                        <div class="flex items-center gap-2">
+                            ${!isComplete ? `
+                                <button onclick="openCompletePromptModal(${t.id})" class="px-3 py-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 text-white font-bold text-[10px] rounded-lg cursor-pointer">Complete</button>
+                                <button onclick="openRescheduleModal(${t.id})" class="px-2 py-1 bg-slate-900 border border-gray-800 text-gray-400 hover:text-white font-bold text-[10px] rounded-lg"><i class="fa-solid fa-clock-offset"></i> Reschedule</button>
+                            ` : `<span class="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded">Archived Done</span>`}
+                            <button onclick="openPurgeModal(${t.id})" class="text-gray-600 hover:text-rose-400 p-1"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                        </div>
                     </div>`;
+
+                if(isComplete) { compContainer.innerHTML += cardHtml; activeCompletedCount++; } 
+                else { liveContainer.innerHTML += cardHtml; activePendingCount++; }
+            });
+
+            if(activePendingCount === 0) liveContainer.innerHTML = `<div class="text-gray-600 text-xs py-4 italic"><i class="fa-solid fa-wand-magic-sparkles"></i> All scheduled slots clear! Inject new topics above to initialize timeline.</div>`;
+            if(activeCompletedCount === 0) compContainer.innerHTML = `<div class="text-gray-700 text-xs py-2 italic">No actions archived for this timestamp yet.</div>`;
+
+            renderSpacedRevisionRadar();
+            renderPathwayMilestoneRoadmap();
+        }
+
+        /* SVG ROADMAP PATH CONNECTORS RENDERING MATHEMATICS MATRIX */
+        function renderPathwayMilestoneRoadmap() {
+            const container = document.getElementById('goal-nodes-container');
+            container.innerHTML = '';
+            
+            let targetDayGoals = activeStrategyGoals.filter(g => g.date === activeDate);
+            if(targetDayGoals.length === 0) {
+                let currentDayTopics = dbTopics[activeDate] || [];
+                targetDayGoals = currentDayTopics.filter(t => t.isGoalNode || t.topicName.includes('[🎯 GOAL]'));
+            }
+
+            if(targetDayGoals.length === 0) {
+                container.innerHTML = `<div class="w-full flex items-center justify-between text-xs text-gray-500 italic py-6"><span>No strategy milestones deployed on this timestamp. Path line is awaiting node mapping...</span><div class="w-10 h-10 rounded-full bg-gray-900/40 border border-gray-800 flex items-center justify-center text-gray-600"><i class="fa-solid fa-flag text-xs"></i></div></div>`;
+                const exSvg = document.getElementById('roadmap-svg-layer'); if(exSvg) exSvg.remove();
+                return;
+            }
+
+            const exSvg = document.getElementById('roadmap-svg-layer'); if(exSvg) exSvg.remove();
+            let nodesHtml = '', allCompleted = true;
+
+            targetDayGoals.forEach((goal, idx) => {
+                let realState = dbTopics[activeDate]?.find(x => x.id === goal.id || x.topicName === goal.topicName);
+                let isDone = (realState ? realState.status === 'Complete' : false) || goal.status === 'Complete';
+                if(!isDone) allCompleted = false;
+
+                nodesHtml += `
+                    <div id="node-point-${idx}" class="flex flex-col items-center relative z-20 max-w-[120px] text-center">
+                        <div class="w-9 h-9 rounded-full flex items-center justify-center border font-black text-xs transition-all duration-500 ${isDone ? 'bg-emerald-950 border-emerald-400 text-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.3)]' : 'bg-indigo-950 border-indigo-500 text-indigo-300 active-node-glow'}">
+                            ${isDone ? '<i class="fa-solid fa-check text-[10px]"></i>' : (idx + 1)}
+                        </div>
+                        <span class="text-[10px] font-bold text-gray-300 mt-2 truncate w-full block">${goal.subject}</span>
+                    </div>`;
+            });
+
+            nodesHtml += `
+                <div id="node-point-flag" class="flex flex-col items-center relative z-20">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center border transition-all duration-700 ${allCompleted ? 'bg-amber-500/20 border-amber-400 text-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.5)]' : 'bg-slate-900 border-gray-800 text-gray-600'}">
+                        <i class="fa-solid fa-flag-checkered text-xs flag-wave-icon ${allCompleted ? 'text-amber-400' : 'text-gray-600'}"></i>
+                    </div>
+                    <span class="text-[9px] uppercase font-black tracking-wider mt-2 ${allCompleted ? 'text-amber-400 animate-pulse' : 'text-gray-500'}">Objective</span>
+                </div>`;
+
+            container.innerHTML = nodesHtml;
+            setTimeout(() => { drawAnimatedPathwayLines(targetDayGoals.length); if(allCompleted && targetDayGoals.length > 0) triggerSurprise(1); }, 100);
+        }
+
+        function drawAnimatedPathwayLines(nodeCount) {
+            const wrapper = document.getElementById('goal-canvas-wrapper'); if(!wrapper) return;
+            let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.id = "roadmap-svg-layer"; svg.setAttribute("class", "absolute top-0 left-0 w-full h-full pointer-events-none z-0");
+            wrapper.appendChild(svg);
+
+            let pathD = '';
+            for(let i = 0; i < nodeCount; i++) {
+                let startEl = document.getElementById(`node-point-${i}`), endEl = document.getElementById(`node-point-${i+1}`) || document.getElementById('node-point-flag');
+                if(startEl && endEl) {
+                    let rectStart = startEl.getBoundingClientRect(), rectEnd = endEl.getBoundingClientRect(), rectWrap = wrapper.getBoundingClientRect();
+                    let x1 = (rectStart.left + rectStart.width / 2) - rectWrap.left, y1 = (rectStart.top + rectStart.height / 2) - rectWrap.top;
+                    let x2 = (rectEnd.left + rectEnd.width / 2) - rectWrap.left, y2 = (rectEnd.top + rectEnd.height / 2) - rectWrap.top;
+                    pathD += ` M ${x1} ${y1} C ${(x1+x2)/2} ${y1}, ${(x1+x2)/2} ${y2}, ${x2} ${y2}`;
+                }
+            }
+
+            if(pathD) {
+                let pathBg = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                pathBg.setAttribute("d", pathD); pathBg.setAttribute("stroke", "#0f172a"); pathBg.setAttribute("stroke-width", "4"); pathBg.setAttribute("fill", "none");
+                svg.appendChild(pathBg);
+
+                let pathActive = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                pathActive.setAttribute("d", pathD); pathActive.setAttribute("stroke", "url(#indigo-gradient-glow)"); pathActive.setAttribute("stroke-width", "2"); pathActive.setAttribute("fill", "none"); pathActive.setAttribute("class", "animated-svg-line");
+                
+                let defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+                defs.innerHTML = `<linearGradient id="indigo-gradient-glow" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#4f46e5" /><stop offset="50%" stop-color="#a855f7" /><stop offset="100%" stop-color="#f59e0b" /></linearGradient>`;
+                svg.appendChild(defs); svg.appendChild(pathActive);
             }
         }
 
-        async function processRevisionApproval(id, label) {
-            let foundTopic = null;
-            Object.keys(dbTopics).forEach(d => {
-                let t = dbTopics[d].find(x => x.id === id);
-                if(t) foundTopic = t;
-            });
-            if(!foundTopic) return;
+        /* INLINE COMPONENT RESCHEDULER LOGIC PIPELINES */
+        function openRescheduleModal(id) { pendingRescheduleId = id; document.getElementById('reschedule-date-input').value = activeDate; document.getElementById('reschedule-modal').classList.remove('hidden'); }
+        function closeRescheduleModal() { document.getElementById('reschedule-modal').classList.add('hidden'); }
 
-            if(label.includes("CUSTOM")) {
-                foundTopic.customReviewHistoryDates.push(activeDate);
-                foundTopic.customRevPendingOn = null;
-            } else {
-                let milestoneKey = label.replace(" Milestone", "");
-                foundTopic.reviewsDone.push(milestoneKey);
-                foundTopic.reviewHistoryStamps[milestoneKey] = activeDate;
+        document.getElementById('reschedule-confirm-btn').onclick = async function() {
+            let newDate = document.getElementById('reschedule-date-input').value;
+            if(!newDate || newDate === activeDate) { closeRescheduleModal(); return; }
+
+            let dayList = dbTopics[activeDate] || [];
+            let mIdx = dayList.findIndex(t => t.id === pendingRescheduleId);
+            if(mIdx !== -1) {
+                let target = dayList[mIdx]; dayList.splice(mIdx, 1); target.date = newDate;
+                if(!dbTopics[newDate]) dbTopics[newDate] = []; dbTopics[newDate].push(target);
+
+                let gIdx = activeStrategyGoals.findIndex(g => g.id === pendingRescheduleId);
+                if(gIdx !== -1) { activeStrategyGoals[gIdx].date = newDate; localStorage.setItem('db_strategy_goals', JSON.stringify(activeStrategyGoals)); }
+
+                closeRescheduleModal(); renderDailyLog();
+                try {
+                    showSyncIndicator("Shifting timeline calendar node...");
+                    dbTopics = await apiCall(`/topics/${pendingRescheduleId}`, 'PUT', target);
+                    renderDailyLog();
+                } catch(e) { console.error(e); } finally { hideSyncIndicator(); }
             }
+        };
 
-            showSyncIndicator("Stamping revision node...");
-            try {
-                dbTopics = await apiPut(`/topics/${id}`, foundTopic);
-                renderDailyLog();
-                triggerCelebrationToast("🎯 REVISION LAYER CONVERTED", "Spaced repetition database matrices updated flawlessly.", "from-emerald-500 to-teal-600");
-            } catch(e) { console.error(e); }
-            finally { hideSyncIndicator(); }
+        function triggerSurprise(forcedIndex = null) {
+            const idx = forcedIndex !== null ? forcedIndex : Math.floor(Math.random() * surprisePool.length);
+            const reward = surprisePool[idx];
+            const container = document.getElementById('surprise-toast-container');
+            const toast = document.createElement('div');
+            toast.className = `surprise-alert pointer-events-auto w-full bg-gradient-to-r ${reward.color} p-4 rounded-xl shadow-2xl border border-white/20 text-white mb-3`;
+            toast.innerHTML = `<div class="flex items-center gap-3"><div class="bg-black/20 p-2 rounded-lg text-lg"><i class="fa-solid fa-gift"></i></div><div><h5 class="text-xs font-black tracking-wider uppercase">${reward.title}</h5><p class="text-[11px] opacity-90 font-medium">${reward.msg}</p></div></div>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.classList.add('transition-all', 'duration-500', 'opacity-0', '-translate-y-4'); setTimeout(() => toast.remove(), 500); }, 3500);
+
+            if (reward.type === "fireworks") {
+                let end = Date.now() + 2000;
+                (function frame() { confetti({ particleCount: 4, angle: 60, spread: 55, origin: { x: 0 } }); confetti({ particleCount: 4, angle: 120, spread: 55, origin: { x: 1 } }); if (Date.now() < end) requestAnimationFrame(frame); }());
+            } else if (reward.type === "starburst") {
+                confetti({ particleCount: 140, spread: 80, origin: { y: 0.5 }, colors: ['#6366f1', '#f43f5e', '#fbbf24'] });
+            }
         }
 
-        async function postponeRevisionRequest(id) {
-            let foundTopic = null;
-            Object.keys(dbTopics).forEach(d => {
-                let t = dbTopics[d].find(x => x.id === id);
-                if(t) foundTopic = t;
+        function renderSpacedRevisionRadar() {
+            const container = document.getElementById('automatic-revision-list'); container.innerHTML = '';
+            let intervals = [1, 3, 7, 30], radarCount = 0;
+
+            Object.keys(dbTopics).forEach(prevStr => {
+                if(prevStr >= activeDate) return;
+                let diff = Math.ceil(Math.abs(new Date(activeDate) - new Date(prevStr)) / (1000 * 60 * 60 * 24));
+                if(intervals.includes(diff)) {
+                    (dbTopics[prevStr] || []).forEach(t => {
+                        if(t.status === 'Complete') {
+                            let wasRev = t.reviewsDone?.includes(activeDate); radarCount++;
+                            container.innerHTML += `
+                                <div class="p-3 bg-slate-900/90 border ${wasRev ? 'border-emerald-900/60 bg-emerald-950/5' : 'border-amber-950/40'} rounded-xl flex justify-between items-center text-xs">
+                                    <div><div class="flex items-center gap-1.5 mb-1"><span class="px-1.5 py-0.5 bg-amber-950 text-amber-400 font-bold text-[8px] rounded uppercase">Day ${diff} Milestone</span><span class="text-gray-500 text-[9px]">${t.subject}</span></div><p class="text-gray-300 font-medium">${t.topicName}</p></div>
+                                    <div>${!wasRev ? `<button onclick="handleExecuteRadarReview(${t.id}, '${prevStr}')" class="px-2.5 py-1 bg-amber-600 hover:bg-amber-500 text-white font-bold text-[9px] rounded-lg shadow cursor-pointer">Re-verify</button>` : `<span class="text-[9px] font-bold text-emerald-400 bg-emerald-950 px-1.5 py-0.5 rounded uppercase"><i class="fa-solid fa-circle-check"></i> Verified</span>`}</div>
+                                </div>`;
+                        }
+                    });
+                }
             });
-            if(!foundTopic) return;
+            if(radarCount === 0) container.innerHTML = `<p class="text-gray-600 text-xs py-4 italic text-center">Spaced loop tracking database window is clear today.</p>`;
+        }
 
-            let nextDayObj = new Date(activeDate);
-            nextDayObj.setDate(nextDayObj.getDate() + 1);
-            let nextDayStr = nextDayObj.toISOString().split('T')[0];
-
-            foundTopic.customRevPendingOn = nextDayStr;
-            showSyncIndicator("Postponing revision node...");
-            try {
-                dbTopics = await apiPut(`/topics/${id}`, foundTopic);
+        async function handleExecuteRadarReview(id, histDate) {
+            let topic = (dbTopics[histDate] || []).find(t => t.id === id);
+            if(topic) {
+                if(!topic.reviewsDone) topic.reviewsDone = [];
+                if(!topic.reviewsDone.includes(activeDate)) topic.reviewsDone.push(activeDate);
                 renderDailyLog();
-                triggerCelebrationToast("⏳ RADAR TIMEOUT SHIFTED", "Milestone visibility window deferred by 24 hours.", "from-purple-600 to-indigo-600");
-            } catch(e) { console.error(e); }
-            finally { hideSyncIndicator(); }
+                try {
+                    showSyncIndicator("Registering revision stamp...");
+                    dbTopics = await apiCall(`/topics/${id}`, 'PUT', topic); renderDailyLog(); triggerSurprise();
+                } catch(e) { console.error(e); } finally { hideSyncIndicator(); }
+            }
         }
 
-        // WORKFLOW FINALIZATION INTERACTION CONTAINER
-        function triggerCompleteWorkflow(id) {
-            pendingCompleteTopicId = id;
-            let foundTopic = null;
-            Object.keys(dbTopics).forEach(d => {
-                let t = dbTopics[d].find(x => x.id === id);
-                if(t) foundTopic = t;
-            });
-            if(!foundTopic) return;
-            document.getElementById('prompt-modal-topic-title').innerText = `[${foundTopic.subject}] - ${foundTopic.topicName}`;
-            document.getElementById('prompt-modal-url-input').value = foundTopic.noteUrl || '';
-            document.getElementById('complete-prompt-modal').classList.remove('hidden');
-        }
-
+        function openCompletePromptModal(id) { pendingCompleteTopicId = id; let t = (dbTopics[activeDate] || []).find(x => x.id === id); if(t) { document.getElementById('prompt-modal-topic-title').innerText = `[${t.subject}] ${t.topicName}`; document.getElementById('prompt-modal-url-input').value = ''; document.getElementById('complete-prompt-modal').classList.remove('hidden'); } }
         function closeCompletePromptModal() { document.getElementById('complete-prompt-modal').classList.add('hidden'); }
 
-        async function submitCompleteWorkflow() {
-            let id = pendingCompleteTopicId;
-            let noteUrl = document.getElementById('prompt-modal-url-input').value.trim();
-            closeCompletePromptModal();
-
-            let foundTopic = null;
-            Object.keys(dbTopics).forEach(d => {
-                let t = dbTopics[d].find(x => x.id === id);
-                if(t) foundTopic = t;
-            });
-            if(!foundTopic) return;
-
-            foundTopic.status = 'Complete';
-            foundTopic.completionDate = activeDate;
-            if(noteUrl) foundTopic.noteUrl = noteUrl;
-
-            showSyncIndicator("Finalizing task...");
-            try {
-                dbTopics = await apiPut(`/topics/${id}`, foundTopic);
-                // Launch Goal path updates mapping instantly
-                dbGoals = await apiGet('/goals');
-                renderDailyLog();
-                
-                // Trigger premium canvas dynamic animation cascade
-                let randomSurprise = surprisePool[Math.floor(Math.random()*surprisePool.length)];
-                triggerCelebrationToast(randomSurprise.title, randomSurprise.msg, randomSurprise.color);
-                confetti({ particleCount: 140, spread: 80, origin: { y: 0.6 } });
-            } catch(e) { console.error(e); }
-            finally { hideSyncIndicator(); }
-        }
-        document.getElementById('prompt-submit-btn').onclick = submitCompleteWorkflow;
-
-        // ================= NEW FEATURE ENGINE: GOAL PATH DASHBOARD =================
-        function setupGoalFormOptions() {
-            const catSelect = document.getElementById('goal-cat-select');
-            catSelect.innerHTML = '';
-            cats.forEach((c, idx) => { catSelect.innerHTML += `<option value="${idx}">${c}</option>`; });
-            populateGoalSubjects();
-        }
-
-        function populateGoalSubjects() {
-            const catIdx = document.getElementById('goal-cat-select').value;
-            const subSelect = document.getElementById('goal-sub-select');
-            subSelect.innerHTML = '';
-            
-            let distinctSubjects = new Set();
-            days.forEach(d => {
-                (dbRoutine[d][catIdx] || []).forEach(s => distinctSubjects.add(s));
-            });
-            
-            if(distinctSubjects.size === 0) {
-                subSelect.innerHTML = `<option value="">-- No Subject Available --</option>`;
-            } else {
-                distinctSubjects.forEach(sub => {
-                    subSelect.innerHTML += `<option value="${sub}">${sub}</option>`;
-                });
+        document.getElementById('prompt-submit-btn').onclick = async function() {
+            let urlVal = document.getElementById('prompt-modal-url-input').value.trim();
+            let t = (dbTopics[activeDate] || []).find(x => x.id === pendingCompleteTopicId);
+            if(t) {
+                t.status = 'Complete'; t.completionDate = activeDate; if(urlVal) t.noteUrl = urlVal;
+                let gIdx = activeStrategyGoals.findIndex(g => g.id === pendingCompleteTopicId);
+                if(gIdx !== -1) { activeStrategyGoals[gIdx].status = 'Complete'; localStorage.setItem('db_strategy_goals', JSON.stringify(activeStrategyGoals)); }
+                closeCompletePromptModal(); renderDailyLog(); triggerSurprise(0);
+                try {
+                    showSyncIndicator("Archiving element status progress...");
+                    dbTopics = await apiCall(`/topics/${pendingCompleteTopicId}`, 'PUT', t); renderDailyLog();
+                } catch(e) { console.error(e); } finally { hideSyncIndicator(); }
             }
-            generateGoalTopicInputs();
-        }
+        };
 
-        function toggleGoalForm() {
-            const box = document.getElementById('goal-creation-box');
-            box.classList.toggle('hidden');
-        }
-
-        function generateGoalTopicInputs() {
-            const container = document.getElementById('goal-topics-fields-container');
-            container.innerHTML = '';
-            let daysCount = parseInt(document.getElementById('goal-duration-input').value) || 7;
-            if(daysCount > 30) daysCount = 30;
-            
-            for(let i = 1; i <= daysCount; i++) {
-                container.innerHTML += `
-                    <div class="bg-[#070b1e] border border-gray-900 p-2.5 rounded-xl space-y-1">
-                        <label class="text-[9px] font-black text-indigo-400 uppercase">Day ${i} Node Target</label>
-                        <input type="text" placeholder="Topic name parsing target..." class="goal-day-topic-input w-full bg-slate-950 border border-gray-800 rounded-lg px-2 py-1 text-xs text-white outline-none focus:border-indigo-500">
-                    </div>`;
-            }
-        }
-
-        async function submitNewGoalPath() {
-            const title = document.getElementById('goal-title-input').value.trim();
-            const catIdx = document.getElementById('goal-cat-select').value;
-            const sub = document.getElementById('goal-sub-select').value;
-            const duration = parseInt(document.getElementById('goal-duration-input').value) || 7;
-            
-            if(!title || !sub) { alert('Please insert valid title configurations mapping nodes!'); return; }
-            
-            let topicInputs = document.querySelectorAll('.goal-day-topic-input');
-            let topicsArr = [];
-            let isValid = true;
-            
-            topicInputs.forEach((inp, idx) => {
-                let tName = inp.value.trim();
-                if(!tName) isValid = false;
-                topicsArr.push({
-                    dayIndex: idx + 1,
-                    topicName: tName,
-                    status: 'Pending',
-                    completedDate: null
-                });
-            });
-            
-            if(!isValid) { alert('Please define operational payload description values for all goal roadmap nodes!'); return; }
-            
-            let newGoalPayload = {
-                id: Date.now(),
-                title: title,
-                category: cats[catIdx],
-                subject: sub,
-                durationDays: duration,
-                topics: topicsArr,
-                status: 'Active',
-                rewardClaimed: false
-            };
-
-            showSyncIndicator("Deploying new path...");
-            try {
-                dbGoals = await apiPost('/goals', newGoalPayload);
-                toggleGoalForm();
-                document.getElementById('goal-title-input').value = '';
-                renderGoalsDashboard();
-                triggerCelebrationToast("🚀 ROADMAP PATH ACTIVATED", "New continuous milestone engine initiated.", "from-amber-500 to-indigo-600");
-            } catch(e) { console.error(e); }
-            finally { hideSyncIndicator(); }
-        }
-
-        function renderGoalsDashboard() {
-            const canvas = document.getElementById('active-goal-paths-canvas');
-            canvas.innerHTML = '';
-            
-            if(dbGoals.length === 0) {
-                canvas.innerHTML = `
-                    <div class="p-10 border-2 border-dashed border-gray-900 text-center rounded-2xl text-gray-500 text-xs">
-                        <i class="fa-solid fa-map-location-dot text-3xl opacity-20 mb-3 block text-indigo-400"></i>
-                        No active animated campaign roadmap paths found. Launch one above!
-                    </div>`;
-                return;
-            }
-
-            dbGoals.forEach(goal => {
-                let totalNodes = goal.topics.length;
-                let completedCount = goal.topics.filter(t => t.status === 'Complete').length;
-                let pct = totalNodes > 0 ? Math.round((completedCount / totalNodes) * 100) : 0;
-                
-                let isCampaignFinished = goal.status === 'Completed';
-                
-                // Construct premium SVG dynamic path calculations mapping curve vector lines
-                let svgWidth = 800;
-                let svgHeight = 120;
-                let paddingX = 50;
-                let stepX = totalNodes > 1 ? (svgWidth - (paddingX * 2)) / (totalNodes - 1) : 0;
-                
-                let pointsPathData = "";
-                let filledPathData = "";
-                
-                let nodesHtmlStrings = "";
-                
-                goal.topics.forEach((node, i) => {
-                    let cx = paddingX + (i * stepX);
-                    let cy = svgHeight / 2 + Math.sin(i * 1.5) * 20; // Beautiful harmonic waves styling path
-                    
-                    if(i === 0) {
-                        pointsPathData += `M ${cx} ${cy}`;
-                    } else {
-                        pointsPathData += ` L ${cx} ${cy}`;
-                    }
-                    
-                    let nodeColor = node.status === 'Complete' ? '#10b981' : '#4b5563';
-                    let isCurrentTarget = false;
-                    
-                    // Determine pointer target highlight active status node trace
-                    if(node.status === 'Pending' && (i === 0 || goal.topics[i-1].status === 'Complete')) {
-                        nodeColor = '#6366f1';
-                        isCurrentTarget = true;
-                    }
-                    
-                    nodesHtmlStrings += `
-                        <g class="cursor-pointer group">
-                            <circle cx="${cx}" cy="${cy}" r="${isCurrentTarget ? '9' : '6'}" fill="#060813" stroke="${nodeColor}" stroke-width="3" class="${isCurrentTarget ? 'node-pulse' : ''}" />
-                            <circle cx="${cx}" cy="${cy}" r="3" fill="${nodeColor}" />
-                            <foreignObject x="${cx - 75}" y="${cy - 52}" width="150" height="45" class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                                <div class="bg-slate-950 border border-gray-800 rounded px-2 py-1 text-[10px] text-center shadow-2xl">
-                                    <span class="text-[8px] font-bold block text-indigo-400">DAY ${node.dayIndex} TARGET</span>
-                                    <span class="text-gray-200 block truncate font-medium">${node.topicName}</span>
-                                </div>
-                            </foreignObject>
-                        </g>`;
-                });
-                
-                // Draw end flag geometry nodes dynamic mapping terminal point calculation positioning
-                let flagX = paddingX + ((totalNodes - 1) * stepX) + 12;
-                let flagY = svgHeight / 2 + Math.sin((totalNodes - 1) * 1.5) * 20 - 15;
-
-                canvas.innerHTML += `
-                    <div class="bg-[#050817] border border-gray-900 rounded-2xl p-5 relative overflow-hidden shadow-xl">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-gray-900/60 pb-4 mb-4">
-                            <div>
-                                <div class="flex items-center gap-2 flex-wrap">
-                                    <h3 class="text-sm font-black text-gray-200 uppercase tracking-wide">${goal.title}</h3>
-                                    <span class="text-[9px] font-bold px-2 py-0.5 rounded ${isCampaignFinished ? 'bg-emerald-950 text-emerald-400' : 'bg-indigo-950 text-indigo-300'} border border-indigo-900/40">${goal.status}</span>
-                                </div>
-                                <p class="text-[11px] text-gray-500 font-semibold mt-0.5">${goal.category} ➔ <span class="text-gray-400">${goal.subject}</span> (${goal.durationDays} Days Duration Metric)</p>
-                            </div>
-                            <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
-                                <div class="text-right">
-                                    <span class="text-xs font-black text-indigo-400">${completedCount}/${totalNodes} Nodes</span>
-                                    <span class="text-[10px] font-bold text-gray-600 block">Total Conversion Rate</span>
-                                </div>
-                                <div class="w-20 bg-slate-950 rounded-full h-2 border border-gray-900 overflow-hidden">
-                                    <div class="bg-gradient-to-r from-emerald-500 to-indigo-500 h-full" style="width: ${pct}%"></div>
-                                </div>
-                                <button onclick="deleteGoalPathMetric(${goal.id})" class="text-gray-600 hover:text-rose-400 text-xs p-1 transition-colors cursor-pointer"><i class="fa-solid fa-trash-can"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="overflow-x-auto custom-scrollbar py-4 bg-[#020510] border border-gray-950 rounded-xl relative">
-                            <div class="absolute" style="left: ${flagX}px; top: ${flagY}px;">
-                                <i class="fa-solid fa-flag-checkered ${isCampaignFinished ? 'text-emerald-400 animate-bounce' : 'text-rose-500'} text-sm"></i>
-                            </div>
-                            
-                            <svg width="${svgWidth}" height="${svgHeight}" class="mx-auto overflow-visible">
-                                <path d="${pointsPathData}" fill="none" stroke="#111827" stroke-width="4" stroke-linecap="round" />
-                                <path d="${pointsPathData}" fill="none" stroke="${isCampaignFinished ? '#10b981' : '#4f46e5'}" stroke-width="3" stroke-linecap="round" class="goal-line-animated" opacity="0.65" />
-                                ${nodesHtmlStrings}
-                            </svg>
-                        </div>
-
-                        <div class="flex justify-between items-center mt-4 pt-3 border-t border-gray-900/40 text-xs">
-                            <p class="text-[11px] text-gray-500 font-medium">💡 Hover above node path checkpoints to inspect description target values.</p>
-                            <div class="flex items-center gap-2">
-                                ${!isCampaignFinished ? `
-                                    <button onclick="advanceGoalNodeManually(${goal.id})" class="px-3 py-1.5 bg-[#0e173d] hover:bg-indigo-600 border border-indigo-900/50 text-indigo-300 hover:text-white font-bold rounded-lg text-[10px] uppercase transition-all cursor-pointer">
-                                        <i class="fa-solid fa-forward-step"></i> Advance Node
-                                    </button>` : ''
-                                }
-                                ${isCampaignFinished && !goal.rewardClaimed ? `
-                                    <button onclick="claimGoalCampaignReward(${goal.id})" class="px-4 py-1.5 bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 text-slate-950 font-black rounded-lg text-[10px] uppercase shadow-lg shadow-amber-950 animate-pulse cursor-pointer">
-                                        🎁 Claim Milestone Reward
-                                    </button>` : ''
-                                }
-                                ${goal.rewardClaimed ? `
-                                    <span class="text-[10px] font-black text-emerald-400 uppercase bg-emerald-950/40 border border-emerald-900/60 px-3 py-1 rounded-md">
-                                        🏆 Campaign Reward Claimed
-                                    </span>` : ''
-                                }
-                            </div>
-                        </div>
-                    </div>`;
-            });
-        }
-
-        async function advanceGoalNodeManually(id) {
-            showSyncIndicator("Advancing goal track...");
-            try {
-                dbGoals = await apiPut(`/goals/${id}/advance`, {});
-                renderGoalsDashboard();
-                triggerCelebrationToast("⚡ ROADMAP INCREMENTED", "Target point checkpoint advanced effectively.", "from-indigo-600 to-cyan-500");
-                confetti({ particleCount: 60, spread: 40 });
-            } catch(e) { console.error(e); }
-            finally { hideSyncIndicator(); }
-        }
-
-        async function claimGoalCampaignReward(id) {
-            showSyncIndicator("Claiming compensation payload...");
-            try {
-                dbGoals = await apiPut(`/goals/${id}/claim`, {});
-                renderGoalsDashboard();
-                triggerCelebrationToast("👑 CIVIL ARCHITECTURE UNLOCKED", "Campaign milestone achievement documented on ledger!", "from-yellow-400 via-amber-500 to-orange-600");
-                
-                // Premium massive dual blast celebratory system confetti deployment
-                let end = Date.now() + (3 * 1000);
-                (function frame() {
-                    confetti({ particleCount: 7, angle: 60, spread: 55, origin: { x: 0 } });
-                    confetti({ particleCount: 7, angle: 120, spread: 55, origin: { x: 1 } });
-                    if (Date.now() < end) { requestAnimationFrame(frame); }
-                }());
-            } catch(e) { console.error(e); }
-            finally { hideSyncIndicator(); }
-        }
-
-        async function deleteGoalPathMetric(id) {
-            if(!confirm('Destroy this active campaign path?')) return;
-            showSyncIndicator("Purging track...");
-            try {
-                dbGoals = await apiDelete(`/goals/${id}`);
-                renderGoalsDashboard();
-            } catch(e) { console.error(e); }
-            finally { hideSyncIndicator(); }
-        }
-
-
-        // ================= TAB 3: PROGRESS ENGINE MATRIX =================
-        function renderProgressTab() {
-            let totalComplete = 0;
-            let totalPending = 0;
-            let totalReviews = 0;
-
-            Object.keys(dbTopics).forEach(d => {
-                dbTopics[d].forEach(t => {
-                    if(t.status === 'Complete') totalComplete++;
-                    else totalPending++;
-                    totalReviews += (t.reviewsDone || []).length;
-                    totalReviews += (t.customReviewHistoryDates || []).length;
-                });
-            });
-
-            document.getElementById('stat-topics-complete').innerText = totalComplete;
-            document.getElementById('stat-topics-pending').innerText = totalPending;
-            document.getElementById('stat-reviews-done').innerText = totalReviews + " 🎯";
-            
-            let totalTasks = totalComplete + totalPending;
-            let rate = totalTasks > 0 ? Math.round((totalComplete / totalTasks) * 100) : 0;
-            document.getElementById('stat-success-rate').innerText = `${rate}%`;
-
-            renderActivityGrid();
-            renderCategorySummaryDistribution();
-            renderMasterCleanerLogTable();
-            renderLifetimeAchievedMap();
-        }
-
-        function renderActivityGrid() {
-            const grid = document.getElementById('calendar-grid');
-            grid.innerHTML = '';
-            
-            for(let i = 29; i >= 0; i--) {
-                let dObj = new Date();
-                dObj.setDate(dObj.getDate() - i);
-                let dateStrKey = dObj.toISOString().split('T')[0];
-                
-                let count = (dbTopics[dateStrKey] || []).filter(t => t.status === 'Complete').length;
-                let bg = "bg-slate-950 text-gray-700 border border-gray-900";
-                if(count === 1) bg = "bg-emerald-950 text-emerald-400 border border-emerald-900";
-                else if(count === 2) bg = "bg-emerald-900 text-emerald-300 border border-emerald-800";
-                else if(count >= 3) bg = "bg-emerald-600 text-white font-bold border border-emerald-400 shadow-md";
-                
-                let dayLabel = dObj.getDate();
-                grid.innerHTML += `<button onclick="showDayHistoryBox('${dateStrKey}')" class="w-8 h-8 rounded-lg text-[10px] transition-all transform hover:scale-110 cursor-pointer flex items-center justify-center font-medium ${bg}" title="${dateStrKey}: ${count} elements finished">${dayLabel}</button>`;
-            }
-        }
-
-        function showDayHistoryBox(dateStrKey) {
-            const box = document.getElementById('selected-day-history-box');
-            const title = document.getElementById('history-box-title');
-            const content = document.getElementById('history-box-content');
-            
-            box.classList.remove('hidden');
-            title.innerText = `Topics Logged on: ${dateStrKey}`;
-            content.innerHTML = '';
-            
-            let list = dbTopics[dateStrKey] || [];
-            if(list.length === 0) {
-                content.innerHTML = `<p class="text-gray-600 text-xs py-2">No data logged on this node date parameter.</p>`;
-            } else {
-                list.forEach(t => {
-                    let isC = t.status === 'Complete';
-                    let linked = t.noteUrl ? `<a href="${t.noteUrl}" target="_blank" class="text-cyan-400 block mt-1 hover:underline text-[10px]"><i class="fa-solid fa-link"></i> Linked Note</a>` : "";
-                    content.innerHTML += `
-                        <div class="bg-[#070b1e] p-3 rounded-lg border border-gray-900 flex justify-between items-center">
-                            <div>
-                                <span class="text-[9px] font-bold text-indigo-400 block uppercase">${t.subject}</span>
-                                <span class="text-xs text-gray-300">${t.topicName}</span>
-                                ${linked}
-                            </div>
-                            <span class="text-[9px] font-bold uppercase px-2 py-0.5 rounded ${isC ? 'bg-emerald-950 text-emerald-400 border border-emerald-900/50' : 'bg-rose-950 text-rose-400 border border-rose-900/50'}">${t.status}</span>
-                        </div>`;
-                });
-            }
-        }
-
-        function renderCategorySummaryDistribution() {
-            const container = document.getElementById('category-summary-list');
-            container.innerHTML = '';
-            
-            cats.forEach(cat => {
-                let totalC = 0, totalP = 0;
-                Object.keys(dbTopics).forEach(d => {
-                    dbTopics[d].forEach(t => {
-                        if(t.category !== cat) return;
-                        if(t.status === 'Complete') totalC++;
-                        else totalP++;
-                    });
-                });
-                
-                let tot = totalC + totalP;
-                let pct = tot > 0 ? Math.round((totalC / tot) * 100) : 0;
-                
-                container.innerHTML += `
-                    <div class="bg-[#0a0f24] border border-gray-900 rounded-2xl p-4 shadow-xl space-y-3">
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs font-black text-gray-200 uppercase tracking-wide">${cat}</span>
-                            <span class="text-[11px] font-extrabold text-indigo-400 bg-indigo-950/50 px-2 py-0.5 rounded">${pct}%</span>
-                        </div>
-                        <div class="w-full bg-slate-950 rounded-full h-1.5 border border-gray-900 overflow-hidden">
-                            <div class="bg-gradient-to-r from-indigo-500 to-purple-500 h-full" style="width: ${pct}%"></div>
-                        </div>
-                        <div class="flex justify-between text-[10px] font-bold text-gray-500 uppercase">
-                            <span>Completed: <strong class="text-emerald-400">${totalC}</strong></span>
-                            <span>Pending: <strong class="text-rose-400">${totalP}</strong></span>
-                        </div>
-                    </div>`;
-            });
-        }
-
-        function renderLifetimeAchievedMap() {
-            const container = document.getElementById('lifetime-achieved-container');
-            container.innerHTML = '';
-            let map = {};
-
-            cats.forEach(c => map[c] = {});
-
-            Object.keys(dbTopics).forEach(d => {
-                dbTopics[d].forEach(t => {
-                    if(t.status !== 'Complete') return;
-                    if(!map[t.category]) map[t.category] = {};
-                    if(!map[t.category][t.subject]) map[t.category][t.subject] = [];
-                    map[t.category][t.subject].push(t);
-                });
-            });
-
-            let coreHtml = '';
-            Object.keys(map).forEach(cat => {
-                let subKeys = Object.keys(map[cat]);
-                let subHasData = subKeys.some(sk => map[cat][sk].length > 0);
-                if(!subHasData) return;
-
-                coreHtml += `<div class="bg-slate-950/40 p-4 rounded-xl border border-gray-900/50"><h4 class="text-[11px] font-black text-indigo-400 uppercase tracking-widest mb-3"><i class="fa-solid fa-folder-open text-[10px]"></i> ${cat}</h4><div class="space-y-3">`;
-                subKeys.forEach(sub => {
-                    let topicsList = map[cat][sub];
-                    if(topicsList.length === 0) return;
-                    coreHtml += `
-                        <div class="pl-3 border-l-2 border-indigo-950/60">
-                            <span class="text-[10px] font-bold text-gray-400 block mb-1.5">➔ ${sub}</span>
-                            <div class="grid grid-cols-1 gap-1.5">`;
-                    topicsList.forEach(topic => {
-                        let linkIcon = topic.noteUrl ? `<a href="${topic.noteUrl}" target="_blank" class="text-cyan-400 hover:text-cyan-300 ml-1.5"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>` : '';
-                        let revCount = (topic.reviewsDone || []).length + (topic.customReviewHistoryDates || []).length;
-                        let revBadge = revCount > 0 ? `<span class="bg-amber-950/50 border border-amber-900/60 text-amber-400 text-[8px] font-black px-1.5 py-0.2 rounded-full uppercase tracking-tight ml-2">Rev: ${revCount}</span>` : '';
-                        coreHtml += `
-                            <div class="bg-[#050816] px-3 py-2 border border-gray-900 rounded-lg flex justify-between items-center text-[11px]">
-                                <span class="text-gray-300 font-medium">${topic.topicName} ${linkIcon} ${revBadge}</span>
-                                <span class="text-[9px] text-gray-600 font-bold">${topic.completionDate || topic.date}</span>
-                            </div>`;
-                    });
-                    coreHtml += `</div></div>`;
-                });
-                coreHtml += `</div></div>`;
-            });
-
-            container.innerHTML = coreHtml || `<p class="text-xs text-gray-600 italic py-4 text-center">No structural lifetime achieve data traced inside current repository scope.</p>`;
-            renderLifetimeUniqueRevisionList();
-        }
-
-        function renderLifetimeUniqueRevisionList() {
-            const container = document.getElementById('lifetime-unique-revision-container');
-            container.innerHTML = '';
-            let map = {};
-            cats.forEach(c => map[c] = {});
-
-            Object.keys(dbTopics).forEach(d => {
-                dbTopics[d].forEach(t => {
-                    let hasAutoRev = (t.reviewsDone && t.reviewsDone.length > 0);
-                    let hasCustRev = (t.customReviewHistoryDates && t.customReviewHistoryDates.length > 0);
-                    if(!hasAutoRev && !hasCustRev) return;
-
-                    if(!map[t.category]) map[t.category] = {};
-                    if(!map[t.category][t.subject]) map[t.category][t.subject] = [];
-                    map[t.category][t.subject].push(t);
-                });
-            });
-
-            let coreHtml = '';
-            Object.keys(map).forEach(cat => {
-                let subKeys = Object.keys(map[cat]);
-                let subHasData = subKeys.some(sk => map[cat][sk].length > 0);
-                if(!subHasData) return;
-
-                coreHtml += `<div class="bg-slate-950/40 p-4 rounded-xl border border-gray-900/50"><h4 class="text-[11px] font-black text-amber-400 uppercase tracking-widest mb-3"><i class="fa-solid fa-business-time text-[10px]"></i> ${cat}</h4><div class="space-y-3">`;
-                subKeys.forEach(sub => {
-                    let topicsList = map[cat][sub];
-                    if(topicsList.length === 0) return;
-                    coreHtml += `
-                        <div class="pl-3 border-l-2 border-amber-950/60">
-                            <span class="text-[10px] font-bold text-gray-400 block mb-1.5">➔ ${sub}</span>
-                            <div class="grid grid-cols-1 gap-1.5">`;
-                    topicsList.forEach(topic => {
-                        let autoStamps = (topic.reviewsDone || []).join(', ');
-                        let customStampsCount = (topic.customReviewHistoryDates || []).length;
-                        let labelParts = [];
-                        if(autoStamps) labelParts.push(`Auto: [${autoStamps}]`);
-                        if(customStampsCount > 0) labelParts.push(`Custom Matrix: x${customStampsCount}`);
-                        let stampLabel = labelParts.join(' | ');
-
-                        coreHtml += `
-                            <div class="bg-[#050816] px-3 py-2 border border-gray-900 rounded-lg text-[11px] space-y-1">
-                                <p class="text-gray-300 font-medium">${topic.topicName}</p>
-                                <p class="text-[9px] font-black text-amber-400 uppercase tracking-wider bg-amber-950/20 px-1.5 py-0.5 rounded border border-amber-900/30 w-fit">${stampLabel}</p>
-                            </div>`;
-                    });
-                    coreHtml += `</div></div>`;
-                });
-                coreHtml += `</div></div>`;
-            });
-
-            container.innerHTML = coreHtml || `<p class="text-xs text-gray-600 italic py-4 text-center">No documented revision timestamps logged inside active database nodes.</p>`;
-        }
-
-        function renderMasterCleanerLogTable() {
-            const tbody = document.getElementById('master-cleaner-tbody');
-            tbody.innerHTML = '';
-            
-            let flatList = [];
-            Object.keys(dbTopics).forEach(d => {
-                dbTopics[d].forEach(t => flatList.push(t));
-            });
-
-            flatList.sort((a,b) => b.id - a.id);
-
-            if(flatList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-600 italic">No operational telemetry records mapped.</td></tr>`;
-                return;
-            }
-
-            flatList.forEach(t => {
-                let tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-900/60 border-b border-gray-900/40 transition-colors";
-                
-                let linkNode = t.noteUrl ? `<a href="${t.noteUrl}" target="_blank" class="px-2 py-0.5 bg-cyan-950 text-cyan-400 font-bold rounded border border-cyan-900 text-[10px] uppercase hover:bg-cyan-900 hover:text-white transition-colors"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i> View</a>` : '<span class="text-gray-700 italic">none</span>';
-                let isC = t.status === 'Complete';
-
-                tr.innerHTML = `
-                    <td class="p-3 font-medium text-gray-400">${t.date}</td>
-                    <td class="p-3 text-slate-400 font-bold text-[11px]">${t.category}</td>
-                    <td class="p-3 text-indigo-400 font-black">${t.subject}</td>
-                    <td class="p-3 text-gray-200 max-w-xs truncate font-medium">${t.topicName}</td>
-                    <td class="p-3 text-center">${linkNode}</td>
-                    <td class="p-3 text-center">
-                        <span class="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase ${isC ? 'bg-emerald-950 text-emerald-400 border border-emerald-900/50' : 'bg-rose-950 text-rose-400 border border-rose-900/50'}">${t.status}</span>
-                    </td>
-                    <td class="p-3 text-center">
-                        <button onclick="triggerPurgeWorkflow(${t.id})" class="text-rose-500 hover:text-rose-400 font-bold text-[11px] transition-colors cursor-pointer"><i class="fa-solid fa-trash"></i> Destroy</button>
-                    </td>`;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function triggerPurgeWorkflow(id) {
-            pendingPurgeId = id;
-            document.getElementById('purge-modal').classList.remove('hidden');
-        }
-
+        function openPurgeModal(id) { pendingPurgeId = id; document.getElementById('purge-modal').classList.remove('hidden'); }
         function closePurgeModal() { document.getElementById('purge-modal').classList.add('hidden'); }
 
-        async function executePurgeWorkflow() {
-            let id = pendingPurgeId;
+        document.getElementById('confirm-purge-btn').onclick = async function() {
             closePurgeModal();
-            showSyncIndicator("Purging node...");
-            try {
-                dbTopics = await apiDelete(`/topics/${id}`);
-                renderProgressTab();
-                renderDailyLog();
-                triggerCelebrationToast("🔥 LOG NODES CLEANED", "Telemetric artifact securely erased from cloud clusters.", "from-rose-600 to-pink-600");
-            } catch(e) { console.error(e); }
-            finally { hideSyncIndicator(); }
-        }
-        document.getElementById('confirm-purge-btn').onclick = executePurgeWorkflow;
+            let dayList = dbTopics[activeDate] || [];
+            let idx = dayList.findIndex(t => t.id === pendingPurgeId);
+            if(idx !== -1) {
+                dayList.splice(idx, 1); activeStrategyGoals = activeStrategyGoals.filter(g => g.id !== pendingPurgeId);
+                localStorage.setItem('db_strategy_goals', JSON.stringify(activeStrategyGoals)); renderDailyLog();
+                try {
+                    showSyncIndicator("Purging database entity record...");
+                    dbTopics = await apiCall(`/topics/${pendingPurgeId}`, 'DELETE'); renderDailyLog();
+                } catch(e) { console.error(e); } finally { hideSyncIndicator(); }
+            }
+        };
 
-        // CELEBRATION FLOATING ALERTS ENGINE
-        function triggerCelebrationToast(title, msg, colorGradient) {
-            const container = document.getElementById('surprise-toast-container');
-            const el = document.createElement('div');
-            el.className = `bg-gradient-to-r ${colorGradient} p-4 rounded-2xl shadow-2xl surprise-alert border border-white/10 pointer-events-auto flex flex-col gap-1 text-slate-950 mb-3`;
-            el.innerHTML = `
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-bolt-lightning text-sm animate-bounce"></i>
-                    <span class="font-black tracking-wider text-xs uppercase">${title}</span>
-                </div>
-                <p class="text-[11px] font-bold opacity-90 pl-5 leading-tight">${msg}</p>`;
-            container.appendChild(el);
-            setTimeout(() => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(-20px)';
-                el.style.transition = 'all 0.4s ease';
-                setTimeout(() => el.remove(), 400);
-            }, 4500);
+        /* ANALYTICS STATS GENERATION PANELS */
+        function renderProgressTab() {
+            let comp = 0, pend = 0, revs = 0;
+            Object.keys(dbTopics).forEach(d => { dbTopics[d].forEach(t => { if(t.status === 'Complete') comp++; else pend++; if(t.reviewsDone) revs += t.reviewsDone.length; }); });
+            document.getElementById('stat-topics-complete').innerText = comp;
+            document.getElementById('stat-topics-pending').innerText = pend;
+            document.getElementById('stat-reviews-done').innerText = revs;
+            document.getElementById('stat-success-rate').innerText = `${(comp + pend) > 0 ? Math.round((comp / (comp + pend)) * 100) : 0}%`;
+            renderCalendarActivityGrid(); renderMasterCleanerSection(); renderLifetimeAchievedMaps();
+        }
+
+        function renderCalendarActivityGrid() {
+            const grid = document.getElementById('calendar-grid'); grid.innerHTML = '';
+            for(let i = 29; i >= 0; i--) {
+                let d = new Date(); d.setDate(d.getDate() - i);
+                let targetStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                let count = dbTopics[targetStr]?.filter(t => t.status === 'Complete').length || 0;
+                let opClass = "bg-slate-900 border-gray-950";
+                if(count > 0 && count <= 2) opClass = "bg-emerald-950 text-emerald-400 border-emerald-900";
+                if(count > 2) opClass = "bg-emerald-600 text-white border-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.3)]";
+                grid.innerHTML += `<div onclick="viewHistoricalDayDetails('${targetStr}')" class="w-8 h-8 rounded-lg border flex items-center justify-center text-[10px] font-black cursor-pointer hover:scale-110 transition-transform ${opClass}">${d.getDate()}</div>`;
+            }
+        }
+
+        function viewHistoricalDayDetails(dateStr) {
+            const box = document.getElementById('selected-day-history-box'), title = document.getElementById('history-box-title'), content = document.getElementById('history-box-content');
+            box.classList.remove('hidden'); title.innerText = `Topics Logged on: ${dateStr}`; content.innerHTML = '';
+            let list = dbTopics[dateStr] || [];
+            if(list.length === 0) content.innerHTML = `<p class="text-gray-600 text-xs py-2">No elements matching this historical frame boundary.</p>`;
+            else {
+                list.forEach(t => {
+                    content.innerHTML += `<div class="bg-[#070b1e] p-3 rounded-lg border border-gray-900 flex justify-between items-center"><div><span class="text-[9px] font-bold text-indigo-400 block uppercase">${t.subject}</span><span class="text-xs text-gray-300">${t.topicName}</span></div><span class="text-[9px] font-bold uppercase px-2 py-0.5 rounded ${t.status === 'Complete' ? 'bg-emerald-950 text-emerald-400' : 'bg-rose-950 text-rose-400'}">${t.status}</span></div>`;
+                });
+            }
+        }
+
+        function renderLifetimeAchievedMaps() {
+            const container = document.getElementById('lifetime-achieved-container'); container.innerHTML = '';
+            let catMap = {};
+            Object.keys(dbTopics).forEach(d => { dbTopics[d].forEach(t => { if(t.status === 'Complete') { if(!catMap[t.category]) catMap[t.category] = {}; if(!catMap[t.category][t.subject]) catMap[t.category][t.subject] = []; catMap[t.category][t.subject].push(t); } }); });
+            if(Object.keys(catMap).length === 0) { container.innerHTML = `<p class="text-gray-600 text-xs italic py-4">No completed map items indexed inside ledger.</p>`; return; }
+            Object.keys(catMap).forEach(cat => {
+                let html = `<div class="p-3 bg-[#0a0f24] border border-gray-900 rounded-xl space-y-2"><h4 class="text-xs font-black text-indigo-400 uppercase tracking-wider">${cat}</h4><div class="pl-3 space-y-2">`;
+                Object.keys(catMap[cat]).forEach(sub => {
+                    html += `<div class="text-[11px]"><span class="font-bold text-gray-400 block mb-1">➔ ${sub}</span><ul class="list-disc pl-4 space-y-1 text-gray-500">`;
+                    catMap[cat][sub].forEach(topic => { html += `<li><strong class="text-gray-300">${topic.topicName}</strong> <span class="text-[9px] text-gray-600">(${topic.date})</span></li>`; });
+                    html += `</ul></div>`;
+                });
+                container.innerHTML += html + `</div></div>`;
+            });
+        }
+
+        function renderMasterCleanerSection() {
+            const tbody = document.getElementById('master-cleaner-tbody'); tbody.innerHTML = '';
+            Object.keys(dbTopics).sort().reverse().forEach(dateStr => {
+                dbTopics[dateStr].forEach(t => {
+                    let tr = document.createElement('tr'); tr.className = "hover:bg-slate-900/40 border-b border-gray-900/40 text-gray-300";
+                    tr.innerHTML = `<td class="p-3 text-[10px] text-gray-500 font-bold">${dateStr}</td><td class="p-3 text-indigo-400 font-medium">${t.category}</td><td class="p-3 font-semibold text-gray-400">${t.subject}</td><td class="p-3 truncate max-w-xs">${t.topicName}</td><td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-[9px] font-bold ${t.status==='Complete'?'bg-emerald-950 text-emerald-400':'bg-rose-950 text-rose-400'}">${t.status}</span></td><td class="p-3 text-center"><button onclick="executeDirectMasterPurge(${t.id}, '${dateStr}')" class="text-rose-500 hover:text-rose-400 font-bold text-[11px] cursor-pointer"><i class="fa-solid fa-trash"></i> Destroy</button></td>`;
+                    tbody.appendChild(tr);
+                });
+            });
+        }
+
+        async function executeDirectMasterPurge(id, dateStr) {
+            triggerCustomAlert("Are you sure you want to completely purge this item from history? This action is processed downstream natively.", "Ledger Prompt", "fa-triangle-exclamation");
+            let list = dbTopics[dateStr] || []; let idx = list.findIndex(x => x.id === id);
+            if(idx !== -1) {
+                list.splice(idx, 1); activeStrategyGoals = activeStrategyGoals.filter(g => g.id !== id);
+                localStorage.setItem('db_strategy_goals', JSON.stringify(activeStrategyGoals)); renderProgressTab();
+                try {
+                    showSyncIndicator("Purging repository timeline record...");
+                    dbTopics = await apiCall(`/topics/${id}`, 'DELETE'); renderProgressTab();
+                } catch(e) { console.error(e); } finally { hideSyncIndicator(); }
+            }
         }
     </script>
 </body>
