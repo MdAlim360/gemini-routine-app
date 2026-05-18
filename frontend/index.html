@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Learning Routine - Legendary Gamified Hub</title>
+    <title>My Learning Routine - Stable Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,700;1,700&family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap" rel="stylesheet">
@@ -18,7 +18,6 @@
         }
         .main-title { font-family: 'Playfair Display', serif; }
         
-        /* Glassmorphic UI Panels */
         .glass-panel {
             background: rgba(10, 15, 42, 0.65);
             backdrop-filter: blur(14px);
@@ -38,7 +37,6 @@
         }
         .streak-active-glow { animation: pulseGlow 2s infinite alternate; }
 
-        /* Color classes */
         .cat-prog { border-color: rgba(99, 102, 241, 0.2) !important; color: #a5b4fc !important; background: rgba(99, 102, 241, 0.04); }
         .cat-acad { border-color: rgba(244, 63, 94, 0.2) !important; color: #fca5a5 !important; background: rgba(244, 63, 94, 0.04); }
         .cat-bcs { border-color: rgba(251, 191, 36, 0.2) !important; color: #fde047 !important; background: rgba(251, 191, 36, 0.03); }
@@ -53,7 +51,7 @@
 
     <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-center mt-2 mb-8">
         <div class="lg:col-span-6 text-center lg:text-left">
-            <p class="text-[11px] uppercase tracking-widest text-indigo-400 font-extrabold mb-1">🚀 Systemized Force Achievement Engine</p>
+            <p class="text-[11px] uppercase tracking-widest text-indigo-400 font-extrabold mb-1">🚀 Automated Engine Dashboard</p>
             <h1 class="main-title text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-indigo-300 to-purple-400">
                 My Learning Routine
             </h1>
@@ -61,33 +59,33 @@
         
         <div class="lg:col-span-6 glass-panel p-4 rounded-2xl grid grid-cols-3 gap-2 items-center text-center">
             <div class="border-r border-indigo-950/50">
-                <span id="hud-streak-count" class="text-2xl font-black text-amber-400 block">0 Days</span>
-                <span class="text-[9px] uppercase font-bold text-gray-500 tracking-wider">🔥 Active Streak</span>
+                <span id="hud-streak-count" class="text-xl font-black text-amber-400 block">Active</span>
+                <span class="text-[9px] uppercase font-bold text-gray-500 tracking-wider">🔥 Streak Radar</span>
             </div>
             <div class="border-r border-indigo-950/50 px-1">
-                <span id="hud-rank-title" class="text-xs font-black text-emerald-400 block truncate">Novice Scholar</span>
-                <span class="text-[9px] uppercase font-bold text-gray-500 tracking-wider">👑 Current Level</span>
+                <span id="hud-rank-title" class="text-xs font-black text-emerald-400 block truncate">Operational</span>
+                <span class="text-[9px] uppercase font-bold text-gray-500 tracking-wider">👑 System Status</span>
             </div>
             <div>
-                <span id="hud-xp-display" class="text-lg font-black text-indigo-400 block">0 XP</span>
+                <span id="hud-xp-display" class="text-lg font-black text-indigo-400 block">Syncing</span>
                 <div class="w-full bg-slate-950 h-1.5 rounded-full mt-1 overflow-hidden p-0.5 border border-indigo-950">
-                    <div id="hud-xp-progress" class="bg-gradient-to-r from-indigo-500 to-purple-500 h-full rounded-full transition-all duration-500" style="width: 10%;"></div>
+                    <div id="hud-xp-progress" class="bg-gradient-to-r from-indigo-500 to-purple-500 h-full rounded-full transition-all duration-500" style="width: 100%;"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="flex justify-center gap-3 mb-8">
-        <button onclick="switchTab('routine')" id="tab-routine" class="tab-btn active text-xs font-semibold px-5 py-2.5 rounded-xl cursor-pointer flex items-center gap-2">
+    <div class="flex flex-wrap justify-center gap-2 mb-8">
+        <button onclick="switchTab('routine')" id="tab-routine" class="tab-btn active text-xs font-semibold px-4 py-2.5 rounded-xl cursor-pointer flex items-center gap-2">
             <i class="fa-solid fa-table"></i> Routine Matrix
         </button>
-        <button onclick="switchTab('daily')" id="tab-daily" class="tab-btn text-xs font-semibold px-5 py-2.5 rounded-xl cursor-pointer flex items-center gap-2">
+        <button onclick="switchTab('daily')" id="tab-daily" class="tab-btn text-xs font-semibold px-4 py-2.5 rounded-xl cursor-pointer flex items-center gap-2">
             <i class="fa-solid fa-pen"></i> Workbench & Logs
         </button>
-        <button onclick="switchTab('archive')" id="tab-archive" class="tab-btn text-xs font-semibold px-5 py-2.5 rounded-xl cursor-pointer flex items-center gap-2">
+        <button onclick="switchTab('archive')" id="tab-archive" class="tab-btn text-xs font-semibold px-4 py-2.5 rounded-xl cursor-pointer flex items-center gap-2">
             <i class="fa-solid fa-box-archive"></i> Search & Archive
         </button>
-        <button onclick="switchTab('progress')" id="tab-progress" class="tab-btn text-xs font-semibold px-5 py-2.5 rounded-xl cursor-pointer flex items-center gap-2">
+        <button onclick="switchTab('progress')" id="tab-progress" class="tab-btn text-xs font-semibold px-4 py-2.5 rounded-xl cursor-pointer flex items-center gap-2">
             <i class="fa-solid fa-trophy"></i> Analytics & Metrics
         </button>
     </div>
@@ -172,9 +170,9 @@
                 <div class="lg:col-span-5 space-y-6">
                     <div class="glass-panel p-6 rounded-2xl shadow-xl">
                         <h3 class="text-amber-400 font-bold text-sm mb-1 flex items-center gap-2">
-                            <i class="fa-solid fa-circle-nodes"></i> Spaced & Custom Revision Radar
+                            <i class="fa-solid fa-circle-nodes"></i> Spaced Revision Radar
                         </h3>
-                        <p class="text-[11px] text-gray-500 mb-4">স্বয়ংক্রিয় মাইলস্টোন ট্র্যাকার (১, ৩, ৭, ৩০ দিন) আপনার মেমোরি রিটেনশন বজায় রাখার ফোর্স তৈরি করবে।</p>
+                        <p class="text-[11px] text-gray-500 mb-4">স্বয়ংক্রিয় মাইলস্টোন ট্র্যাকার (১, ৩, ৭, ৩০ দিন) আপনার মেমোরি রিটেনশন রিভিশন বুস্ট করবে।</p>
                         <div id="automatic-revision-list" class="space-y-3 max-h-[550px] overflow-y-auto custom-scrollbar pr-2"></div>
                     </div>
                 </div>
@@ -183,7 +181,7 @@
 
         <div id="view-archive" class="tab-view hidden space-y-6">
             <div class="glass-panel p-5 rounded-2xl">
-                <h3 class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-4">⚡ Global Legacy Topic Locator</h3>
+                <h3 class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-4">⚡ Global Historical Topic Locator</h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label class="text-[10px] text-gray-500 uppercase font-bold block mb-1">Instant Fuzzy Search</label>
@@ -216,7 +214,6 @@
                                 <th class="p-3">Subject Matrix</th>
                                 <th class="p-3">Topic Title</th>
                                 <th class="p-3 text-center">Status</th>
-                                <th class="p-3 text-center">AI Actions</th>
                             </tr>
                         </thead>
                         <tbody id="archive-search-results-tbody" class="divide-y divide-indigo-950/20"></tbody>
@@ -299,59 +296,6 @@
         </div>
     </div>
 
-    <div id="quiz-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4 z-50">
-        <div class="glass-panel max-w-2xl w-full p-6 rounded-2xl border-indigo-500/30 overflow-y-auto max-h-[90vh] custom-scrollbar">
-            <div class="flex justify-between items-center border-b border-indigo-950 pb-3 mb-4">
-                <div>
-                    <h3 id="quiz-modal-headline" class="text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-indigo-400 uppercase">AI Adaptive Exam Portal</h3>
-                    <p id="quiz-modal-sub" class="text-[11px] text-gray-400 mt-0.5"></p>
-                </div>
-                <button onclick="closeQuizModal()" class="text-gray-500 hover:text-white text-sm cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            
-            <div id="quiz-setup-view" class="space-y-4">
-                <p class="text-xs text-gray-400">Select an assessment metric below. The AI will instantly generate targeted questions based on this topic's memory footprints.</p>
-                <div class="grid grid-cols-2 gap-3">
-                    <button onclick="triggerQuizGeneration('MCQ')" class="p-4 bg-slate-950/60 border border-indigo-950 rounded-xl hover:border-indigo-500 text-left cursor-pointer transition-all">
-                        <span class="text-amber-400 font-bold text-xs block"><i class="fa-solid fa-list-check"></i> Multiple Choice (MCQ)</span>
-                        <span class="text-[10px] text-gray-500 block mt-1">Test structural accurate recall indicators.</span>
-                    </button>
-                    <button onclick="triggerQuizGeneration('True/False')" class="p-4 bg-slate-950/60 border border-indigo-950 rounded-xl hover:border-indigo-500 text-left cursor-pointer transition-all">
-                        <span class="text-sky-400 font-bold text-xs block"><i class="fa-solid fa-circle-question"></i> Binary Logic (True/False)</span>
-                        <span class="text-[10px] text-gray-500 block mt-1">Validate fundamental core definitions.</span>
-                    </button>
-                    <button onclick="triggerQuizGeneration('Gap-Filling')" class="p-4 bg-slate-950/60 border border-indigo-950 rounded-xl hover:border-indigo-500 text-left cursor-pointer transition-all">
-                        <span class="text-emerald-400 font-bold text-xs block"><i class="fa-solid fa-pen-clip"></i> Gap-Filling Matrix</span>
-                        <span class="text-[10px] text-gray-500 block mt-1">Evaluate specific terminology precision.</span>
-                    </button>
-                    <button onclick="triggerQuizGeneration('Flashcard')" class="p-4 bg-slate-950/60 border border-indigo-950 rounded-xl hover:border-indigo-500 text-left cursor-pointer transition-all">
-                        <span class="text-purple-400 font-bold text-xs block"><i class="fa-solid fa-id-card"></i> Core Concept Flashcards</span>
-                        <span class="text-[10px] text-gray-500 block mt-1">Execute broad conceptual thinking revision.</span>
-                    </button>
-                </div>
-            </div>
-
-            <div id="quiz-active-view" class="hidden space-y-6">
-                <div id="quiz-questions-stack" class="space-y-6"></div>
-                <div class="flex justify-end pt-4 border-t border-indigo-950">
-                    <button onclick="evaluateAndSubmitActiveQuiz()" class="px-6 py-2 bg-gradient-to-r from-emerald-600 to-indigo-600 text-white font-extrabold text-xs rounded-xl shadow-lg cursor-pointer">
-                        Submit & Compute Grades
-                    </button>
-                </div>
-            </div>
-
-            <div id="quiz-result-view" class="hidden text-center space-y-4 py-6">
-                <div class="inline-flex p-4 bg-indigo-950/30 rounded-full border border-indigo-500/20 text-4xl text-amber-400 animate-bounce">
-                    <i class="fa-solid fa-award"></i>
-                </div>
-                <h4 class="text-xl font-black text-white">Performance Score Calculated!</h4>
-                <p id="quiz-score-metric" class="text-2xl font-bold text-emerald-400"></p>
-                <p class="text-xs text-gray-400 max-w-sm mx-auto">Your metrics have been safely pushed into the global database. Experience points (XP) allocated accordingly.</p>
-                <button onclick="closeQuizModal()" class="mt-4 px-5 py-2 bg-slate-900 border border-gray-800 text-xs font-bold text-gray-300 rounded-xl cursor-pointer">Return To Matrix</button>
-            </div>
-        </div>
-    </div>
-
     <div id="edit-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
         <div class="glass-panel w-full max-w-md p-6 rounded-2xl shadow-2xl">
             <h3 id="modal-title" class="text-base font-bold text-white mb-2">Edit Matrix Node</h3>
@@ -405,9 +349,6 @@
         
         let dbRoutine = {};
         let dbTopics = {};
-        let currentActiveQuizData = [];
-        let activeQuizTopicObj = null;
-        let activeQuizType = "";
 
         const todayDateObj = new Date();
         const systemTodayStr = `${todayDateObj.getFullYear()}-${String(todayDateObj.getMonth() + 1).padStart(2, '0')}-${String(todayDateObj.getDate()).padStart(2, '0')}`;
@@ -418,9 +359,9 @@
         let pendingCompleteTopicId = null;
 
         const surprisePool = [
-            { title: "🚀 HYPER MOMENTUM BURST", msg: "Unstoppable force registered in system logic!", color: "from-amber-500 to-rose-500" },
-            { title: "👑 SCHOLAR MATRIX UPGRADE", msg: "Experience tracking point allocation optimized.", color: "from-cyan-400 via-indigo-500 to-purple-600" },
-            { title: "⚡ METRICS MAXIMIZED", msg: "Database synchronized successfully.", color: "from-emerald-400 to-teal-600" }
+            { title: "🚀 MOMENTUM INJECTED", msg: "Topic tracked successfully inside backend pipeline.", color: "from-amber-500 to-rose-500" },
+            { title: "⚡ METRICS MAXIMIZED", msg: "Memory layer revision successfully synchronized.", color: "from-emerald-400 to-teal-600" },
+            { title: "👑 MATRIX CONFIG UPDATED", msg: "Global table framework synchronized successfully.", color: "from-cyan-400 via-indigo-500 to-purple-600" }
         ];
 
         function showSyncIndicator(text = "Syncing...") {
@@ -457,7 +398,7 @@
                 const topicsData = await apiCall('/topics');
                 dbRoutine = routineData;
                 dbTopics = topicsData;
-                await syncGamificationProfile(0); 
+                updateStatsHUD();
             } catch(e) {
                 console.error(e);
             }
@@ -468,21 +409,18 @@
             renderDailyLog();
         };
 
-        async function syncGamificationProfile(xpToAdd = 0) {
-            try {
-                let currentProf = null;
-                if (xpToAdd > 0) {
-                    currentProf = await apiCall('/profile/reward', 'POST', { xpToAdd, currentTodayStr: systemTodayStr });
-                } else {
-                    currentProf = await apiCall('/profile');
-                }
-                document.getElementById('hud-streak-count').innerText = `${currentProf.streak} Days`;
-                document.getElementById('hud-rank-title').innerText = currentProf.level;
-                document.getElementById('hud-xp-display').innerText = `${currentProf.xp} XP`;
-                document.getElementById('hud-xp-progress').style.width = `${Math.min(100, (currentProf.xp % 100))}%`;
-            } catch (err) {
-                console.error("Gamification Sync Fail", err);
-            }
+        function updateStatsHUD() {
+            let totalDone = 0;
+            let pendingDone = 0;
+            Object.keys(dbTopics).forEach(dk => {
+                dbTopics[dk].forEach(t => {
+                    if(t.status === 'Complete') totalDone++;
+                    else pendingDone++;
+                });
+            });
+            document.getElementById('hud-streak-count').innerText = `${totalDone} Done`;
+            document.getElementById('hud-rank-title').innerText = pendingDone > 0 ? `${pendingDone} Pending` : "Fully Clear";
+            document.getElementById('hud-xp-display').innerText = "Database Connected";
         }
 
         function switchTab(tabId) {
@@ -506,7 +444,7 @@
                 dbRoutine[day].forEach((cellArr, idx) => {
                     let colorfulClass = cssClasses[idx];
                     html += `<td class="p-4 align-top routine-cell ${colorfulClass} border-r border-indigo-950/10 last:border-r-0"><div class="flex flex-col gap-1.5 min-h-[44px]">`;
-                    if(cellArr.length === 0) html += `<span class="text-gray-700/60 font-medium italic">empty block</span>`;
+                    if(!cellArr || cellArr.length === 0) html += `<span class="text-gray-700/60 font-medium italic text-[10px]">empty block</span>`;
                     else {
                         cellArr.forEach(sub => {
                             html += `<span class="px-2 py-1 bg-slate-950/90 border border-indigo-950/50 rounded text-[10px] font-bold text-gray-200 w-fit">${sub}</span>`;
@@ -522,13 +460,14 @@
         function openModal(day, catIdx) {
             activeEditCell = { day, catIdx };
             document.getElementById('modal-title').innerText = `Edit Bracket: ${day} ➔ ${cats[catIdx]}`;
-            document.getElementById('modal-input').value = dbRoutine[day][catIdx].join(', ');
+            document.getElementById('modal-input').value = dbRoutine[day] && dbRoutine[day][catIdx] ? dbRoutine[day][catIdx].join(', ') : '';
             document.getElementById('edit-modal').classList.remove('hidden');
         }
         function closeModal() { document.getElementById('edit-modal').classList.add('hidden'); }
         
         async function saveModalChanges() {
             let val = document.getElementById('modal-input').value;
+            if(!dbRoutine[activeEditCell.day]) dbRoutine[activeEditCell.day] = [[],[],[],[],[],[]];
             dbRoutine[activeEditCell.day][activeEditCell.catIdx] = val.split(',').map(s => s.trim()).filter(s => s.length > 0);
             closeModal();
             renderRoutineTable();
@@ -572,7 +511,7 @@
             let subName = subSelect.value;
             let topicName = topicInput.value.trim();
 
-            if(!subName || !topicName) { alert("Missing operational bounds."); return; }
+            if(!subName || !topicName) { alert("Please provide valid inputs."); return; }
             
             const newObj = {
                 id: Date.now(), date: activeDate, originDate: activeDate, completionDate: null,
@@ -585,8 +524,8 @@
                 dbTopics = await apiCall('/topics', 'POST', newObj);
                 topicInput.value = '';
                 renderDailyLog();
+                updateStatsHUD();
                 triggerSurpriseToast(0);
-                await syncGamificationProfile(10); 
             } catch(e) { console.error(e); }
             hideSyncIndicator();
         }
@@ -616,17 +555,15 @@
                                 <p class="text-xs text-gray-200 font-semibold">${t.topicName}</p>
                             </div>
                             <div class="flex gap-2 w-full md:w-auto justify-end">
-                                <button onclick="launchQuizPortal(${t.id}, '${t.topicName}', '${t.subject}', '${t.category}')" class="px-3 py-1 bg-purple-950/60 border border-purple-800 text-purple-300 text-[10px] font-bold rounded-lg cursor-pointer"><i class="fa-solid fa-brain"></i> AI Test Exam</button>
                                 <button onclick="openCompletePromptModal(${t.id})" class="px-3 py-1 bg-emerald-950 text-emerald-400 border border-emerald-900 text-[10px] font-bold rounded-lg cursor-pointer">Mastered ✓</button>
                             </div>
                         </div>`;
                 } else {
-                    let noteLink = t.noteUrl ? `<a href="${t.noteUrl}" target="_blank" class="text-cyan-400 hover:underline ml-2"><i class="fa-solid fa-link"></i> Doc Matrix</a>` : '';
+                    let noteLink = t.noteUrl ? `<a href="${t.noteUrl}" target="_blank" class="text-cyan-400 hover:underline ml-2"><i class="fa-solid fa-link"></i> Reference</a>` : '';
                     completedContainer.innerHTML += `
                         <div class="bg-slate-950/40 p-3 rounded-xl border border-indigo-950/20 flex justify-between items-center text-xs">
                             <div><span class="text-gray-500 font-medium">[${t.subject}]</span> <span class="text-gray-300">${t.topicName}</span>${noteLink}</div>
                             <div class="flex items-center gap-2">
-                                <button onclick="launchQuizPortal(${t.id}, '${t.topicName}', '${t.subject}', '${t.category}')" class="text-[10px] text-indigo-400 hover:underline"><i class="fa-solid fa-vial"></i> Take AI Quiz</button>
                                 <span class="text-[10px] text-emerald-400 font-black uppercase tracking-wider bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-900">Mastered</span>
                             </div>
                         </div>`;
@@ -641,7 +578,7 @@
             renderRevisionRadar();
         }
 
-        // ================= SPACED REVISION RADAR =================
+        // ================= REVISION RADAR =================
         function renderRevisionRadar() {
             const radarContainer = document.getElementById('automatic-revision-list');
             radarContainer.innerHTML = '';
@@ -657,16 +594,16 @@
                         let milestones = [1, 3, 7, 30];
                         milestones.forEach(m => {
                             let idxStr = `R${m}`;
-                            if(diffDays >= m && !t.reviewsDone.includes(idxStr)) {
+                            if(diffDays >= m && (!t.reviewsDone || !t.reviewsDone.includes(idxStr))) {
                                 radarCounter++;
                                 radarContainer.innerHTML += `
                                     <div class="p-3 bg-slate-950/80 border border-amber-900/30 rounded-xl flex justify-between items-center text-xs animate-pulse">
                                         <div>
-                                            <span class="text-[9px] font-black text-amber-400 block uppercase">Critical Revision Milestone: ${m} Day Threshold</span>
+                                            <span class="text-[9px] font-black text-amber-400 block uppercase">Revision Threshold: ${m} Day</span>
                                             <span class="text-gray-300 font-bold">${t.topicName}</span>
-                                            <span class="text-[10px] block text-gray-500">${t.subject} (${t.category})</span>
+                                            <span class="text-[10px] block text-gray-500">${t.subject}</span>
                                         </div>
-                                        <button onclick="commitRevisionMastery(${t.id}, '${idxStr}')" class="px-3 py-1 bg-amber-950 text-amber-400 border border-amber-900 font-bold text-[10px] rounded-lg cursor-pointer">Run Review</button>
+                                        <button onclick="commitRevisionMastery(${t.id}, '${idxStr}')" class="px-3 py-1 bg-amber-950 text-amber-400 border border-amber-900 font-bold text-[10px] rounded-lg cursor-pointer">Mark Run</button>
                                     </div>`;
                             }
                         });
@@ -675,7 +612,7 @@
             });
 
             if(radarCounter === 0) {
-                radarContainer.innerHTML = `<p class="text-gray-600 text-[11px] italic text-center py-8">Radar quiet. Memory layers are verified and functionally static.</p>`;
+                radarContainer.innerHTML = `<p class="text-gray-600 text-[11px] italic text-center py-8">Radar quiet. Memory layers are verified and stable.</p>`;
             }
         }
 
@@ -687,20 +624,23 @@
             });
             if(!targetedTopic) return;
 
+            if(!targetedTopic.reviewsDone) targetedTopic.reviewsDone = [];
+            if(!targetedTopic.reviewHistoryStamps) targetedTopic.reviewHistoryStamps = {};
+            
             targetedTopic.reviewsDone.push(milestoneStr);
             targetedTopic.reviewHistoryStamps[milestoneStr] = activeDate;
 
-            showSyncIndicator("Logging Spaced Execution Vector...");
+            showSyncIndicator("Logging Revision Execution Vector...");
             try {
                 dbTopics = await apiCall(`/topics/${id}`, 'PUT', targetedTopic);
                 renderDailyLog();
+                updateStatsHUD();
                 triggerSurpriseToast(1);
-                await syncGamificationProfile(20); 
             } catch(e) { console.error(e); }
             hideSyncIndicator();
         }
 
-        // ================= COMPLETION MODALS =================
+        // ================= COMPLETION PROCESSING =================
         function openCompletePromptModal(id) {
             pendingCompleteTopicId = id;
             let targetedTopic = null;
@@ -734,18 +674,16 @@
                 dbTopics = await apiCall(`/topics/${id}`, 'PUT', targetedTopic);
                 confetti({ particleCount: 140, spread: 80, origin: { y: 0.6 } });
                 renderDailyLog();
-                await syncGamificationProfile(30); 
+                updateStatsHUD();
             } catch(e) { console.error(e); }
             hideSyncIndicator();
         };
 
-        // ================= GLOBAL SEARCH & DEEP ARCHIVE ENGINE =================
+        // ================= SEARCH SEARCH LOGIC =================
         function buildGlobalSearchCategoryOptions() {
             const selectFilter = document.getElementById('archive-filter-cat');
             selectFilter.innerHTML = '<option value="ALL">-- All Categories --</option>';
-            cats.forEach(c => {
-                selectFilter.innerHTML += `<option value="${c}">${c}</option>`;
-            });
+            cats.forEach(c => { selectFilter.innerHTML += `<option value="${c}">${c}</option>`; });
         }
 
         function runArchiveSearchFilter() {
@@ -773,130 +711,17 @@
                                 <td class="p-3 text-indigo-300 font-bold">${t.subject}</td>
                                 <td class="p-3 text-white font-medium">${t.topicName}</td>
                                 <td class="p-3 text-center">${statusBadge}</td>
-                                <td class="p-3 text-center">
-                                    <button onclick="launchQuizPortal(${t.id}, '${t.topicName}', '${t.subject}', '${t.category}')" class="text-[11px] text-amber-400 hover:underline"><i class="fa-solid fa-puzzle-piece"></i> Dynamic Test</button>
-                                </td>
                             </tr>`;
                     }
                 });
             });
 
             if(tbody.innerHTML === '') {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-600 italic">No historical records match your active filtering parameters.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-600 italic">No historical records match parameters.</td></tr>`;
             }
         }
 
-        // ================= INTEGRATED AI ADAPTIVE EXAM PORTAL =================
-        function launchQuizPortal(id, topicName, subject, category) {
-            activeQuizTopicObj = { id, topicName, subject, category };
-            document.getElementById('quiz-modal-sub').innerText = `${subject} ➔ ${topicName}`;
-            
-            document.getElementById('quiz-setup-view').classList.remove('hidden');
-            document.getElementById('quiz-active-view').classList.add('hidden');
-            document.getElementById('quiz-result-view').classList.add('hidden');
-            
-            document.getElementById('quiz-modal').classList.remove('hidden');
-        }
-
-        function closeQuizModal() { document.getElementById('quiz-modal').classList.add('hidden'); }
-
-        async function triggerQuizGeneration(type) {
-            activeQuizType = type;
-            showSyncIndicator(`AI Parsing: ${type}...`);
-            try {
-                const response = await apiCall('/quiz/generate', 'POST', {
-                    topicName: activeQuizTopicObj.topicName,
-                    subject: activeQuizTopicObj.subject,
-                    category: activeQuizTopicObj.category,
-                    type: type
-                });
-                currentActiveQuizData = response.quiz;
-                renderQuizActiveQuestions();
-            } catch (err) {
-                console.error(err);
-                alert("AI processing failure.");
-            }
-            hideSyncIndicator();
-        }
-
-        function renderQuizActiveQuestions() {
-            document.getElementById('quiz-setup-view').classList.add('hidden');
-            const container = document.getElementById('quiz-questions-stack');
-            container.innerHTML = '';
-
-            currentActiveQuizData.forEach((qObj, idx) => {
-                let htmlBlock = `<div class="p-4 bg-slate-950/50 border border-indigo-950 rounded-xl space-y-2">
-                    <p class="text-xs font-bold text-gray-200">${idx+1}. ${qObj.q}</p>`;
-                
-                if (activeQuizType === 'MCQ' || activeQuizType === 'True/False') {
-                    qObj.o.forEach(opt => {
-                        htmlBlock += `
-                            <label class="flex items-center gap-2 text-xs text-gray-400 cursor-pointer hover:text-white mt-1">
-                                <input type="radio" name="q_ans_${idx}" value="${opt}" class="accent-indigo-500"> ${opt}
-                            </label>`;
-                    });
-                } else if (activeQuizType === 'Gap-Filling') {
-                    htmlBlock += `<input type="text" id="q_input_${idx}" placeholder="Provide accurate keyword answer..." class="w-full bg-[#060919] border border-gray-800 rounded-lg px-3 py-1.5 text-xs text-white outline-none mt-1 focus:border-indigo-500">`;
-                } else {
-                    htmlBlock += `
-                        <button onclick="document.getElementById('fc_ans_${idx}').classList.remove('hidden')" class="px-2 py-1 bg-purple-950/30 text-purple-300 text-[10px] rounded border border-purple-900 block mt-1">Reveal Conceptual Answer</button>
-                        <p id="fc_ans_${idx}" class="text-xs font-medium text-emerald-400 hidden mt-2 bg-emerald-950/10 p-2 rounded border border-emerald-900/30">${qObj.a}</p>
-                        <div class="mt-2 flex gap-2">
-                            <span class="text-[10px] text-gray-500">Self Assessment Metric:</span>
-                            <label class="text-[10px] text-emerald-400 cursor-pointer"><input type="radio" name="q_ans_${idx}" value="CORRECT" checked> Retained</label>
-                            <label class="text-[10px] text-rose-400 cursor-pointer"><input type="radio" name="q_ans_${idx}" value="WRONG"> Forgotten</label>
-                        </div>`;
-                }
-
-                htmlBlock += `</div>`;
-                container.innerHTML += htmlBlock;
-            });
-
-            document.getElementById('quiz-active-view').classList.remove('hidden');
-        }
-
-        async function evaluateAndSubmitActiveQuiz() {
-            let correctCount = 0;
-            let total = currentActiveQuizData.length;
-
-            currentActiveQuizData.forEach((qObj, idx) => {
-                let userVal = "";
-                if (activeQuizType === 'MCQ' || activeQuizType === 'True/False') {
-                    let selected = document.querySelector(`input[name="q_ans_${idx}"]:checked`);
-                    if(selected) userVal = selected.value;
-                    if(userVal === qObj.a) correctCount++;
-                } else if (activeQuizType === 'Gap-Filling') {
-                    userVal = document.getElementById(`q_input_${idx}`).value.trim();
-                    if(userVal.toLowerCase() === qObj.a.toLowerCase()) correctCount++;
-                } else {
-                    let selected = document.querySelector(`input[name="q_ans_${idx}"]:checked`);
-                    if(selected && selected.value === 'CORRECT') correctCount++;
-                }
-            });
-
-            const payload = {
-                topicId: activeQuizTopicObj.id, topicName: activeQuizTopicObj.topicName,
-                subject: activeQuizTopicObj.subject, category: activeQuizTopicObj.category,
-                score: correctCount, totalQuestions: total, quizType: activeQuizType, dateTaken: systemTodayStr
-            };
-
-            showSyncIndicator("Computing Analytics...");
-            try {
-                await apiCall('/quiz/save-result', 'POST', payload);
-                document.getElementById('quiz-active-view').classList.add('hidden');
-                document.getElementById('quiz-score-metric').innerText = `${correctCount} / ${total} Correct Marks`;
-                document.getElementById('quiz-result-view').classList.remove('hidden');
-                
-                let awardedXp = (correctCount / total === 1) ? 40 : 15;
-                await syncGamificationProfile(awardedXp);
-                confetti({ particleCount: 80, spread: 40 });
-            } catch (err) {
-                console.error(err);
-            }
-            hideSyncIndicator();
-        }
-
-        // ================= METRICS & STATS PANEL =================
+        // ================= METRICS ANALYTICS PANEL =================
         async function renderProgressTab() {
             const grid = document.getElementById('calendar-grid');
             grid.innerHTML = '';
@@ -913,7 +738,7 @@
                         totalComplete++;
                         catMetrics[t.category].complete += 1;
                     } else { totalPending++; }
-                    totalReviews += t.reviewsDone.length;
+                    if(t.reviewsDone) totalReviews += t.reviewsDone.length;
                 });
             });
 
@@ -1000,7 +825,7 @@
                         if (!completedBySubject[t.subject]) completedBySubject[t.subject] = [];
                         completedBySubject[t.subject].push(t);
                     }
-                    if (t.reviewsDone.length > 0) {
+                    if (t.reviewsDone && t.reviewsDone.length > 0) {
                         if (!reviewsBySubject[t.subject]) reviewsBySubject[t.subject] = [];
                         reviewsBySubject[t.subject].push(t);
                     }
@@ -1060,6 +885,7 @@
                 dbTopics = await apiCall(`/topics/${id}`, 'DELETE');
                 renderProgressTab();
                 renderDailyLog();
+                updateStatsHUD();
             } catch(e) { console.error(e); }
             hideSyncIndicator();
         };
