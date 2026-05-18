@@ -3,1945 +3,998 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Learning Routine — Premium Edition v20</title>
+    <title>My Learning Routine - Legacy Studio v3.0</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,700;1,700&family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    
     <style>
-        :root {
-            --bg-dark: #0a0a0f;
-            --card-bg: rgba(18, 18, 29, 0.6);
-            --border-glass: rgba(255, 255, 255, 0.05);
-            --primary-grad: linear-gradient(135deg, #4f8ef7 0%, #a855f7 100%);
-        }
+        body { background-color: #060813; color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .main-title { font-family: 'Playfair Display', serif; }
+        .tab-btn { background: rgba(30, 41, 59, 0.3); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s ease; }
+        .tab-btn.active { background: rgba(99, 102, 241, 0.2); border-color: rgba(99, 102, 241, 0.4); color: #818cf8; box-shadow: 0 0 15px rgba(99, 102, 241, 0.15); }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.01); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
+        .surprise-alert { animation: slideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
-        body { 
-            background-color: var(--bg-dark); 
-            color: #f3f4f6; 
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
-        }
-
-        /* Glassmorphism Premium Base */
-        .glass-panel {
-            background: var(--card-bg);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid var(--border-glass);
-        }
-
-        /* Nav & Layout elements */
-        .nav-link.active {
-            background: var(--primary-grad);
-            color: white;
-            box-shadow: 0 4px 20px rgba(168, 85, 247, 0.3);
-        }
-
-        /* Staggered Cards Animation on Page Load */
-        .stagger-card {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: cardSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .stagger-card:nth-child(1) { animation-delay: 0.05s; }
-        .stagger-card:nth-child(2) { animation-delay: 0.1s; }
-        .stagger-card:nth-child(3) { animation-delay: 0.15s; }
-        .stagger-card:nth-child(4) { animation-delay: 0.2s; }
-        .stagger-card:nth-child(5) { animation-delay: 0.25s; }
-        .stagger-card:nth-child(n+6) { animation-delay: 0.3s; }
-
-        @keyframes cardSlideUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Success Pulse Animation */
-        .complete-glow-pulse {
-            animation: greenPulse 1.2s cubic-bezier(0.25, 0, 0, 1) forwards;
-        }
-        @keyframes greenPulse {
-            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); border-color: #10b981; }
-            100% { box-shadow: 0 0 25px 2px rgba(16, 185, 129, 0); border-color: rgba(255, 255, 255, 0.05); }
-        }
-
-        /* Fire Emoji Animation */
-        .streak-fire-pulse {
-            animation: firePulse 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 2 alternate;
-        }
-        @keyframes firePulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.4) rotate(10deg); filter: drop-shadow(0 0 10px #f59e0b); }
-        }
-
-        /* Progress Bar Soft Width Transition */
-        .progress-bar-fill {
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Interactive Premium States */
-        .premium-btn-hover {
-            transition: all 0.2s ease;
-        }
-        .premium-btn-hover:hover {
-            transform: scale(1.04);
-            box-shadow: 0 0 15px rgba(79, 142, 247, 0.4);
-        }
-
-        /* Tab Switch Animations */
-        .tab-view {
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-        .tab-view.hidden {
-            display: none;
-            opacity: 0;
-            transform: translateY(10px);
-        }
-
-        /* Scrollbars Custom Styling */
-        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 99px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #4f8ef7; }
-
-        /* Categorized Highlight Overlays */
-        .cat-prog { border-left: 4px solid #4f8ef7 !important; background: rgba(79, 142, 247, 0.03); }
-        .cat-acad { border-left: 4px solid #f43f5e !important; background: rgba(244, 63, 94, 0.03); }
-        .cat-bcs { border-left: 4px solid #fbbf24 !important; background: rgba(251, 191, 36, 0.02); }
-        .cat-eng { border-left: 4px solid #34d399 !important; background: rgba(52, 211, 153, 0.03); }
-        .cat-soft { border-left: 4px solid #38bdf8 !important; background: rgba(56, 189, 248, 0.03); }
-        .cat-res { border-left: 4px solid #f472b6 !important; background: rgba(244, 114, 182, 0.03); }
-
-        .surprise-alert { animation: slideDownToast 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        @keyframes slideDownToast { 0% { transform: translateY(-30px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
-        .modal-animate { animation: scaleUpModal 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-        @keyframes scaleUpModal { 0% { transform: scale(0.95); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-
-        /* SVG Circular Timer Properties */
-        .pomo-circle {
-            transition: stroke-dashoffset 1s linear;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-        }
-        
-        /* Procrastination Side/Slide Overlay Panel */
-        .slide-panel {
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        /* Glassmorphism Utility Classes */
+        .glass-panel { background: rgba(10, 15, 36, 0.6) !important; backdrop-filter: blur(14px) !important; -webkit-backdrop-filter: blur(14px) !important; border: 1px solid rgba(255, 255, 255, 0.05) !important; }
+        .badge-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .badge-card.unlocked-badge { background: rgba(99, 102, 241, 0.08); border-color: rgba(99, 102, 241, 0.3); box-shadow: 0 0 20px rgba(99, 102, 241, 0.15); animation: badgeFlip 0.6s ease-out forwards; }
+        @keyframes badgeFlip { 0% { transform: rotateY(90deg) scale(0.9); opacity: 0; } 100% { transform: rotateY(0) scale(1); opacity: 1; } }
     </style>
 </head>
-<body class="min-h-screen bg-[#0a0a0f]">
+<body class="min-h-screen pb-24 selection:bg-indigo-500/30 selection:text-indigo-200">
 
-    <div id="surprise-toast-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm px-4 pointer-events-none"></div>
+    <div id="surprise-toast-container" class="fixed bottom-6 right-6 z-50 pointer-events-none flex flex-col gap-3 max-w-sm w-full"></div>
 
-    <div class="flex flex-col lg:flex-row min-h-screen">
-        
-        <aside class="w-full lg:w-72 glass-panel lg:min-h-screen lg:sticky lg:top-0 border-b lg:border-b-0 lg:border-r border-[rgba(255,255,255,0.06)] z-40 flex flex-col justify-between">
-            <div>
-                <div class="p-6 border-b border-[rgba(255,255,255,0.06)] flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-purple-950/40">
-                            <i class="fa-solid fa-graduation-cap text-white text-sm"></i>
-                        </div>
-                        <div>
-                            <h1 class="text-sm font-extrabold tracking-tight text-white uppercase">Engine v21</h1>
-                            <p class="text-[10px] text-gray-500 font-bold tracking-widest">ANTI-PROCRASTINATION</p>
-                        </div>
-                    </div>
-                    <div class="text-[10px] bg-slate-900 px-2 py-1 rounded border border-gray-800 text-gray-400 font-bold">
-                        DARK
-                    </div>
-                </div>
-
-                <nav class="p-4 space-y-2 flex flex-row lg:flex-col items-center justify-around lg:justify-start w-full overflow-x-auto lg:overflow-x-visible custom-scrollbar">
-                    <button onclick="switchTab('routine')" id="tab-routine" class="nav-link tab-btn active w-full text-xs font-bold px-4 py-3.5 rounded-xl cursor-pointer flex items-center gap-3 text-gray-400 transition-all premium-btn-hover whitespace-nowrap">
-                        <i class="fa-solid fa-calendar-days text-sm"></i> <span class="hidden md:inline lg:inline">Weekly Routine</span>
-                    </button>
-                    <button onclick="switchTab('daily')" id="tab-daily" class="nav-link tab-btn w-full text-xs font-bold px-4 py-3.5 rounded-xl cursor-pointer flex items-center gap-3 text-gray-400 transition-all premium-btn-hover whitespace-nowrap">
-                        <i class="fa-solid fa-cube text-sm"></i> <span class="hidden md:inline lg:inline">Daily Log & Workbench</span>
-                    </button>
-                    <button onclick="switchTab('pomo')" id="tab-pomo" class="nav-link tab-btn w-full text-xs font-bold px-4 py-3.5 rounded-xl cursor-pointer flex items-center gap-3 text-gray-400 transition-all premium-btn-hover whitespace-nowrap">
-                        <i class="fa-solid fa-stopwatch text-sm"></i> <span class="hidden md:inline lg:inline">Pomodoro Focus</span>
-                    </button>
-                    <button onclick="switchTab('progress')" id="tab-progress" class="nav-link tab-btn w-full text-xs font-bold px-4 py-3.5 rounded-xl cursor-pointer flex items-center gap-3 text-gray-400 transition-all premium-btn-hover whitespace-nowrap">
-                        <i class="fa-solid fa-bolt text-sm"></i> <span class="hidden md:inline lg:inline">Analytics & Progress</span>
-                    </button>
-                </nav>
+    <div id="level-up-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden flex flex-col items-center justify-center z-50 p-4">
+        <div class="text-center space-y-4 max-w-md p-8 rounded-2xl bg-[#0a0f24]/60 border border-white/10 shadow-2xl">
+            <div class="w-24 h-24 bg-indigo-600/20 border-2 border-indigo-500 rounded-full flex items-center justify-center mx-auto shadow-[0_0_50px_rgba(99,102,241,0.5)]">
+                <i class="fa-solid fa-up-long text-4xl text-indigo-400 animate-bounce"></i>
             </div>
+            <h2 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-500">⭐ LEVEL UP!</h2>
+            <p id="level-up-announcement-text" class="text-xl font-bold text-gray-200"></p>
+            <p class="text-xs text-gray-500">আপনার নতুন মেধা স্তর সিস্টেমে আপগ্রেড করা হয়েছে</p>
+        </div>
+    </div>
 
-            <div class="p-4 hidden lg:block border-t border-[rgba(255,255,255,0.04)]">
-                <div id="sidebar-intention-widget" class="p-3 bg-black/40 rounded-xl border border-gray-900/60 mb-3 hidden">
-                    <p class="text-[9px] text-indigo-400 font-extrabold uppercase tracking-wider mb-2 flex items-center gap-1">
-                        <i class="fa-solid fa-crosshair"></i> আজকের লক্ষ্যসমূহ
-                    </p>
-                    <ul id="widget-intention-list" class="text-[11px] space-y-1.5 text-gray-300"></ul>
-                    <div id="widget-review-container" class="mt-2 hidden">
-                        <button onclick="openReviewIntentionModal()" class="w-full text-center bg-indigo-900/40 text-indigo-300 hover:text-white border border-indigo-800/60 text-[10px] py-1 rounded-md font-bold transition-all">
-                            Review করো 🎯
-                        </button>
-                    </div>
-                </div>
+    <div id="badge-unlock-modal" class="fixed inset-0 bg-black/95 backdrop-blur-lg hidden flex flex-col items-center justify-center z-50 p-4">
+        <div class="text-center space-y-4 max-w-sm p-6 bg-slate-900/80 border border-white/5 rounded-2xl shadow-2xl">
+            <p class="text-[10px] font-bold uppercase tracking-widest text-emerald-400 animate-pulse">✨ নতুন অর্জন আনলক হয়েছে ✨</p>
+            <div id="unlocked-badge-icon-holder" class="w-24 h-24 mx-auto flex items-center justify-center text-5xl rounded-full bg-slate-950 border border-gray-800 shadow-[0_0_40px_rgba(251,191,36,0.3)]"></div>
+            <h3 id="unlocked-badge-title-holder" class="text-2xl font-black text-amber-400"></h3>
+            <p id="unlocked-badge-desc-holder" class="text-xs text-gray-300 px-4"></p>
+            <button onclick="closeBadgeUnlockModal()" class="mt-4 px-6 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 font-bold text-xs rounded-xl text-white shadow-lg cursor-pointer transition-transform active:scale-95">
+                দারুণ! সামনে বাড়ি 🚀
+            </button>
+        </div>
+    </div>
 
-                <div class="p-3 bg-black/30 rounded-xl border border-gray-900 text-center">
-                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Operational Status</p>
-                    <p class="text-xs text-emerald-400 font-extrabold mt-1 flex items-center justify-center gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Live Cloud Synced
-                    </p>
-                </div>
-            </div>
-        </aside>
-
-        <main class="flex-1 p-4 md:p-8 lg:p-10 space-y-6 max-w-7xl mx-auto w-full">
+    <div id="weekly-report-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-[#0a0f26] border border-indigo-950 rounded-2xl w-full max-w-md p-6 shadow-[0_0_40px_rgba(99,102,241,0.3)] text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-sky-400 via-indigo-500 to-purple-600"></div>
+            <h3 class="text-base font-black text-sky-400 mb-1 flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-chart-bar"></i> সাপ্তাহিক রিপোর্ট 📊
+            </h3>
+            <p class="text-[11px] text-gray-500 mb-4">বিগত ৭ দিনের সার্বিক পারফরম্যান্স বিশ্লেষণ</p>
             
-            <header class="glass-panel p-4 md:p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xl border-[rgba(255,255,255,0.04)] stagger-card">
-                <div>
-                    <span class="text-[10px] font-black tracking-widest text-indigo-400 uppercase">SYSTEM ACTIVE TIMESTAMP</span>
-                    <h2 id="current-live-date-header" class="text-base font-bold text-white mt-0.5 flex items-center gap-2">
-                        <i class="fa-solid fa-clock text-gray-500 text-xs"></i> Loading Terminal State...
-                    </h2>
+            <div class="grid grid-cols-2 gap-3 text-left text-xs mb-4">
+                <div class="bg-[#060a1c] p-3 border border-gray-900 rounded-xl">
+                    <span class="text-[10px] text-gray-500 block">টপিক সম্পন্ন:</span>
+                    <span id="rep-topics-count" class="font-bold text-white text-sm">0 টি</span>
                 </div>
-                <div class="flex items-center gap-3 bg-gradient-to-r from-amber-500/10 to-orange-600/10 border border-amber-500/20 px-4 py-2 rounded-xl">
-                    <div id="streak-icon-holder" class="text-lg">🔥</div>
-                    <div>
-                        <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wide">Dynamic Running Streak</div>
-                        <div class="text-sm font-black text-amber-400 mt-0.5"><span id="streak-counter-value">0</span> Days Active</div>
-                    </div>
+                <div class="bg-[#060a1c] p-3 border border-gray-900 rounded-xl">
+                    <span class="text-[10px] text-gray-500 block">অর্জিত এক্সপি (XP):</span>
+                    <span id="rep-xp-count" class="font-bold text-indigo-400 text-sm">+0 XP</span>
                 </div>
-            </header>
+                <div class="bg-[#060a1c] p-3 border border-gray-900 rounded-xl">
+                    <span class="text-[10px] text-gray-500 block">সেরা সক্রিয় দিন:</span>
+                    <span id="rep-best-day" class="font-bold text-amber-400 text-xs">-</span>
+                </div>
+                <div class="bg-[#060a1c] p-3 border border-gray-900 rounded-xl">
+                    <span class="text-[10px] text-gray-500 block">টানা পড়াশোনা (Streak):</span>
+                    <span id="rep-streak-status" class="font-bold text-emerald-400 text-xs">-</span>
+                </div>
+            </div>
 
-            <div id="view-routine" class="tab-view block space-y-4">
-                <div class="flex items-center justify-between stagger-card">
-                    <div>
-                        <h3 class="text-lg font-bold text-white tracking-tight">Structured Master Routine Matrix</h3>
-                        <p class="text-xs text-gray-500 mt-0.5">High-impact execution pathways mapped across category channels.</p>
+            <div class="bg-[#060a1c] p-3 border border-gray-900 rounded-xl text-left text-xs mb-4">
+                <span class="text-[10px] text-gray-500 block">এই সপ্তাহের প্রিয় সাবজেক্ট:</span>
+                <span id="rep-best-subject" class="font-bold text-purple-400 text-xs">-</span>
+            </div>
+
+            <div class="p-4 bg-indigo-950/20 border border-indigo-900/40 rounded-xl mb-6">
+                <p id="rep-motivation-message" class="text-xs font-medium text-gray-200 leading-relaxed"></p>
+            </div>
+
+            <button onclick="document.getElementById('weekly-report-modal').classList.add('hidden')" class="w-full py-2.5 bg-slate-900 border border-gray-800 text-gray-300 hover:text-white font-bold text-xs rounded-xl cursor-pointer">
+                বন্ধ করুন
+            </button>
+        </div>
+    </div>
+
+    <header class="max-w-7xl mx-auto px-4 pt-8 pb-4 text-center relative">
+        <div class="absolute top-4 right-4 flex items-center gap-2">
+            <span id="sync-status-indicator" class="text-[10px] bg-emerald-950/80 text-emerald-400 border border-emerald-900 px-2 py-0.5 rounded-full font-mono flex items-center gap-1">
+                <i class="fa-solid fa-cloud shadow-sm animate-pulse"></i> Sync Connected
+            </span>
+        </div>
+
+        <h1 class="main-title text-4xl md:text-6xl font-bold tracking-tight text-white mb-2">My Learning Routine</h1>
+        <p class="text-xs tracking-widest text-indigo-400 uppercase font-bold font-mono">Spaced Repetition & Engine Architecture v3.0</p>
+
+        <div class="max-w-4xl mx-auto mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 items-center p-4 rounded-2xl bg-[#0a0f24]/60 border border-gray-900/50 backdrop-blur-md">
+            <div class="flex items-center gap-3 justify-center sm:justify-start">
+                <span id="header-streak-display" class="text-sm font-bold bg-amber-950/40 text-amber-400 border border-amber-900/40 px-3 py-1.5 rounded-xl">
+                    🔥 0 Days Streak
+                </span>
+                <span id="header-level-name" class="text-xs font-black uppercase tracking-wider bg-indigo-950/40 text-indigo-400 border border-indigo-900/40 px-3 py-1.5 rounded-xl">
+                    স্তর: নবীন
+                </span>
+            </div>
+            <div class="w-full space-y-1">
+                <div class="flex justify-between text-[10px] uppercase tracking-wider font-extrabold text-gray-400 px-1">
+                    <span id="xp-counter-text">XP: 0 / 100</span>
+                    <span class="text-indigo-400" id="xp-percent-text">0%</span>
+                </div>
+                <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-gray-900">
+                    <div id="xp-bar-fill-element" class="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-0 transition-all duration-500"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-center flex-wrap gap-2 mt-6">
+            <button onclick="switchTab('routine')" id="tab-routine" class="tab-btn active text-xs font-semibold px-4 py-2 rounded-xl cursor-pointer">
+                <i class="fa-solid fa-table mr-1"></i> Routine
+            </button>
+            <button onclick="switchTab('daily')" id="tab-daily" class="tab-btn text-xs font-semibold px-4 py-2 rounded-xl cursor-pointer">
+                <i class="fa-solid fa-pen mr-1"></i> Daily Log & Workbench
+            </button>
+            <button onclick="switchTab('progress')" id="tab-progress" class="tab-btn text-xs font-semibold px-4 py-2 rounded-xl cursor-pointer">
+                <i class="fa-solid fa-trophy mr-1"></i> Progress & Legacy Ledger
+            </button>
+            <button onclick="switchTab('badges')" id="tab-badges" class="tab-btn text-xs font-semibold px-4 py-2 rounded-xl cursor-pointer">
+                <i class="fa-solid fa-medal mr-1 text-amber-400"></i> আমার অর্জন 🏅
+            </button>
+            <button onclick="triggerManualWeeklyReport()" class="tab-btn text-xs font-semibold px-4 py-2 rounded-xl cursor-pointer text-sky-400">
+                <i class="fa-solid fa-chart-bar mr-1"></i> সাপ্তাহিক রিপোর্ট 📊
+            </button>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 mt-4">
+
+        <div id="view-routine" class="tab-view space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="routine-days-container"></div>
+        </div>
+
+        <div id="view-daily" class="tab-view hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <div class="lg:col-span-1 space-y-6">
+                    <div class="p-6 rounded-2xl bg-[#0e132e]/40 border border-gray-900/60 shadow-xl backdrop-blur-md">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-sm font-bold text-gray-100 flex items-center gap-1.5">
+                                <i class="fa-solid fa-bolt text-indigo-400 text-xs"></i> Log Target Completed
+                            </h3>
+                            <input type="date" id="workbench-active-date" onchange="syncActiveWorkbenchSessionDate()" class="bg-[#050714] border border-gray-900 text-gray-300 text-[11px] rounded-lg px-2 py-1 font-mono focus:outline-none">
+                        </div>
+                        
+                        <div class="space-y-3 text-xs">
+                            <div>
+                                <label class="block text-gray-400 font-medium mb-1">Subject Vector Stream:</label>
+                                <select id="form-subject-selector" class="w-full bg-[#050714] border border-gray-900 rounded-xl p-2.5 text-gray-300 focus:outline-none focus:border-indigo-500"></select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 font-medium mb-1">Category Type:</label>
+                                <select id="form-category-selector" class="w-full bg-[#050714] border border-gray-900 rounded-xl p-2.5 text-gray-300 focus:outline-none focus:border-indigo-500">
+                                    <option value="Syllabus Experiment">Syllabus Experiment</option>
+                                    <option value="Theory Lecture">Theory Lecture</option>
+                                    <option value="Programming Concept">Programming Concept</option>
+                                    <option value="Project Implementation">Project Implementation</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 font-medium mb-1">Topic Name Description:</label>
+                                <input type="text" id="form-topic-name" placeholder="e.g., Experiment 1: Open Channel Flow" class="w-full bg-[#050714] border border-gray-900 rounded-xl p-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 font-medium mb-1">Reference Notes URL Link (Optional):</label>
+                                <input type="url" id="form-note-url" placeholder="https://drive.google.com/..." class="w-full bg-[#050714] border border-gray-900 rounded-xl p-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500">
+                            </div>
+                            <button onclick="submitTopicLogToWorkbench()" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-2.5 rounded-xl cursor-pointer shadow-lg transition-all active:scale-95 text-xs">
+                                Log Active Session & Claim XP
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#090d22]/50 border border-gray-900/60">
+                        <h4 class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-3 flex items-center gap-1.5">
+                            <i class="fa-solid fa-satellite-dish animate-pulse"></i> Spaced Repetition Radar
+                        </h4>
+                        <p class="text-[11px] text-gray-400 mb-3 leading-relaxed">সিস্টেম স্বয়ংক্রিয়ভাবে স্পেসড ইন্টারভ্যালে (১ দিন, ৩ দিন, ৭ দিন) রিভিশন সাজেস্ট করবে।</p>
+                        <div id="radar-suggestions-container" class="space-y-2 max-h-[220px] overflow-y-auto custom-scrollbar"></div>
                     </div>
                 </div>
-                <div class="overflow-x-auto glass-panel border border-[rgba(255,255,255,0.05)] rounded-2xl p-6 shadow-2xl custom-scrollbar stagger-card">
-                    <table class="w-full text-left border-collapse min-w-[1100px]">
+
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="p-5 rounded-2xl bg-[#070a1a]/80 border border-gray-900/80 shadow-2xl backdrop-blur-md">
+                        <h3 id="history-box-title" class="text-sm font-bold text-white mb-4">Topics Logged on: Loading...</h3>
+                        <div id="daily-workbench-feed-target" class="space-y-3 min-h-[300px]"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="view-progress" class="tab-view hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                <div class="bg-[#0b0f24]/60 p-4 border border-gray-900 rounded-xl text-center">
+                    <span class="text-[10px] text-gray-500 block uppercase font-bold">Total Completed Units</span>
+                    <span id="stat-total-complete" class="text-2xl font-black text-emerald-400 block mt-1">0</span>
+                </div>
+                <div class="bg-[#0b0f24]/60 p-4 border border-gray-900 rounded-xl text-center">
+                    <span class="text-[10px] text-gray-500 block uppercase font-bold">Pending Pipeline Load</span>
+                    <span id="stat-total-pending" class="text-2xl font-black text-rose-400 block mt-1">0</span>
+                </div>
+                <div class="bg-[#0b0f24]/60 p-4 border border-gray-900 rounded-xl text-center">
+                    <span class="text-[10px] text-gray-500 block uppercase font-bold">Efficiency Performance Scale</span>
+                    <span id="stat-efficiency-ratio" class="text-2xl font-black text-indigo-400 block mt-1">0%</span>
+                </div>
+                <div class="bg-[#0b0f24]/60 p-4 border border-gray-900 rounded-xl text-center">
+                    <span class="text-[10px] text-gray-500 block uppercase font-bold">Total Revision Reps</span>
+                    <span id="stat-total-reviews" class="text-2xl font-black text-purple-400 block mt-1">0</span>
+                </div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-[#080c20]/90 border border-gray-900/60 shadow-xl">
+                <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-database text-indigo-400"></i> Global Learning History Registry Ledger
+                </h3>
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left border-collapse text-xs">
                         <thead>
-                            <tr class="text-[10px] font-black uppercase tracking-widest border-b border-gray-800/60 pb-4 text-gray-400">
-                                <th class="p-3 w-32">Temporal Orbit</th>
-                                <th class="p-3 text-blue-400">✨ Programming</th>
-                                <th class="p-3 text-rose-400">✨ Academic / Gov Job</th>
-                                <th class="p-3 text-amber-400">✨ BCS Matrix</th>
-                                <th class="p-3 text-emerald-400">✨ English Skill</th>
-                                <th class="p-3 text-sky-400">✨ Engineering Software</th>
-                                <th class="p-3 text-pink-400">✨ Research / ML</th>
+                            <tr class="border-b border-gray-900 text-gray-400 font-bold">
+                                <th class="py-2.5 px-3">Date Record</th>
+                                <th class="py-2.5 px-3">Subject</th>
+                                <th class="py-2.5 px-3">Topic Unit Description</th>
+                                <th class="py-2.5 px-3">Classification</th>
+                                <th class="py-2.5 px-3">State Status</th>
+                                <th class="py-2.5 px-3">Revision Checkpoints History</th>
+                                <th class="py-2.5 px-3">Actions Execution</th>
                             </tr>
                         </thead>
-                        <tbody id="routine-table-body" class="divide-y divide-gray-900/40 text-xs"></tbody>
+                        <tbody id="ledger-table-rows-target" class="divide-y divide-gray-950 text-gray-300"></tbody>
                     </table>
                 </div>
             </div>
-
-            <div id="view-daily" class="tab-view hidden space-y-6">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-gray-900 pb-4">
-                    <div>
-                        <h2 id="daily-day-title" class="text-xl font-bold text-white tracking-tight">Active Core Workbench</h2>
-                        <p id="daily-date-subtitle" class="text-xs text-gray-400 mt-0.5"></p>
-                    </div>
-                    <div class="flex items-center gap-3 bg-black/40 border border-gray-800 p-2 rounded-xl">
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider pl-1">Jump Orbit:</span>
-                        <input type="date" id="date-picker" onchange="handleDateChange(this.value)" class="bg-[#12121e] border border-gray-800 rounded-lg px-2.5 py-1 text-xs font-semibold text-white outline-none focus:border-purple-500 transition-all">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    
-                    <div class="lg:col-span-7 space-y-6">
-                        
-                        <div class="glass-panel p-5 rounded-2xl shadow-xl stagger-card border-[rgba(255,255,255,0.06)] relative overflow-hidden">
-                            <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500"></div>
-                            <h3 class="text-xs font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                <i class="fa-solid fa-circle-nodes text-blue-400 text-[10px]"></i> System Injection Terminal
-                            </h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                                <div>
-                                    <label class="text-[9px] text-gray-400 uppercase font-black tracking-wider block mb-1">Select Channel Category</label>
-                                    <select id="injector-cat-select" onchange="populateInjectorSubjects()" class="w-full bg-[#11111b] border border-gray-800 rounded-xl px-3 py-2.5 text-xs text-gray-300 outline-none focus:border-blue-500 transition-all"></select>
-                                </div>
-                                <div>
-                                    <label class="text-[9px] text-gray-400 uppercase font-black tracking-wider block mb-1">Select Active Core Subject</label>
-                                    <select id="injector-sub-select" class="w-full bg-[#11111b] border border-gray-800 rounded-xl px-3 py-2.5 text-xs text-gray-300 outline-none focus:border-purple-500 transition-all"></select>
-                                </div>
-                            </div>
-                            <div class="space-y-3 mb-4">
-                                <div>
-                                    <label class="text-[9px] text-gray-400 uppercase font-black tracking-wider block mb-1">Target Topic Blueprint / Details</label>
-                                    <input type="text" id="injector-topic-name" placeholder="Enter high performance target specific parameters..." class="w-full bg-[#0a0a0f] border border-gray-800 rounded-xl px-3 py-2.5 text-xs text-white outline-none focus:border-blue-500 transition-all">
-                                </div>
-                            </div>
-                            <div class="flex justify-end">
-                                <button onclick="handleInjectorSubmit()" class="w-full md:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-extrabold px-6 py-2.5 rounded-xl text-xs cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-purple-950/50 premium-btn-hover">
-                                    <i class="fa-solid fa-arrow-right-to-bracket text-[10px]"></i> Inject Task Into Matrix
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="space-y-3">
-                            <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
-                                <i class="fa-solid fa-chart-simple text-blue-400"></i> Active Scheduled Targets
-                            </h3>
-                            <div id="daily-live-topics-container" class="grid grid-cols-1 gap-4"></div>
-                        </div>
-
-                        <div class="glass-panel p-5 rounded-2xl border-emerald-500/10 shadow-xl bg-gradient-to-b from-slate-900/10 to-emerald-950/5">
-                            <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-                                <i class="fa-solid fa-square-check text-xs"></i> Completed Node Index (Archived History)
-                            </h3>
-                            <div id="daily-completed-topics-container" class="space-y-2.5"></div>
-                        </div>
-
-                    </div>
-
-                    <div class="lg:col-span-5 space-y-6">
-                        <div class="glass-panel p-5 rounded-2xl shadow-xl border-purple-500/10 bg-gradient-to-b from-[#11111c]/80 to-black/20">
-                            <h3 class="text-amber-400 font-extrabold text-xs uppercase tracking-widest flex items-center gap-2">
-                                <i class="fa-solid fa-satellite-dish text-amber-500"></i> Spaced Revision Radar Array
-                            </h3>
-                            <p class="text-[10px] text-gray-500 mt-1 mb-4 leading-relaxed">Automated critical milestones (1d, 3d, 7d, 30d) and custom prioritized review vectors aggregated continuously.</p>
-                            <div id="automatic-revision-list" class="space-y-3 max-h-[580px] overflow-y-auto custom-scrollbar pr-1"></div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div id="view-pomo" class="tab-view hidden max-w-xl mx-auto space-y-6">
-                <div class="glass-panel p-8 rounded-3xl border-purple-500/10 shadow-2xl bg-gradient-to-b from-[#131322] to-[#0d0d16] text-center space-y-6 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
-                    
-                    <div>
-                        <h2 class="text-xl font-extrabold tracking-tight text-white flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-brain text-purple-400"></i> Deep Work Focus Station
-                        </h2>
-                        <p id="pomo-mode-label" class="text-xs font-bold text-indigo-400 uppercase tracking-widest mt-1">Focus Session</p>
-                    </div>
-
-                    <div class="relative w-64 h-64 mx-auto flex items-center justify-center">
-                        <svg class="w-full h-full transform" viewBox="0 0 160 160">
-                            <circle cx="80" cy="80" r="70" stroke="rgba(255,255,255,0.02)" stroke-width="6" fill="transparent"/>
-                            <circle id="pomo-progress-ring" class="pomo-circle" cx="80" cy="80" r="70" 
-                                    stroke="url(#pomoGradient)" stroke-width="6" fill="transparent" 
-                                    stroke-dasharray="439.82" stroke-dashoffset="0" stroke-linecap="round"/>
-                            
-                            <defs>
-                                <linearGradient id="pomoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#4f8ef7"/>
-                                    <stop offset="100%" stop-color="#a855f7"/>
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                        
-                        <div class="absolute inset-0 flex flex-col items-center justify-center">
-                            <span id="pomo-time-display" class="text-4xl font-black text-white tracking-tighter">25:00</span>
-                            <span id="pomo-session-display" class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-1">Session 1 of 4</span>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-center gap-4">
-                        <button onclick="resetPomoTimer()" class="w-10 h-10 rounded-xl bg-slate-900 border border-gray-800 text-gray-400 hover:text-white flex items-center justify-center transition-all hover:scale-105 cursor-pointer">
-                            <i class="fa-solid fa-rotate-right text-xs"></i>
-                        </button>
-                        <button id="pomo-master-btn" onclick="togglePomoTimer()" class="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-extrabold text-xs tracking-wider flex items-center gap-2 shadow-lg shadow-purple-950/40 premium-btn-hover cursor-pointer">
-                            <i id="pomo-btn-icon" class="fa-solid fa-play text-[10px]"></i> <span id="pomo-btn-text">Start Focus</span>
-                        </button>
-                        <div class="w-10 h-10"></div> </div>
-                </div>
-            </div>
-
-            <div id="view-progress" class="tab-view hidden space-y-6">
-                
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 stagger-card">
-                    <div class="glass-panel p-5 rounded-xl border-[rgba(255,255,255,0.04)] text-center relative overflow-hidden group">
-                        <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-emerald-500/30"></div>
-                        <span id="stat-topics-complete" class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">0</span>
-                        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-1.5">Nodes Destroyed</p>
-                    </div>
-                    <div class="glass-panel p-5 rounded-xl border-[rgba(255,255,255,0.04)] text-center relative overflow-hidden">
-                        <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-rose-500/30"></div>
-                        <span id="stat-topics-pending" class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-orange-400">0</span>
-                        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-1.5">Pending Load</p>
-                    </div>
-                    <div class="glass-panel p-5 rounded-xl border-[rgba(255,255,255,0.04)] text-center relative overflow-hidden">
-                        <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-amber-500/30"></div>
-                        <span id="stat-reviews-done" class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-300">0</span>
-                        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-1.5">Reviews Verified 🎯</p>
-                    </div>
-                    <div class="glass-panel p-5 rounded-xl border-[rgba(255,255,255,0.04)] text-center relative overflow-hidden">
-                        <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-blue-500/30"></div>
-                        <span id="stat-success-rate" class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">0%</span>
-                        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-1.5">Efficiency Rating</p>
-                    </div>
-                </div>
-
-                <div class="glass-panel p-5 rounded-xl stagger-card border-[rgba(255,255,255,0.04)]">
-                    <h3 class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-border-all text-indigo-400"></i> Trajectory Horizon (Last 30 Days Operations Grid)
-                    </h3>
-                    <div id="calendar-grid" class="flex flex-wrap gap-2 p-3 bg-black/40 rounded-xl border border-gray-900/60 justify-start"></div>
-                </div>
-
-                <div class="glass-panel p-5 rounded-xl stagger-card border-[rgba(255,255,255,0.04)]">
-                    <h3 class="text-[10px] font-black uppercase tracking-widest text-purple-400 mb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-chart-bar"></i> Procrastination Friction Analysis (Weekly Delay Log Vectors)
-                    </h3>
-                    <div id="procrastination-chart-container" class="grid grid-cols-5 gap-4 h-32 items-end pt-4 bg-black/40 px-6 rounded-xl border border-gray-900/60">
-                        </div>
-                    <div class="grid grid-cols-5 text-center text-[9px] font-bold text-gray-500 uppercase tracking-wider mt-2 px-2">
-                        <div>ক্লান্ত</div>
-                        <div>বিক্ষিপ্ত</div>
-                        <div>কঠিন</div>
-                        <div>নো মোটিভেশন</div>
-                        <div>অন্য কারণ</div>
-                    </div>
-                </div>
-
-                <div id="selected-day-history-box" class="glass-panel border border-blue-500/20 bg-gradient-to-r from-blue-950/10 to-purple-950/5 p-5 rounded-xl hidden modal-animate">
-                    <h4 id="history-box-title" class="text-xs font-black uppercase tracking-wider text-blue-400 mb-3"></h4>
-                    <div id="history-box-content" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs"></div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2">
-                    <div class="lg:col-span-7 glass-panel p-5 rounded-2xl shadow-xl border-[rgba(255,255,255,0.05)]">
-                        <h3 class="text-xs font-extrabold text-emerald-400 uppercase tracking-widest mb-1 flex items-center gap-2">
-                            <i class="fa-solid fa-network-wired text-emerald-400"></i> Lifetime Accomplished Core Map
-                        </h3>
-                        <p class="text-[10px] text-gray-500 mb-4 leading-normal">Comprehensive mapping organized structurally through system channels.</p>
-                        <div id="lifetime-achieved-container" class="space-y-4 max-h-[500px] overflow-y-auto custom-scrollbar pr-1"></div>
-                    </div>
-
-                    <div class="lg:col-span-5 glass-panel p-5 rounded-2xl shadow-xl border-[rgba(255,255,255,0.05)]">
-                        <h3 class="text-xs font-extrabold text-amber-400 uppercase tracking-widest mb-1 flex items-center gap-2">
-                            <i class="fa-solid fa-timeline text-amber-500"></i> Consolidated Verification Timeline
-                        </h3>
-                        <p class="text-[10px] text-gray-500 mb-4 leading-normal">Sequential log displaying structural recall metrics per category vector.</p>
-                        <div id="lifetime-unique-revision-container" class="space-y-4 max-h-[500px] overflow-y-auto custom-scrollbar pr-1"></div>
-                    </div>
-                </div>
-
-                <div class="space-y-3">
-                    <h3 class="text-[10px] font-black uppercase tracking-widest text-gray-400">Channel Volumetric Conversion Summaries</h3>
-                    <div id="category-summary-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-                </div>
-
-                <div class="glass-panel border border-rose-500/10 rounded-2xl p-5 shadow-2xl bg-gradient-to-b from-slate-900/20 to-rose-950/5">
-                    <div class="mb-4">
-                        <h3 class="text-xs font-black text-rose-400 uppercase tracking-widest flex items-center gap-2">
-                            <i class="fa-solid fa-shield-halved"></i> Deep Ledger Purge Terminal
-                        </h3>
-                        <p class="text-[11px] text-gray-400 mt-0.5">Administrative engine to hard wipe systemic structural nodes securely.</p>
-                    </div>
-                    <div class="overflow-x-auto max-h-[300px] overflow-y-auto custom-scrollbar border border-gray-900 rounded-xl">
-                        <table class="w-full text-left border-collapse text-xs">
-                            <thead>
-                                <tr class="bg-black/60 text-gray-400 font-extrabold uppercase tracking-wider text-[9px] border-b border-gray-900">
-                                    <th class="p-3">Logged Date</th>
-                                    <th class="p-3">Category</th>
-                                    <th class="p-3">Subject</th>
-                                    <th class="p-3">Topic Detail</th>
-                                    <th class="p-3 text-center">Reference Node</th>
-                                    <th class="p-3 text-center">Status</th>
-                                    <th class="p-3 text-center">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="master-cleaner-tbody" class="divide-y divide-gray-900/60 bg-black/10"></tbody>
-                        </table>
-                    </div>
-                </div>
-
-            </div>
-        </main>
-    </div>
-
-    <button onclick="toggleProcrastinationPanel(true)" class="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 to-pink-600 text-white flex items-center justify-center shadow-xl shadow-pink-950/40 hover:scale-110 transition-all cursor-pointer">
-        <span class="text-lg">😩</span>
-    </button>
-
-    <div id="procrastination-slide-panel" class="fixed inset-y-0 right-0 z-50 w-full max-w-sm glass-panel border-l border-gray-800 shadow-2xl p-6 slide-panel translate-x-full flex flex-col justify-between">
-        <div class="space-y-6">
-            <div class="flex items-center justify-between border-b border-gray-900 pb-3">
-                <h3 class="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
-                    <i class="fa-solid fa-bolt text-pink-400"></i> Procrastination Log
-                </h3>
-                <button onclick="toggleProcrastinationPanel(false)" class="text-gray-500 hover:text-white transition-colors cursor-pointer">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <div>
-                <label class="text-[10px] text-gray-400 uppercase font-black tracking-wider block mb-2">এখন পড়তে পারছি না কারণ...</label>
-                <select id="proc-reason-select" onchange="handleProcrastinationLog(this.value)" class="w-full bg-[#11111b] border border-gray-800 rounded-xl px-3 py-2.5 text-xs text-gray-300 outline-none focus:border-pink-500 transition-all">
-                    <option value="" disabled selected>একটি কারণ সিলেক্ট করুন...</option>
-                    <option value="tired">ক্লান্ত</option>
-                    <option value="distracted">বিক্ষিপ্ত</option>
-                    <option value="hard">বিষয়টা কঠিন</option>
-                    <option value="nomotivation">মোটিভেশন নেই</option>
-                    <option value="other">অন্য কারণ</option>
-                </select>
-            </div>
-
-            <div id="proc-tip-card" class="p-4 bg-purple-950/20 border border-purple-500/20 rounded-xl hidden modal-animate">
-                <h5 class="text-xs font-black text-purple-400 uppercase tracking-wide flex items-center gap-1.5">
-                    <i class="fa-solid fa-lightbulb"></i> Micro Strategy Tip
-                </h5>
-                <p id="proc-tip-text" class="text-xs text-gray-300 mt-2 leading-relaxed"></p>
-            </div>
         </div>
 
-        <div class="text-[10px] text-gray-600 font-medium text-center border-t border-gray-900/60 pt-3">
-            Friction barriers tracked locally to index weekly trends.
-        </div>
-    </div>
-
-    <div id="intention-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4 z-50">
-        <div class="glass-panel border border-indigo-500/20 rounded-2xl w-full max-w-md p-6 shadow-[0_0_50px_rgba(79,142,247,0.15)] modal-animate">
-            <h3 class="text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 tracking-wider uppercase mb-1 flex items-center gap-2">
-                আজকের লক্ষ্য 🎯
-            </h3>
-            <p class="text-[11px] text-gray-400 mb-4 leading-relaxed">দিনের শুরুতে ৩টি নির্দিষ্ট গুরুত্বপূর্ণ লক্ষ্য ঠিক করুন। এটি আপনার মনোযোগ ধরে রাখতে সাহায্য করবে।</p>
-            
-            <div class="space-y-3.5">
-                <div>
-                    <label class="text-[9px] text-gray-400 uppercase font-black tracking-wider block mb-1">লক্ষ্য ১</label>
-                    <input type="text" id="intention-input-1" placeholder="যেমন: Structural Analysis ৩টি ম্যাথ সলভ করা..." class="w-full bg-black/40 border border-gray-800 rounded-xl px-3 py-2.5 text-xs text-white outline-none focus:border-indigo-500 transition-all">
+        <div id="view-badges" class="tab-view hidden space-y-6">
+            <div class="text-center max-w-xl mx-auto py-4">
+                <h2 class="text-xl font-bold text-white flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-award text-amber-400"></i> মেডেল রুম ও অনার গ্যালারি
+                </h2>
+                <p class="text-xs text-gray-500 mt-1">আপনার কঠোর পরিশ্রম ও অর্জিত মাইলস্টোনগুলোর লাইভ ট্র্যাকার। লক থাকা মেডেলগুলো সিলুয়েট হিসেবে দেখা যাবে।</p>
+            </div>
+            <div id="badges-grid-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                 </div>
-                <div>
-                    <label class="text-[9px] text-gray-400 uppercase font-black tracking-wider block mb-1">লক্ষ্য ২</label>
-                    <input type="text" id="intention-input-2" placeholder="যেমন: JavaScript Async/Await বুঝা..." class="w-full bg-black/40 border border-gray-800 rounded-xl px-3 py-2.5 text-xs text-white outline-none focus:border-indigo-500 transition-all">
-                </div>
-                <div>
-                    <label class="text-[9px] text-gray-400 uppercase font-black tracking-wider block mb-1">লক্ষ্য ৩</label>
-                    <input type="text" id="intention-input-3" placeholder="যেমন: BCS ভূগোলের ১ম চ্যাপ্টার শেষ করা..." class="w-full bg-black/40 border border-gray-800 rounded-xl px-3 py-2.5 text-xs text-white outline-none focus:border-indigo-500 transition-all">
-                </div>
-            </div>
-
-            <div class="flex justify-end gap-3 mt-6">
-                <button onclick="saveDailyIntentions()" class="w-full px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs rounded-xl shadow-lg cursor-pointer premium-btn-hover text-center">
-                    🚀 লক্ষ্যসমূহ লক করো
-                </button>
-            </div>
         </div>
-    </div>
 
-    <div id="intention-review-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4 z-50">
-        <div class="glass-panel border border-indigo-500/20 rounded-2xl w-full max-w-md p-6 shadow-2xl modal-animate">
-            <h3 class="text-sm font-black text-indigo-400 tracking-wider uppercase mb-1 flex items-center gap-2">
-                <i class="fa-solid fa-square-poll-vertical"></i> Review করো 🎯
-            </h3>
-            <p class="text-[11px] text-gray-400 mb-4">আজকের অর্জিত লক্ষ্যসমূহ রিভিউ এবং চেক অফ করুন:</p>
-            
-            <div id="review-modal-checkbox-list" class="space-y-3">
-                </div>
-
-            <div class="flex justify-end gap-3 mt-6">
-                <button onclick="closeReviewIntentionModal()" class="px-4 py-2 text-[11px] font-bold text-gray-400 hover:text-white transition-colors cursor-pointer">বন্ধ করুন</button>
-                <button onclick="submitIntentionReviewState()" class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-black text-[11px] rounded-xl shadow-lg cursor-pointer premium-btn-hover">সংরক্ষণ করো</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="edit-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4 z-50 transition-all">
-        <div class="glass-panel border border-gray-800 rounded-2xl w-full max-w-md p-6 shadow-2xl modal-animate relative">
-            <h3 id="modal-title" class="text-sm font-black tracking-wide text-white uppercase mb-2">Modify Cell Matrix Value</h3>
-            <input type="text" id="modal-input" class="w-full bg-black/60 border border-gray-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-purple-500 transition-all">
-            <div class="flex justify-end gap-3 mt-6">
-                <button onclick="closeModal()" class="px-4 py-2 text-[11px] font-bold text-gray-400 hover:text-white transition-colors cursor-pointer">Abort</button>
-                <button onclick="saveModalChanges()" class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-black text-[11px] rounded-xl shadow-lg cursor-pointer premium-btn-hover">Commit Segment Change</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="complete-prompt-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4 z-50">
-        <div class="glass-panel border border-emerald-500/20 rounded-2xl w-full max-w-md p-6 shadow-[0_0_50px_rgba(16,185,129,0.15)] modal-animate">
-            <h3 class="text-sm font-black text-emerald-400 tracking-wider uppercase mb-1 flex items-center gap-2">
-                <i class="fa-solid fa-circle-check"></i> Complete Topic Workflow
-            </h3>
-            <p class="text-[11px] text-gray-400 mb-4 leading-relaxed">Optionally bind reference knowledge materials, cloud directories, or notes into the database cluster node.</p>
-            
-            <div class="space-y-4">
-                <div>
-                    <span class="text-[9px] text-gray-500 uppercase font-black tracking-wider block mb-1">Active Target Topic</span>
-                    <div id="prompt-modal-topic-title" class="p-3 bg-black/40 border border-gray-800 rounded-xl text-xs text-white font-medium"></div>
-                </div>
-                <div>
-                    <label class="text-[9px] text-gray-400 uppercase font-black tracking-wider block mb-1">Knowledge Node Asset Link (Drive, Notion, Docs)</label>
-                    <div class="flex gap-2">
-                        <span class="bg-black/40 border border-gray-800 rounded-xl px-3 py-2 text-xs text-gray-400 flex items-center"><i class="fa-solid fa-link text-[10px]"></i></span>
-                        <input type="url" id="prompt-modal-url-input" placeholder="https://drive.google.com/..." class="flex-1 bg-black/40 border border-gray-800 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-emerald-500 transition-all">
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex justify-end gap-3 mt-6">
-                <button onclick="closeCompletePromptModal()" class="px-4 py-2 text-[11px] font-bold text-gray-400 hover:text-white transition-colors cursor-pointer">Cancel</button>
-                <button id="prompt-submit-btn" class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black text-[11px] rounded-xl shadow-lg cursor-pointer premium-btn-hover">✅ Complete Node & Run Blaster</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="purge-modal" class="fixed inset-0 bg-black/95 backdrop-blur-md hidden flex items-center justify-center p-4 z-50">
-        <div class="glass-panel border border-rose-500/30 rounded-2xl w-full max-w-sm p-6 shadow-[0_0_60px_rgba(244,63,94,0.2)] modal-animate text-center">
-            <div class="mx-auto w-12 h-12 bg-rose-950/40 border border-rose-500/30 text-rose-400 text-lg rounded-full flex items-center justify-center mb-3 shadow-[0_0_15px_rgba(244,63,94,0.3)]">
-                <i class="fa-solid fa-triangle-exclamation animate-pulse"></i>
-            </div>
-            <h3 class="text-sm font-black text-rose-400 uppercase tracking-widest mb-1">Purge Node Record?</h3>
-            <p class="text-[11px] text-gray-400 leading-relaxed px-1 mb-5">Confirming this action will securely erase this logging parameter forever from the lifetime statistics map.</p>
-            <div class="flex items-center gap-3">
-                <button onclick="closePurgeModal()" class="flex-1 py-2.5 bg-black/40 border border-gray-800 text-gray-400 hover:text-white font-bold text-xs rounded-xl transition-all cursor-pointer">Abort</button>
-                <button id="confirm-purge-btn" class="flex-1 py-2.5 bg-gradient-to-r from-rose-600 to-pink-600 text-white font-black text-xs rounded-xl shadow-lg hover:shadow-rose-500/20 transition-all cursor-pointer">Execute Purge</button>
-            </div>
-        </div>
     </div>
 
     <script>
-        // ===================== API CONFIG =====================
-        const API_BASE = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
-            ? 'http://localhost:5000/api'
-            : '/api';
-
-        const defaultRoutine = {
-            "Saturday": [["AI Engineering – L2", "JavaScript", "Typing Practice"], ["Structure–II", "R.C.C–II"], ["Geography", "English"], ["English Speaking"], ["QGIS"], ["Machine Learning"]],
-            "Sunday": [["AI Engineering – L2", "JavaScript", "Typing Practice"], ["Structure–II", "R.C.C–II"], [], ["English Speaking"], ["QGIS"], ["Machine Learning"]],
-            "Monday": [["AI Engineering – L2", "JavaScript", "Typing Practice"], ["Geotech–II", "Steel Structure"], ["Geography", "English"], ["Basic English"], ["SAP 2000"], ["Machine Learning"]],
-            "Tuesday": [["AI Engineering – L2", "JavaScript", "Typing Practice"], ["Geotech–II", "Steel Structure"], [], ["Basic English"], ["SAP 2000"], ["Machine Learning"]],
-            "Wednesday": [["AI Engineering – L2", "JavaScript", "Typing Practice"], ["Transportation", "Earth Quake Engineering", "Structure–I"], ["Geography", "English"], ["Freehand Writing"], ["Excel"], ["Research Class"]],
-            "Thursday": [["AI Engineering – L2", "JavaScript", "Typing Practice"], ["Transportation", "Earth Quake Engineering", "Structure–I"], [], ["Freehand Writing"], ["Excel"], ["Research Class"]],
-            "Friday": [[], [], ["Geography", "English"], [], [], []]
+        // --- GLOBAL VARIABLES SCHEMA AND LOCALSTORAGE CACHE INTEGRITY MAPPING ---
+        let dbTopics = {};
+        let activeDate = "";
+        
+        // Gamification Engine Native State Matrix
+        let gameData = {
+            xp: 0,
+            streakCount: 0,
+            lastActiveDate: null,
+            unlockedBadges: [],
+            weeklyReportGeneratedFor: []
         };
 
-        const cats = ["Programming", "Academic / Gov Job", "BCS", "English", "Software", "Research / ML"];
-        const cssClasses = ["cat-prog", "cat-acad", "cat-bcs", "cat-eng", "cat-soft", "cat-res"];
-        const days = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-        
-        let dbRoutine = defaultRoutine;
-        let dbTopics = {};
-
-        const todayDateObj = new Date();
-        const year = todayDateObj.getFullYear();
-        const month = String(todayDateObj.getMonth() + 1).padStart(2, '0');
-        const dayStr = String(todayDateObj.getDate()).padStart(2, '0');
-        const systemTodayStr = `${year}-${month}-${dayStr}`;
-
-        let activeDate = systemTodayStr;
-        let activeEditCell = null;
-        let pendingPurgeId = null;
-        let pendingCompleteTopicId = null;
-
-        // --- FEATURE 1: POMODORO SYSTEM STATE VARIABLES ---
-        let pomoTimerInterval = null;
-        let pomoSecondsLeft = 25 * 60;
-        let pomoIsRunning = false;
-        let pomoCurrentMode = 'focus'; // 'focus' ba 'break'
-        let pomoSessionCount = 1;
-        const POMO_TOTAL_SESSIONS = 4;
-
-        // --- FEATURE 2: JUST 2 MINUTES RUNNING POOL STATE ---
-        let activeTwoMinIntervals = {};
-
-        const surprisePool = [
-            { title: "🚀 HYPER DRIVE BURST", msg: "Unstoppable momentum! Space elements blasted.", color: "from-blue-500 to-purple-500", type: "fireworks" },
-            { title: "👑 LEGENDARY STREAK", msg: "Master engineering tier unlocked for this session!", color: "from-cyan-400 via-indigo-500 to-purple-600", type: "starburst" },
-            { title: "⚡ FOCUS SHOCKWAVE", msg: "Efficiency spike registered on the active radar!", color: "from-emerald-400 to-teal-600", type: "shower" },
-            { title: "🎯 RADAR SUPREMACY", msg: "Perfect conversion! Spaced repetition optimized.", color: "from-pink-500 via-purple-600 to-indigo-700", type: "massive" },
-            { title: "💎 RADAR OVERLOAD DETECTED", msg: "Topic successfully routed to Active Revision Radar!", color: "from-purple-500 to-indigo-500", type: "gold" }
+        const SUBJECTS_CATALOG = [
+            "AI Engineering – L2", "JavaScript", "Typing Practice",
+            "Transportation", "Earth Quake Engineering", "Structure–I",
+            "Geography", "English", "Freehand Writing", "Excel", "Research Class"
         ];
 
-        // ===================== API HELPERS =====================
-        function showSyncIndicator(text = "Syncing...") {
-            let ind = document.getElementById('sync-indicator');
-            if (!ind) {
-                ind = document.createElement('div');
-                ind.id = 'sync-indicator';
-                ind.className = 'fixed bottom-4 left-4 z-50 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2 border border-white/10';
-                document.body.appendChild(ind);
-            }
-            ind.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin text-[10px]"></i> ${text}`;
-            ind.style.display = 'flex';
-        }
+        const WEEK_DAYS_SEQUENCE = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
-        function hideSyncIndicator() {
-            const ind = document.getElementById('sync-indicator');
-            if (ind) ind.style.display = 'none';
-        }
+        const BADGES_DATABASE = [
+            { id: "first_step", title: "প্রথম পদক্ষেপ", desc: "প্রথম topic complete করা হয়েছে", icon: "🔥", color: "from-orange-500 to-red-600" },
+            { id: "reader_10", title: "পাঠক", desc: "১০টি topics complete করা হয়েছে", icon: "📚", color: "from-blue-500 to-indigo-600" },
+            { id: "pioneer_50", title: "অগ্রযাত্রী", desc: "৫০টি topics complete করা হয়েছে", icon: "🚀", color: "from-purple-500 to-pink-600" },
+            { id: "hardworker_7", title: "পরিশ্রমী", desc: "৭ দিন টানা রানিং স্ট্রিক বজায় রেখেছেন", icon: "💎", color: "from-amber-400 to-orange-500" },
+            { id: "unstoppable_30", title: "অদম্য", desc: "৩০ দিন টানা রানিং স্ট্রিক বজায় রেখেছেন", icon: "⚡", color: "from-red-500 to-rose-600" },
+            { id: "genius_100", title: "মেধাবী", desc: "১০০টি topics complete করা হয়েছে", icon: "🧠", color: "from-cyan-500 to-teal-600" },
+            { id: "master_level", title: "মাস্টার", desc: "Reach Master Level System Rank (১০০১+ XP)", icon: "🌟", color: "from-yellow-400 via-amber-500 to-orange-600" }
+        ];
 
-        async function apiGet(endpoint) {
-            const res = await fetch(`${API_BASE}${endpoint}`);
-            const json = await res.json();
-            if (!json.success) throw new Error(json.error || 'API Error');
-            return json.data;
-        }
-
-        async function apiPost(endpoint, body) {
-            const res = await fetch(`${API_BASE}${endpoint}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-            const json = await res.json();
-            if (!json.success) throw new Error(json.error || 'API Error');
-            return json.data;
-        }
-
-        async function apiPut(endpoint, body) {
-            const res = await fetch(`${API_BASE}${endpoint}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-            const json = await res.json();
-            if (!json.success) throw new Error(json.error || 'API Error');
-            return json.data;
-        }
-
-        async function apiDelete(endpoint) {
-            const res = await fetch(`${API_BASE}${endpoint}`, { method: 'DELETE' });
-            const json = await res.json();
-            if (!json.success) throw new Error(json.error || 'API Error');
-            return json.data;
-        }
-
-        // ===================== RUNTIME SYSTEM INITIALIZATION =====================
+        // System Core Lifecycle Bootloader
         window.onload = async function() {
-            document.getElementById('date-picker').value = activeDate;
-            
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('current-live-date-header').innerHTML = `<i class="fa-solid fa-clock text-indigo-400 text-xs"></i> ` + todayDateObj.toLocaleDateString('en-US', options);
-
-            // Request Notification Permission dynamically
-            if (Notification.permission === 'default') {
-                Notification.requestPermission();
-            }
-
-            showSyncIndicator("Connecting cluster...");
-            try {
-                const [routineData, topicsData] = await Promise.all([
-                    apiGet('/routine'),
-                    apiGet('/topics')
-                ]);
-                dbRoutine = routineData;
-                dbTopics = topicsData;
-            } catch(e) {
-                console.error('Initial cluster link failure:', e);
-                dbRoutine = defaultRoutine;
-                dbTopics = {};
-            }
-            hideSyncIndicator();
-            renderRoutineTable();
-            setupInjectorOptions();
-            renderDailyLog();
-            calculateAndRenderDynamicStreak();
-
-            // --- FEATURE 3: TRIGGER INTENTION INITIALIZATION ENGINE ---
-            checkDailyIntentionPipeline();
+            setSystemClockTodayDefaultDate();
+            initializeFormSelectors();
+            await synchronizeStateCacheWithCloudServer();
+            loadGamificationSystem();
+            renderRoutineScheduleMatrixGrid();
+            renderDailyWorkbenchFeedEntries();
+            checkWeeklyReportAutoTrigger();
         };
 
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-view').forEach(view => view.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`view-${tabId}`).classList.remove('hidden');
-            document.getElementById(`tab-${tabId}`).classList.add('active');
-            if(tabId === 'progress') renderProgressTab();
-            if(tabId === 'daily') renderDailyLog();
+        function setSystemClockTodayDefaultDate() {
+            let today = new Date();
+            let year = today.getFullYear();
+            let month = String(today.getMonth() + 1).padStart(2, '0');
+            let day = String(today.getDate()).padStart(2, '0');
+            activeDate = `${year}-${month}-${day}`;
+            document.getElementById('workbench-active-date').value = activeDate;
         }
 
-        // ================= TAB 1: ROUTINE ENGINE MATRIX =================
-        function renderRoutineTable() {
-            const tbody = document.getElementById('routine-table-body');
-            tbody.innerHTML = '';
-            days.forEach(day => {
-                let tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-900/30 border-b border-gray-900/40 transition-colors";
-                let html = `<td class="p-4 font-bold text-gray-400 border-r border-gray-900/20">${day}</td>`;
-                dbRoutine[day].forEach((cellArr, idx) => {
-                    let colorfulClass = cssClasses[idx];
-                    html += `<td class="p-4 align-top routine-cell ${colorfulClass} border-r border-gray-900/10 last:border-r-0 relative group"><div class="flex flex-col gap-1.5 min-h-[44px]">`;
-                    if(cellArr.length === 0) {
-                        html += `<span class="text-gray-700/60 font-medium italic">vacant</span>`;
-                    } else {
-                        cellArr.forEach(sub => {
-                            html += `<span class="px-2 py-1 bg-black/40 border border-white/5 rounded-md text-gray-300 font-medium tracking-wide shadow-sm" style="width: fit-content;">${sub}</span>`;
-                        });
-                    }
-                    html += `</div>
-                        <button onclick="openEditModal('${day}', ${idx})" class="absolute right-2 bottom-2 opacity-0 group-hover:opacity-100 bg-purple-600 hover:bg-purple-500 text-white w-5 h-5 rounded-md flex items-center justify-center text-[9px] shadow transition-all cursor-pointer"><i class="fa-solid fa-pen"></i></button>
-                    </td>`;
-                });
-                tr.innerHTML = html;
-                tbody.appendChild(tr);
+        function initializeFormSelectors() {
+            let subSelect = document.getElementById('form-subject-selector');
+            subSelect.innerHTML = "";
+            SUBJECTS_CATALOG.forEach(s => {
+                subSelect.innerHTML += `<option value="${s}">${s}</option>`;
             });
         }
 
-        function openEditModal(day, catIndex) {
-            activeEditCell = { day, catIndex };
-            const currentArr = dbRoutine[day][catIndex];
-            document.getElementById('modal-title').innerText = `Edit: ${day} (${cats[catIndex]})`;
-            document.getElementById('modal-input').value = currentArr.join(', ');
-            document.getElementById('edit-modal').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('edit-modal').classList.add('hidden');
-            activeEditCell = null;
-        }
-
-        async function saveModalChanges() {
-            if(!activeEditCell) return;
-            const inputVal = document.getElementById('modal-input').value;
-            const parsedArr = inputVal.split(',').map(s => s.trim()).filter(s => s.length > 0);
-            
-            dbRoutine[activeEditCell.day][activeEditCell.catIndex] = parsedArr;
-            closeModal();
-            renderRoutineTable();
-            setupInjectorOptions();
-
+        // --- CLOUD CLUSTER BACKEND CORE FETCH SYNC INTEGRATION PIPELINE ---
+        async function synchronizeStateCacheWithCloudServer() {
+            showSyncStatusIndicator("Syncing...", "amber");
             try {
-                showSyncIndicator("Saving matrix change...");
-                dbRoutine = await apiPut('/routine', dbRoutine);
-                renderRoutineTable();
-                setupInjectorOptions();
-            } catch(e) { console.error('Save routine error:', e); }
-            finally { hideSyncIndicator(); }
-        }
-
-        // ================= TAB 2: INJECTOR COMPONENT SYSTEM =================
-        function setupInjectorOptions() {
-            const catSelect = document.getElementById('injector-cat-select');
-            catSelect.innerHTML = '';
-            cats.forEach(c => {
-                catSelect.innerHTML += `<option value="${c}">${c}</option>`;
-            });
-            populateInjectorSubjects();
-        }
-
-        function populateInjectorSubjects() {
-            const catName = document.getElementById('injector-cat-select').value;
-            const subSelect = document.getElementById('injector-sub-select');
-            subSelect.innerHTML = '';
-            
-            const targetDay = new Date(activeDate).toLocaleDateString('en-US', { weekday: 'long' });
-            const catIdx = cats.indexOf(catName);
-            
-            let activeSubs = [];
-            if(catIdx !== -1 && dbRoutine[targetDay] && dbRoutine[targetDay][catIdx]) {
-                activeSubs = dbRoutine[targetDay][catIdx];
+                let response = await fetch('/api/topics');
+                if (response.ok) {
+                    dbTopics = await response.json();
+                    localStorage.setItem('local_cached_db_topics', JSON.stringify(dbTopics));
+                    showSyncStatusIndicator("Sync Connected", "emerald");
+                } else {
+                    useFallbackLocalStorageCache();
+                }
+            } catch(e) {
+                useFallbackLocalStorageCache();
             }
-            
-            if(activeSubs.length > 0) {
-                subSelect.innerHTML += `<optgroup label="Scheduled Matrix Today">`;
-                activeSubs.forEach(s => {
-                    subSelect.innerHTML += `<option value="${s}">${s}</option>`;
+        }
+
+        function useFallbackLocalStorageCache() {
+            let cache = localStorage.getItem('local_cached_db_topics');
+            if (cache) dbTopics = JSON.parse(cache);
+            showSyncStatusIndicator("Offline Cache Mode", "rose");
+        }
+
+        function showSyncStatusIndicator(text, color) {
+            let ind = document.getElementById('sync-status-indicator');
+            if(!ind) return;
+            ind.innerText = text;
+            ind.className = `text-[10px] bg-${color}-950/80 text-${color}-400 border border-${color}-900 px-2 py-0.5 rounded-full font-mono flex items-center gap-1`;
+        }
+
+        async function postDataPayloadToCloudServer(url, payload) {
+            try {
+                let response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
                 });
-                subSelect.innerHTML += `</optgroup>`;
+                return response.ok;
+            } catch(e) {
+                return false;
             }
-            
-            let allOtherSubs = new Set();
-            days.forEach(d => {
-                if(catIdx !== -1 && dbRoutine[d] && dbRoutine[d][catIdx]) {
-                    dbRoutine[d][catIdx].forEach(s => {
-                        if(!activeSubs.includes(s)) allOtherSubs.add(s);
+        }
+
+        // --- GAMIFICATION ENGINE CORE IMPLEMENTATION ---
+        function loadGamificationSystem() {
+            try {
+                const savedGame = localStorage.getItem('routine_game_data');
+                if (savedGame) {
+                    gameData = JSON.parse(savedGame);
+                }
+                verifyAndSyncStreak();
+                updateGamificationUI();
+                syncGamificationWithBackend();
+            } catch (err) {
+                console.error("Failed to load gamification state:", err);
+            }
+        }
+
+        function saveGameData() {
+            localStorage.setItem('routine_game_data', JSON.stringify(gameData));
+            updateGamificationUI();
+            syncGamificationWithBackend();
+        }
+
+        async function syncGamificationWithBackend() {
+            try {
+                await fetch('/api/gamification/sync', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: 'default', stateData: gameData })
+                });
+            } catch (e) {
+                console.warn("Gamification cloud sync delayed (running offline mode)");
+            }
+        }
+
+        function getLevelDetails(xp) {
+            if (xp <= 100) return { current: "নবীন (Novice)", next: " শিক্ষার্থী", min: 0, max: 100 };
+            if (xp <= 300) return { current: "শিক্ষার্থী (Learner)", next: "পণ্ডিত", min: 101, max: 300 };
+            if (xp <= 600) return { current: "পণ্ডিত (Scholar)", next: "বিশেষজ্ঞ", min: 301, max: 600 };
+            if (xp <= 1000) return { current: "বিশেষজ্ঞ (Expert)", next: "মাস্টার", min: 601, max: 1000 };
+            return { current: "মাস্টার (Master)", next: "Max Level", min: 1001, max: 5000 };
+        }
+
+        function verifyAndSyncStreak() {
+            let todayStr = new Date().toISOString().split('T')[0];
+            let yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            let yesterdayStr = yesterday.toISOString().split('T')[0];
+
+            let completedToday = false;
+            let completedYesterday = false;
+
+            Object.keys(dbTopics).forEach(d => {
+                dbTopics[d].forEach(t => {
+                    if (t.status === 'Complete' && t.completionDate) {
+                        if (t.completionDate === todayStr) completedToday = true;
+                        if (t.completionDate === yesterdayStr) completedYesterday = true;
+                    }
+                });
+            });
+
+            if (gameData.lastActiveDate) {
+                if (gameData.lastActiveDate !== todayStr && gameData.lastActiveDate !== yesterdayStr) {
+                    if (gameData.streakCount > 0) {
+                        gameData.streakCount = 0;
+                        showComebackMessage();
+                    }
+                }
+            }
+
+            if (completedToday && gameData.lastActiveDate !== todayStr) {
+                if (gameData.lastActiveDate === yesterdayStr || completedYesterday) {
+                    gameData.streakCount++;
+                    checkStreakMilestoneAnimation(gameData.streakCount);
+                } else {
+                    gameData.streakCount = 1;
+                }
+                gameData.lastActiveDate = todayStr;
+            } else if (completedToday) {
+                gameData.lastActiveDate = todayStr;
+            }
+
+            localStorage.setItem('routine_game_data', JSON.stringify(gameData));
+        }
+
+        function showComebackMessage() {
+            const container = document.getElementById('surprise-toast-container');
+            if (!container) return;
+            const toast = document.createElement('div');
+            toast.className = `surprise-alert pointer-events-auto w-full bg-gradient-to-r from-rose-950 to-slate-950 p-4 rounded-xl shadow-2xl border border-rose-500/30 text-white mb-3`;
+            toast.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <div class="bg-black/20 p-2 rounded-lg text-lg"><i class="fa-solid fa-heart-crack text-rose-400"></i></div>
+                    <div>
+                        <h5 class="text-xs font-black tracking-wider uppercase">স্ট্রিক আপডেট</h5>
+                        <p class="text-[11px] opacity-90 font-medium">ফিরে এসেছ! নতুন করে শুরু করো 💪 স্ট্রিক রিসেট: 0</p>
+                    </div>
+                </div>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 6000);
+        }
+
+        function rewardXP(amount, reason) {
+            const oldDetails = getLevelDetails(gameData.xp);
+            gameData.xp += amount;
+
+            const container = document.getElementById('surprise-toast-container');
+            if (container) {
+                const toast = document.createElement('div');
+                toast.className = `surprise-alert pointer-events-auto bg-[#0a0f24]/90 border border-indigo-500/30 p-2 px-4 rounded-xl text-xs text-indigo-300 font-bold mb-2 flex items-center justify-between shadow-xl`;
+                toast.innerHTML = `<span>✨ ${reason}</span> <span class="text-emerald-400 font-extrabold">+${amount} XP</span>`;
+                container.appendChild(toast);
+                setTimeout(() => toast.remove(), 3000);
+            }
+
+            const newDetails = getLevelDetails(gameData.xp);
+            if (oldDetails.current !== newDetails.current) {
+                triggerLevelUpAnimation(newDetails.current);
+            }
+
+            checkBadgeUnlocks();
+            saveGameData();
+        }
+
+        function triggerLevelUpAnimation(lvlName) {
+            document.getElementById('level-up-announcement-text').innerText = `তুমি এখন একজন ${lvlName.split(' ')[0]}!`;
+            const modal = document.getElementById('level-up-modal');
+            modal.classList.remove('hidden');
+
+            let end = Date.now() + (2 * 1000);
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
+                if (Date.now() < end) { requestAnimationFrame(frame); }
+            }());
+
+            setTimeout(() => { modal.classList.add('hidden'); }, 2500);
+        }
+
+        function checkStreakMilestoneAnimation(days) {
+            const milestones = [7, 14, 30, 60, 100];
+            if (milestones.includes(days)) {
+                confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+                if (days === 7) rewardXP(50, "৭ দিনের স্ট্রিক বোনাস!");
+            }
+        }
+
+        function checkBadgeUnlocks() {
+            let completedCount = 0;
+            Object.keys(dbTopics).forEach(d => {
+                dbTopics[d].forEach(t => { if (t.status === 'Complete') completedCount++; });
+            });
+
+            const checkList = [
+                { id: "first_step", cond: completedCount >= 1 },
+                { id: "reader_10", cond: completedCount >= 10 },
+                { id: "pioneer_50", cond: completedCount >= 50 },
+                { id: "genius_100", cond: completedCount >= 100 },
+                { id: "hardworker_7", cond: gameData.streakCount >= 7 },
+                { id: "unstoppable_30", cond: gameData.streakCount >= 30 },
+                { id: "master_level", cond: gameData.xp >= 1001 }
+            ];
+
+            checkList.forEach(item => {
+                if (item.cond && !gameData.unlockedBadges.includes(item.id)) {
+                    gameData.unlockedBadges.push(item.id);
+                    const badgeObj = BADGES_DATABASE.find(b => b.id === item.id);
+                    if (badgeObj) {
+                        document.getElementById('unlocked-badge-icon-holder').innerHTML = `<span>${badgeObj.icon}</span>`;
+                        document.getElementById('unlocked-badge-title-holder').innerText = badgeObj.title;
+                        document.getElementById('unlocked-badge-desc-holder').innerText = badgeObj.desc;
+                        document.getElementById('badge-unlock-modal').classList.remove('hidden');
+                        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                    }
+                }
+            });
+        }
+
+        function closeBadgeUnlockModal() {
+            document.getElementById('badge-unlock-modal').classList.add('hidden');
+        }
+
+        function updateGamificationUI() {
+            document.getElementById('header-streak-display').innerText = `🔥 ${gameData.streakCount} Days Streak`;
+            const details = getLevelDetails(gameData.xp);
+            document.getElementById('header-level-name').innerText = `স্তর: ${details.current.split(' ')[0]}`;
+            document.getElementById('xp-counter-text').innerText = `XP: ${gameData.xp} / ${details.max === 5000 ? '∞' : details.max}`;
+
+            const range = details.max - details.min;
+            const currentProgress = gameData.xp - details.min;
+            const percentage = Math.min(100, Math.max(0, Math.round((currentProgress / range) * 100)));
+
+            document.getElementById('xp-percent-text').innerText = `${percentage}%`;
+            document.getElementById('xp-bar-fill-element').style.width = `${percentage}%`;
+        }
+
+        function renderBadgesTab() {
+            const grid = document.getElementById('badges-grid-container');
+            grid.innerHTML = '';
+
+            BADGES_DATABASE.forEach(badge => {
+                const isUnlocked = gameData.unlockedBadges.includes(badge.id);
+                const card = document.createElement('div');
+                card.className = `badge-card p-5 rounded-2xl flex flex-col items-center text-center justify-center ${isUnlocked ? 'unlocked-badge text-white' : 'opacity-30 text-gray-600'}`;
+
+                card.innerHTML = `
+                    <div class="text-4xl mb-3 ${isUnlocked ? '' : 'grayscale opacity-50'}">${badge.icon}</div>
+                    <h4 class="text-xs font-bold ${isUnlocked ? 'text-amber-400' : 'text-gray-500'}">${badge.title}</h4>
+                    <p class="text-[10px] text-gray-400 mt-1 px-1 leading-relaxed">${badge.desc}</p>
+                    <span class="text-[8px] px-2 py-0.5 rounded-full mt-3 font-mono ${isUnlocked ? 'bg-indigo-950 text-indigo-400' : 'bg-slate-950 text-gray-700'}">
+                        ${isUnlocked ? 'Unlocked' : 'Locked'}
+                    </span>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- WEEKLY REPORT CARD METRICS LAB ---
+        function getWeeklyMetrics() {
+            let completedCount = 0;
+            let earnedXP = 0;
+            let subjectsMap = {};
+            let daysActivityMap = {};
+
+            const today = new Date();
+            const oneWeekAgo = new Date();
+            oneWeekAgo.setDate(today.getDate() - 7);
+
+            Object.keys(dbTopics).forEach(d => {
+                const recordDate = new Date(d);
+                if (recordDate >= oneWeekAgo && recordDate <= today) {
+                    dbTopics[d].forEach(t => {
+                        if (t.status === 'Complete' && t.completionDate) {
+                            completedCount++;
+                            earnedXP += 10;
+                            subjectsMap[t.subject] = (subjectsMap[t.subject] || 0) + 1;
+                            
+                            const dayName = new Date(t.completionDate).toLocaleDateString('bn-BD', { weekday: 'long' });
+                            daysActivityMap[dayName] = (daysActivityMap[dayName] || 0) + 1;
+                        }
+                        if (t.reviewsDone) earnedXP += (t.reviewsDone.length * 5);
                     });
                 }
             });
-            
-            if(allOtherSubs.size > 0) {
-                subSelect.innerHTML += `<optgroup label="Global Pool Register">`;
-                allOtherSubs.forEach(s => {
-                    subSelect.innerHTML += `<option value="${s}">${s}</option>`;
-                });
-                subSelect.innerHTML += `</optgroup>`;
-            }
-            subSelect.innerHTML += `<option value="__custom__">+ Add Custom Target Subject</option>`;
+
+            let bestSubject = "-";
+            let maxSubCount = 0;
+            Object.keys(subjectsMap).forEach(s => {
+                if (subjectsMap[s] > maxSubCount) { maxSubCount = subjectsMap[s]; bestSubject = s; }
+            });
+
+            let bestDay = "-";
+            let maxDayCount = 0;
+            Object.keys(daysActivityMap).forEach(d => {
+                if (daysActivityMap[d] > maxDayCount) { maxDayCount = daysActivityMap[d]; bestDay = d; }
+            });
+
+            return { completedCount, earnedXP, bestSubject, bestDay };
         }
 
-        async function handleInjectorSubmit() {
-            const catName = document.getElementById('injector-cat-select').value;
-            const subSelect = document.getElementById('injector-sub-select');
-            const topicInput = document.getElementById('injector-topic-name');
-            
-            let subName = subSelect.value;
-            if(subName === '__custom__') {
-                let promptSub = prompt("Enter Custom Subject Node Name:");
-                if(!promptSub) return;
-                subName = promptSub.trim();
+        function checkWeeklyReportAutoTrigger() {
+            const today = new Date();
+            if (today.getDay() === 0) {
+                const sundayStr = today.toISOString().split('T')[0];
+                if (!gameData.weeklyReportGeneratedFor.includes(sundayStr)) {
+                    gameData.weeklyReportGeneratedFor.push(sundayStr);
+                    saveGameData();
+                    showWeeklyReportCardModal();
+                }
             }
+        }
+
+        function triggerManualWeeklyReport() {
+            showWeeklyReportCardModal();
+        }
+
+        function showWeeklyReportCardModal() {
+            const metrics = getWeeklyMetrics();
             
-            let topicName = topicInput.value.trim();
-            if(!subName || !topicName) {
-                alert("Provide validation parameters securely to map terminal target.");
+            document.getElementById('rep-topics-count').innerText = `${metrics.completedCount} টি`;
+            document.getElementById('rep-xp-count').innerText = `+${metrics.earnedXP} XP`;
+            document.getElementById('rep-best-day').innerText = metrics.bestDay !== "-" ? metrics.bestDay : "ডাটা নেই";
+            document.getElementById('rep-streak-status').innerText = `${gameData.streakCount} দিন রানিং`;
+            document.getElementById('rep-best-subject').innerText = metrics.bestSubject !== "-" ? metrics.bestSubject : "বিশ্লেষণাধীন";
+
+            let msg = "";
+            if (metrics.completedCount >= 8) msg = "অসাধারণ সপ্তাহ! তুমি নিজেকে ছাড়িয়েゲছ 🌟";
+            else if (metrics.completedCount >= 4) msg = "ভালো চেষ্টা! আগামী সপ্তাহ আরও ভালো হবে 💪";
+            else msg = "হাল ছেড়ো না। প্রতিটি দিনই নতুন সুযোগ 🌅";
+            
+            document.getElementById('rep-motivation-message').innerText = msg;
+            document.getElementById('weekly-report-modal').classList.remove('hidden');
+        }
+
+        // --- TAB PANEL DISPLAY COORDINATOR ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-view').forEach(view => view.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+
+            if(tabId === 'progress') renderGlobalLedgerTable();
+            if(tabId === 'daily') {
+                renderDailyWorkbenchFeedEntries();
+                renderRadarSpacedSuggestions();
+            }
+            if(tabId === 'badges') renderBadgesTab();
+        }
+
+        function syncActiveWorkbenchSessionDate() {
+            activeDate = document.getElementById('workbench-active-date').value;
+            renderDailyWorkbenchFeedEntries();
+        }
+
+        // --- VIEW CONTROLLER 1: GRID LAYOUT FOR WEEKDAYS SCHEDULE ---
+        async function renderRoutineScheduleMatrixGrid() {
+            let container = document.getElementById('routine-days-container');
+            container.innerHTML = "<p class='text-gray-500 text-xs py-4 col-span-full animate-pulse'>Fetching Class Slots Engine...</p>";
+            
+            try {
+                let res = await fetch('/api/routine');
+                let apiData = await res.json();
+                let routine = apiData.data;
+
+                container.innerHTML = "";
+                WEEK_DAYS_SEQUENCE.forEach(day => {
+                    let periods = routine[day] || [];
+                    let slotCardsHtml = "";
+
+                    periods.forEach((slot, index) => {
+                        if(slot && slot.length > 0) {
+                            let slotBadgeTitle = Array.isArray(slot) ? slot.join(' | ') : slot;
+                            slotCardsHtml += `
+                                <div class="bg-[#050714]/80 p-2.5 rounded-xl border border-gray-900 flex justify-between items-center group hover:border-indigo-900/40 transition-all">
+                                    <div class="truncate pr-2">
+                                        <span class="text-[10px] block font-mono text-gray-500 font-bold uppercase">Slot ${index + 1}</span>
+                                        <span class="text-xs font-bold text-gray-300 group-hover:text-white transition-colors truncate block" title="${slotBadgeTitle}">${slotBadgeTitle}</span>
+                                    </div>
+                                    <button onclick="injectSlotIntoDailyWorkbench('${day}', ${index}, '${escapeHtml(slotBadgeTitle)}')" class="px-2.5 py-1 bg-indigo-950 hover:bg-indigo-900 text-indigo-400 font-black rounded-lg text-[9px] uppercase tracking-wider transition-all active:scale-90 cursor-pointer">
+                                        Inject
+                                    </button>
+                                </div>`;
+                        }
+                    });
+
+                    if(slotCardsHtml === "") {
+                        slotCardsHtml = `<p class="text-[10px] text-gray-600 italic py-2">No standard structured classes mapped for this day vector.</p>`;
+                    }
+
+                    container.innerHTML += `
+                        <div class="p-4 rounded-2xl bg-[#090d22]/40 border border-gray-900/60 shadow-xl flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-xs font-black uppercase text-indigo-400 tracking-widest border-b border-gray-950 pb-2 mb-3 flex items-center justify-between">
+                                    <span>${day} Matrix</span>
+                                    <span class="text-[9px] bg-slate-900 text-gray-500 px-2 py-0.5 rounded-md font-mono">${periods.filter(s=>s&&s.length>0).length} Slots</span>
+                                </h3>
+                                <div class="space-y-2 max-h-[280px] overflow-y-auto custom-scrollbar pr-1">${slotCardsHtml}</div>
+                            </div>
+                        </div>`;
+                });
+            } catch (err) {
+                container.innerHTML = "<p class='text-rose-400 text-xs py-4 col-span-full'>Failed to stream routine mapping matrix profile.</p>";
+            }
+        }
+
+        // --- VIEW CONTROLLER 2: DAILY FEED WORKBENCH AND LOG OPERATIONS ---
+        function renderDailyWorkbenchFeedEntries() {
+            document.getElementById('history-box-title').innerText = `Topics Logged on: ${activeDate}`;
+            let container = document.getElementById('daily-workbench-feed-target');
+            container.innerHTML = "";
+
+            let list = dbTopics[activeDate] || [];
+            if(list.length === 0) {
+                container.innerHTML = `
+                    <div class="h-48 border-2 border-dashed border-gray-950 rounded-2xl flex flex-col items-center justify-center text-center p-6">
+                        <i class="fa-solid fa-folder-open text-gray-700 text-xl mb-2"></i>
+                        <p class="text-xs text-gray-500">এই তারিখে এখনো কোনো টপিক লগ করা হয়নি।</p>
+                    </div>`;
                 return;
             }
-            
-            let newRecord = {
+
+            list.forEach(t => {
+                let isComplete = t.status === 'Complete';
+                let actionBtn = isComplete ? 
+                    `<button class="px-3 py-1 bg-emerald-950 text-emerald-400 font-bold rounded-lg text-[10px] cursor-not-allowed flex items-center gap-1"><i class="fa-solid fa-circle-check"></i> Complete</button>` :
+                    `<button onclick="executeCompletionWorkflow(${t.id})" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg text-[10px] transition-all active:scale-95 cursor-pointer shadow-sm">Mark Complete</button>`;
+                
+                let linkLabel = t.noteUrl ? `<a href="${t.noteUrl}" target="_blank" class="text-cyan-400 hover:underline text-[10px] inline-flex items-center gap-0.5 mt-1 font-medium"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i> View Linked Docs</a>` : "";
+
+                container.innerHTML += `
+                    <div class="p-4 rounded-xl bg-[#050714]/90 border border-gray-950 flex flex-col sm:flex-row justify-between sm:items-center gap-3 hover:border-gray-900 transition-all">
+                        <div class="truncate">
+                            <div class="flex items-center gap-2">
+                                <span class="text-[9px] font-black uppercase bg-indigo-950 text-indigo-400 px-2 py-0.5 rounded border border-indigo-900/30 font-mono">${t.subject}</span>
+                                <span class="text-[9px] font-medium tracking-wide text-gray-500 bg-slate-900 px-2 py-0.5 rounded">${t.category}</span>
+                            </div>
+                            <h4 class="text-xs font-bold text-gray-200 mt-1.5 truncate" title="${t.topicName}">${t.topicName}</h4>
+                            ${linkLabel}
+                        </div>
+                        <div class="flex items-center gap-2 justify-end">${actionBtn}</div>
+                    </div>`;
+            });
+        }
+
+        async function injectSlotIntoDailyWorkbench(day, slotIndex, slotTitle) {
+            let topicName = `Slot ${slotIndex + 1}: ${slotTitle}`;
+            let payload = {
+                id: Date.now() + Math.floor(Math.random() * 1000),
+                date: activeDate,
+                originDate: activeDate,
+                completionDate: null,
+                category: "Theory Lecture",
+                subject: slotTitle.split(' | ')[0],
+                topicName: topicName,
+                noteUrl: "",
+                status: "Pending",
+                reviewsDone: [],
+                reviewHistoryStamps: {},
+                customRevPendingOn: null
+            };
+
+            showSyncStatusIndicator("Saving Load...", "amber");
+            let state = await postDataPayloadToCloudServer('/api/topics', payload);
+            if(state) {
+                await synchronizeStateCacheWithCloudServer();
+                renderDailyWorkbenchFeedEntries();
+                switchTab('daily');
+            }
+        }
+
+        async function submitTopicLogToWorkbench() {
+            let sub = document.getElementById('form-subject-selector').value;
+            let cat = document.getElementById('form-category-selector').value;
+            let name = document.getElementById('form-topic-name').value.trim();
+            let note = document.getElementById('form-note-url').value.trim();
+
+            if(!name) { alert("Please input a valid Topic Title."); return; }
+
+            let payload = {
                 id: Date.now(),
                 date: activeDate,
                 originDate: activeDate,
                 completionDate: null,
-                category: catName,
-                subject: subName,
-                topicName: topicName,
-                noteUrl: null,
-                status: 'Pending',
+                category: cat,
+                subject: sub,
+                topicName: name,
+                noteUrl: note,
+                status: "Pending",
                 reviewsDone: [],
                 reviewHistoryStamps: {},
-                customRevPendingOn: null,
-                customReviewHistoryDates: []
+                customRevPendingOn: null
             };
-            
-            topicInput.value = '';
-            if(!dbTopics[activeDate]) dbTopics[activeDate] = [];
-            dbTopics[activeDate].push(newRecord);
-            renderDailyLog();
-            
-            try {
-                showSyncIndicator("Injecting element...");
-                dbTopics = await apiPost('/topics', newRecord);
-                renderDailyLog();
-                calculateAndRenderDynamicStreak();
-            } catch(e) { console.error('Topic append cluster failure:', e); }
-            finally { hideSyncIndicator(); }
-        }
 
-        function handleDateChange(val) {
-            activeDate = val;
-            populateInjectorSubjects();
-            renderDailyLog();
-        }
-
-        function triggerSurprise(forcedIndex = null) {
-            const randomIndex = Math.floor(Math.random() * surprisePool.length);
-            const reward = forcedIndex !== null ? surprisePool[forcedIndex] : surprisePool[randomIndex];
-            const container = document.getElementById('surprise-toast-container');
-            const toast = document.createElement('div');
-            toast.className = `surprise-alert pointer-events-auto w-full bg-gradient-to-r ${reward.color} p-4 rounded-xl shadow-2xl border border-white/10 text-white mb-3`;
-            toast.innerHTML = `
-                <div class="flex items-center gap-3">
-                    <div class="bg-black/20 p-2 rounded-lg text-sm"><i class="fa-solid fa-gift"></i></div>
-                    <div>
-                        <h5 class="text-xs font-black tracking-wider uppercase">${reward.title}</h5>
-                        <p class="text-[10px] opacity-90 font-medium">${reward.msg}</p>
-                    </div>
-                </div>`;
-            container.appendChild(toast);
-            
-            if(reward.type === 'starburst' || reward.type === 'fireworks') {
-                confetti({ particleCount: 140, spread: 80, origin: { y: 0.6 } });
-            } else {
-                confetti({ particleCount: 40, angle: 60, spread: 55, origin: { x: 0 } });
-                confetti({ particleCount: 40, angle: 120, spread: 55, origin: { x: 1 } });
+            showSyncStatusIndicator("Saving Custom Load...", "amber");
+            let success = await postDataPayloadToCloudServer('/api/topics', payload);
+            if(success) {
+                document.getElementById('form-topic-name').value = "";
+                document.getElementById('form-note-url').value = "";
+                await synchronizeStateCacheWithCloudServer();
+                renderDailyWorkbenchFeedEntries();
             }
-            setTimeout(() => { toast.remove(); }, 4500);
         }
 
-        // ================= TAB 2: LIVE CARD RENDERING ENGINE =================
-        function renderDailyLog() {
-            const targetDay = new Date(activeDate).toLocaleDateString('en-US', { weekday: 'long' });
-            document.getElementById('daily-day-title').innerText = `${targetDay}'s Workbench`;
-            document.getElementById('daily-date-subtitle').innerText = new Date(activeDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            
-            const liveContainer = document.getElementById('daily-live-topics-container');
-            const compContainer = document.getElementById('daily-completed-topics-container');
-            
-            liveContainer.innerHTML = '';
-            compContainer.innerHTML = '';
-            
-            if(!dbTopics[activeDate]) dbTopics[activeDate] = [];
-            let dayRecords = dbTopics[activeDate];
-            
-            let pendingRecords = dayRecords.filter(t => t.status === 'Pending');
-            let completeRecords = dayRecords.filter(t => t.status === 'Complete');
-            
-            let uniqueSubjects = [...new Set(pendingRecords.map(t => t.subject))];
-            
-            if(uniqueSubjects.length === 0) {
-                liveContainer.innerHTML = `<div class="text-center py-6 text-xs text-gray-500 bg-black/30 rounded-xl border border-gray-900">No pending routine vectors identified for this target timestamp. Inject parameters using the interface terminal above.</div>`;
-            } else {
-                uniqueSubjects.forEach(subName => {
-                    let subBlock = document.createElement('div');
-                    subBlock.className = "glass-panel p-4 rounded-xl shadow-lg border-[rgba(255,255,255,0.04)] mt-2 stagger-card";
-                    let matchedCat = pendingRecords.find(r => r.subject === subName)?.category || "";
-                    let catColorBorder = cssClasses[cats.indexOf(matchedCat)] || "";
-                    
-                    let topicsHtml = `
-                        <div class="flex justify-between items-center border-b border-gray-900 pb-2 mb-3">
-                            <span class="text-xs font-black tracking-tight text-white flex items-center gap-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span> ${subName}
-                            </span>
-                            <span class="text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-slate-900 border border-gray-800 text-gray-400">${matchedCat}</span>
-                        </div>
-                        <div class="space-y-3">`;
-                    
-                    pendingRecords.filter(t => t.subject === subName).forEach(t => {
-                        topicsHtml += `
-                            <div id="card-node-${t.id}" class="p-3 bg-black/40 border border-gray-900 rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-3 hover:border-gray-800 transition-all ${catColorBorder}">
-                                <div class="flex-1 flex items-center gap-3">
-                                    <button onclick="startTwoMinFrictionBreaker(${t.id})" class="w-6 h-6 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center text-xs shrink-0 hover:bg-amber-500/20 transition-all cursor-pointer" title="Just 2 Minutes Action">
-                                        <i class="fa-solid fa-bolt"></i>
-                                    </button>
-                                    <div>
-                                        <h4 class="text-xs font-bold text-gray-200 flex items-center gap-2">
-                                            <span>${t.topicName}</span>
-                                            <span id="twomin-timer-${t.id}" class="text-[10px] font-mono text-amber-400 bg-amber-950/40 px-1.5 py-0.2 rounded border border-amber-900/30 hidden">02:00</span>
-                                        </h4>
-                                        ${t.originDate && t.originDate !== activeDate ? `<span class="inline-block mt-1 text-[9px] bg-amber-950/40 text-amber-400 font-bold px-1.5 py-0.5 rounded border border-amber-900/40"><i class="fa-solid fa-clock-rotate-left"></i> Shifted from ${t.originDate}</span>` : ''}
+        async function executeCompletionWorkflow(id) {
+            let match = null;
+            Object.keys(dbTopics).forEach(d => {
+                dbTopics[d].forEach(t => { if(t.id === id) match = t; });
+            });
+
+            if(!match) return;
+            let todayStr = new Date().toISOString().split('T')[0];
+
+            match.status = 'Complete';
+            match.completionDate = todayStr;
+
+            showSyncStatusIndicator("Updating Node...", "amber");
+            let status = await postDataPayloadToCloudServer('/api/topics', match);
+            if(status) {
+                rewardXP(10, "টপিক সম্পন্ন করেছ!");
+                
+                let dayRecords = dbTopics[activeDate] || [];
+                let pendingCount = dayRecords.filter(t => t.status === 'Pending').length;
+                if(pendingCount === 0 && dayRecords.length > 0) {
+                    rewardXP(15, "আজকের সব গোল ক্লিয়ারড! (Intention Bonus)");
+                }
+
+                verifyAndSyncStreak();
+                await synchronizeStateCacheWithCloudServer();
+                renderDailyWorkbenchFeedEntries();
+            }
+        }
+
+        // --- REVISION RADAR SUGGESTIONS AND CHECKPOINT OPERATIONS ---
+        function renderRadarSpacedSuggestions() {
+            let container = document.getElementById('radar-suggestions-container');
+            container.innerHTML = "";
+            let today = new Date();
+            let suggestedCount = 0;
+
+            Object.keys(dbTopics).forEach(d => {
+                dbTopics[d].forEach(t => {
+                    if(t.status === 'Complete' && t.completionDate) {
+                        let compDate = new Date(t.completionDate);
+                        let diffDays = Math.floor((today - compDate) / (1000 * 60 * 60 * 24));
+                        
+                        let intervals = [1, 3, 7];
+                        let needsReview = intervals.includes(diffDays) && (!t.reviewsDone || !t.reviewsDone.includes(String(diffDays)));
+                        
+                        if(needsReview) {
+                            suggestedCount++;
+                            container.innerHTML += `
+                                <div class="p-3 rounded-xl bg-purple-950/20 border border-purple-900/40 flex justify-between items-center group">
+                                    <div class="truncate pr-2">
+                                        <span class="text-[9px] bg-purple-900/40 text-purple-300 font-bold px-1.5 py-0.5 rounded block w-max uppercase tracking-wider font-mono">Day ${diffDays} Rep</span>
+                                        <span class="text-xs font-bold text-gray-200 block mt-1 truncate" title="${t.topicName}">${t.topicName}</span>
                                     </div>
-                                </div>
-                                <div class="flex items-center gap-2 w-full md:w-auto justify-end">
-                                    <input type="date" onchange="movePendingTopicDate(${t.id}, this.value)" class="bg-slate-900 text-gray-400 border border-gray-800 text-[10px] rounded px-1.5 py-0.5 outline-none focus:border-purple-500">
-                                    <button onclick="sendTopicToCustomRadar(${t.id})" class="text-[10px] bg-purple-950/40 border border-purple-900/40 text-purple-300 hover:text-white px-2 py-1 rounded-lg transition-all cursor-pointer" title="Push Custom Review Matrix"><i class="fa-solid fa-satellite-dish"></i></button>
-                                    <button onclick="openCompletePromptModal(${t.id})" class="text-[10px] bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-extrabold px-3 py-1 rounded-lg shadow cursor-pointer premium-btn-hover">Complete</button>
-                                </div>
-                            </div>`;
-                    });
-                    topicsHtml += `</div>`;
-                    subBlock.innerHTML = topicsHtml;
-                    liveContainer.appendChild(subBlock);
-                });
-            }
-            
-            if(completeRecords.length === 0) {
-                compContainer.innerHTML = `<div class="text-center py-4 text-[10px] text-gray-600 italic">No operational nodes registered as completed for this tracking stamp.</div>`;
-            } else {
-                completeRecords.forEach(t => {
-                    let compactLink = "";
-                    if(t.noteUrl) {
-                        compactLink = `<a href="${t.noteUrl}" target="_blank" class="text-blue-400 hover:underline inline-flex items-center gap-0.5 ml-2"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i> Material Asset</a>`;
-                    }
-                    compContainer.innerHTML += `
-                        <div class="flex justify-between items-center bg-black/30 border border-gray-900 px-3 py-2 rounded-xl transition-all">
-                            <div>
-                                <span class="text-xs text-gray-400 line-through opacity-80">${t.topicName}</span>
-                                <span class="text-[9px] text-emerald-400 font-semibold block mt-0.5">${t.subject} • Logged Archive ${compactLink}</span>
-                            </div>
-                            <button onclick="updateTopicStatusToPending(${t.id})" class="text-[9px] bg-slate-900 border border-gray-800 text-gray-400 px-2 py-0.5 rounded cursor-pointer hover:text-white transition-colors">⏳ Revert Node</button>
-                        </div>`;
-                });
-            }
-            renderSpacedRepetitionRadar();
-        }
-
-        async function movePendingTopicDate(topicId, targetNewDate) {
-            if(!targetNewDate) return;
-            let foundTopic = null;
-            Object.keys(dbTopics).forEach(d => {
-                let idx = dbTopics[d].findIndex(t => t.id === topicId);
-                if(idx !== -1) {
-                    foundTopic = { ...dbTopics[d][idx] };
-                    if (!foundTopic.originDate) foundTopic.originDate = d;
-                    dbTopics[d].splice(idx, 1);
-                }
-            });
-            if(foundTopic) {
-                foundTopic.date = targetNewDate;
-                if(!dbTopics[targetNewDate]) dbTopics[targetNewDate] = [];
-                dbTopics[targetNewDate].push(foundTopic);
-                renderDailyLog();
-                try {
-                    showSyncIndicator("Shifting timeline index...");
-                    dbTopics = await apiPut(`/topics/${topicId}`, foundTopic);
-                    renderDailyLog();
-                } catch(e) { console.error('Shift error:', e); }
-                finally { hideSyncIndicator(); }
-            }
-        }
-
-        function openCompletePromptModal(id) {
-            pendingCompleteTopicId = id;
-            let titleText = "Target Element Node Blueprint";
-            Object.keys(dbTopics).forEach(d => {
-                dbTopics[d].forEach(t => { if(t.id === id) titleText = `[${t.subject}] — ${t.topicName}`; });
-            });
-            document.getElementById('prompt-modal-topic-title').innerText = titleText;
-            document.getElementById('prompt-modal-url-input').value = '';
-            
-            const btn = document.getElementById('prompt-submit-btn');
-            btn.onclick = function() {
-                const urlVal = document.getElementById('prompt-modal-url-input').value.trim();
-                const cardEl = document.getElementById(`card-node-${id}`);
-                if(cardEl) cardEl.classList.add('complete-glow-pulse');
-                
-                setTimeout(() => {
-                    executeCompletionWorkflow(id, urlVal);
-                }, 400);
-            };
-            document.getElementById('complete-prompt-modal').classList.remove('hidden');
-        }
-
-        function closeCompletePromptModal() {
-            document.getElementById('complete-prompt-modal').classList.add('hidden');
-            pendingCompleteTopicId = null;
-        }
-
-        async function executeCompletionWorkflow(id, inputUrl) {
-            let updatedTopic = null;
-            Object.keys(dbTopics).forEach(d => {
-                dbTopics[d].forEach(t => {
-                    if(t.id === id) {
-                        t.status = 'Complete';
-                        t.completionDate = activeDate;
-                        t.noteUrl = inputUrl || null;
-                        updatedTopic = { ...t };
-                        triggerSurprise();
-                    }
-                });
-            });
-            closeCompletePromptModal();
-            renderDailyLog();
-            calculateAndRenderDynamicStreak();
-            if (updatedTopic) {
-                try {
-                    showSyncIndicator("Syncing execution complete...");
-                    dbTopics = await apiPut(`/topics/${id}`, updatedTopic);
-                    calculateAndRenderDynamicStreak();
-                } catch(e) { console.error('Complete runtime cluster error:', e); }
-                finally { hideSyncIndicator(); }
-            }
-        }
-
-        async function updateTopicStatusToPending(id) {
-            let updatedTopic = null;
-            Object.keys(dbTopics).forEach(d => {
-                dbTopics[d].forEach(t => {
-                    if(t.id === id) {
-                        t.status = 'Pending';
-                        t.completionDate = null;
-                        updatedTopic = { ...t };
-                    }
-                });
-            });
-            renderDailyLog();
-            calculateAndRenderDynamicStreak();
-            if (updatedTopic) {
-                try {
-                    showSyncIndicator("Reverting status index...");
-                    dbTopics = await apiPut(`/topics/${id}`, updatedTopic);
-                    renderDailyLog();
-                    calculateAndRenderDynamicStreak();
-                } catch(e) { console.error('Revert status error:', e); }
-                finally { hideSyncIndicator(); }
-            }
-        }
-
-        // ================= TAB 2: SPACED RADAR PROCESSING MATRIX =================
-        function renderSpacedRepetitionRadar() {
-            const container = document.getElementById('automatic-revision-list');
-            container.innerHTML = '';
-            
-            let allCompletedRecords = [];
-            Object.keys(dbTopics).forEach(dateStr => {
-                dbTopics[dateStr].forEach(topic => {
-                    if(topic.status === 'Complete' && topic.completionDate) {
-                        allCompletedRecords.push(topic);
-                    }
-                });
-            });
-            
-            let activeDateObj = new Date(activeDate);
-            let count = 0;
-            
-            allCompletedRecords.forEach(topic => {
-                let radarLinkBadge = "";
-                if (topic.noteUrl) {
-                    radarLinkBadge = `<a href="${topic.noteUrl}" target="_blank" class="text-[10px] text-blue-400 hover:underline flex items-center gap-0.5 mt-1" style="width: fit-content;"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i> Material Asset Attached</a>`;
-                }
-                
-                if(topic.customRevPendingOn && topic.customRevPendingOn === activeDate) {
-                    count++;
-                    container.innerHTML += `
-                        <div class="bg-gradient-to-r from-purple-950/20 to-black/40 border border-purple-500/30 p-3 rounded-xl flex justify-between items-center transition-all">
-                            <div>
-                                <div class="flex items-center gap-1.5">
-                                    <span class="text-[9px] font-black uppercase bg-purple-600 text-white px-1.5 py-0.5 rounded flex items-center gap-1">
-                                        <i class="fa-solid fa-circle text-[5px] text-purple-200 animate-ping"></i> Custom Radar
-                                    </span>
-                                </div>
-                                <h4 class="text-xs font-bold text-purple-200 mt-1">${topic.topicName}</h4>
-                                <p class="text-[10px] text-gray-500">${topic.subject} • ${topic.category}</p>
-                                ${radarLinkBadge}
-                            </div>
-                            <button onclick="approveCustomRadarReview(${topic.id})" class="text-[10px] bg-purple-600 hover:bg-purple-500 text-white font-extrabold px-3 py-1.5 rounded-lg cursor-pointer shadow-lg transition-all shrink-0">Complete</button>
-                        </div>`;
-                }
-                
-                let cDate = new Date(topic.completionDate);
-                let diffTime = Math.abs(activeDateObj - cDate);
-                let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                
-                let milestones = [1, 3, 7, 30];
-                milestones.forEach(m => {
-                    let targetMilestoneDate = new Date(cDate);
-                    targetMilestoneDate.setDate(cDate.getDate() + m);
-                    let tStr = targetMilestoneDate.toISOString().split('T')[0];
-                    
-                    if(tStr === activeDate) {
-                        count++;
-                        let isDone = topic.reviewsDone && topic.reviewsDone.includes(String(m));
-                        
-                        container.innerHTML += `
-                            <div class="bg-black/30 border ${isDone ? 'border-emerald-500/20 bg-emerald-950/5' : 'border-gray-800/80'} p-3 rounded-xl flex justify-between items-center transition-all">
-                                <div>
-                                    <div class="flex items-center gap-1.5">
-                                        <span class="text-[9px] font-extrabold uppercase ${isDone ? 'bg-emerald-900/60 text-emerald-400' : 'bg-blue-900/40 text-blue-400'} px-1.5 py-0.5 rounded">Day ${m} System Retain</span>
-                                        <span class="text-[9px] text-gray-500 font-mono">Logged: ${topic.completionDate}</span>
-                                    </div>
-                                    <h4 class="text-xs font-bold ${isDone ? 'text-gray-400 line-through' : 'text-gray-200'} mt-1">${topic.topicName}</h4>
-                                    <p class="text-[10px] text-gray-500">${topic.subject} • ${topic.category}</p>
-                                    ${radarLinkBadge}
-                                </div>
-                                <input type="checkbox" ${isDone ? 'checked' : ''} onchange="toggleMilestoneReview(${topic.id}, ${m}, this.checked)" class="w-4 h-4 rounded border-gray-800 text-blue-600 focus:ring-blue-500 cursor-pointer accent-blue-500">
-                            </div>`;
-                    }
-                });
-            });
-            
-            if(count === 0) {
-                container.innerHTML = `<div class="text-center py-8 text-xs text-gray-600 italic">Radar loop quiescent. No automated memory retain processes detected for this timeline grid point.</div>`;
-            }
-        }
-
-        async function toggleMilestoneReview(topicId, milestoneDay, isChecked) {
-            let updatedTopic = null;
-            let milestoneStr = String(milestoneDay);
-            
-            Object.keys(dbTopics).forEach(d => {
-                dbTopics[d].forEach(t => {
-                    if(t.id === topicId) {
-                        if(!t.reviewsDone) t.reviewsDone = [];
-                        if(!t.reviewHistoryStamps) t.reviewHistoryStamps = {};
-                        
-                        if(isChecked) {
-                            if(!t.reviewsDone.includes(milestoneStr)) {
-                                t.reviewsDone.push(milestoneStr);
-                                t.reviewHistoryStamps[milestoneStr] = activeDate;
-                            }
-                            triggerSurprise();
-                        } else {
-                            t.reviewsDone = t.reviewsDone.filter(m => m !== milestoneStr);
-                            delete t.reviewHistoryStamps[milestoneStr];
-                        }
-                        updatedTopic = { ...t };
-                    }
-                });
-            });
-            renderDailyLog();
-            if (updatedTopic) {
-                try {
-                    showSyncIndicator("Saving radar array state...");
-                    dbTopics = await apiPut(`/topics/${topicId}`, updatedTopic);
-                } catch(e) { console.error('Review sync cluster error:', e); }
-                finally { hideSyncIndicator(); }
-            }
-        }
-
-        async function sendTopicToCustomRadar(topicId) {
-            let updatedTopic = null;
-            Object.keys(dbTopics).forEach(d => {
-                dbTopics[d].forEach(t => {
-                    if(t.id === topicId) {
-                        t.customRevPendingOn = activeDate;
-                        updatedTopic = { ...t };
-                    }
-                });
-            });
-            triggerSurprise(4);
-            renderDailyLog();
-            if (updatedTopic) {
-                try {
-                    showSyncIndicator("Routing to custom array...");
-                    dbTopics = await apiPut(`/topics/${topicId}`, updatedTopic);
-                } catch(e) { console.error('Custom radar route failure:', e); }
-                finally { hideSyncIndicator(); }
-            }
-        }
-
-        async function approveCustomRadarReview(topicId) {
-            let updatedTopic = null;
-            Object.keys(dbTopics).forEach(d => {
-                dbTopics[d].forEach(t => {
-                    if(t.id === topicId) {
-                        if(!t.customReviewHistoryDates) t.customReviewHistoryDates = [];
-                        t.customReviewHistoryDates.push(activeDate);
-                        t.customRevPendingOn = null;
-                        updatedTopic = { ...t };
-                        triggerSurprise();
-                    }
-                });
-            });
-            renderDailyLog();
-            if (updatedTopic) {
-                try {
-                    showSyncIndicator("Clearing loop parameter...");
-                    dbTopics = await apiPut(`/topics/${topicId}`, updatedTopic);
-                } catch(e) { console.error('Approve custom review failure:', e); }
-                finally { hideSyncIndicator(); }
-            }
-        }
-
-        // ================= TAB 3: TERMINAL PROGRESS ANALYTICS LEDGER =================
-        function renderProgressTab() {
-            let completed = 0, pending = 0, totalReviews = 0;
-            let allCompletedRecords = [];
-            
-            Object.keys(dbTopics).forEach(dateStr => {
-                dbTopics[dateStr].forEach(t => {
-                    if(t.status === 'Complete') {
-                        completed++;
-                        allCompletedRecords.push(t);
-                        if(t.reviewsDone) totalReviews += t.reviewsDone.length;
-                        if(t.customReviewHistoryDates) totalReviews += t.customReviewHistoryDates.length;
-                    } else {
-                        pending++;
-                    }
-                });
-            });
-            
-            document.getElementById('stat-topics-complete').innerText = completed;
-            document.getElementById('stat-topics-pending').innerText = pending;
-            document.getElementById('stat-reviews-done').innerText = totalReviews;
-            
-            let totalTasks = completed + pending;
-            let rate = totalTasks > 0 ? Math.round((completed / totalTasks) * 100) : 0;
-            document.getElementById('stat-success-rate').innerText = `${rate}%`;
-            
-            const cal = document.getElementById('calendar-grid');
-            cal.innerHTML = '';
-            
-            for(let i = 29; i >= 0; i--) {
-                let d = new Date();
-                d.setDate(d.getDate() - i);
-                let dStr = d.toISOString().split('T')[0];
-                let list = dbTopics[dStr] || [];
-                
-                let totalCount = list.length;
-                let doneCount = list.filter(t => t.status === 'Complete').length;
-                
-                let levelClass = "bg-slate-950 text-gray-500 border border-gray-900";
-                if(totalCount > 0) {
-                    if(doneCount === 0) levelClass = "bg-rose-950/50 text-rose-400 border border-rose-900/40";
-                    else if(doneCount < totalCount) levelClass = "bg-blue-950/80 text-blue-300 border border-blue-900/50";
-                    else levelClass = "bg-gradient-to-br from-emerald-950 to-emerald-900 text-emerald-300 border border-emerald-500/30 font-extrabold";
-                }
-                
-                let dayNum = d.getDate();
-                let btn = document.createElement('button');
-                btn.className = `w-8 h-8 rounded-lg text-[10px] font-bold flex items-center justify-center transition-all cursor-pointer hover:scale-110 shrink-0 ${levelClass}`;
-                btn.innerText = dayNum;
-                btn.title = `${dStr} — Total: ${totalCount}, Done: ${doneCount}`;
-                btn.onclick = () => showHistoryForDate(dStr);
-                cal.appendChild(btn);
-            }
-            
-            let groupedData = {};
-            allCompletedRecords.forEach(t => {
-                if(!groupedData[t.category]) groupedData[t.category] = {};
-                if(!groupedData[t.category][t.subject]) groupedData[t.category][t.subject] = [];
-                groupedData[t.category][t.subject].push(t);
-            });
-            
-            const lifetimeAchievedBox = document.getElementById('lifetime-achieved-container');
-            lifetimeAchievedBox.innerHTML = '';
-            
-            if(allCompletedRecords.length === 0) {
-                lifetimeAchievedBox.innerHTML = `<div class="text-center py-8 text-xs text-gray-600 italic">No nodes logged inside lifetime database cluster map yet.</div>`;
-            } else {
-                cats.forEach(catName => {
-                    if(groupedData[catName]) {
-                        let catSection = document.createElement('div');
-                        catSection.className = "mb-4 border-b border-gray-900/40 pb-3 last:border-0";
-                        let catHeaderHtml = `
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]"></span>
-                                <h4 class="text-xs font-black text-emerald-400 uppercase tracking-widest">${catName}</h4>
-                            </div>`;
-                        let subjectsHtml = `<div class="pl-3 space-y-2.5">`;
-                        
-                        Object.keys(groupedData[catName]).forEach(subName => {
-                            subjectsHtml += `
-                                <div class="bg-black/30 border border-gray-900/60 rounded-xl p-3">
-                                    <h5 class="text-[11px] font-bold text-indigo-300 mb-2 flex items-center gap-1.5">
-                                        <i class="fa-solid fa-folder text-[10px] text-indigo-500"></i> ${subName}
-                                    </h5>
-                                    <div class="space-y-1.5 pl-2 border-l border-gray-900">`;
-                            
-                            groupedData[catName][subName].forEach((t, serialIdx) => {
-                                let linkPart = t.noteUrl ? `<a href="${t.noteUrl}" target="_blank" class="text-blue-400 hover:underline ml-2"><i class="fa-solid fa-link text-[9px]"></i> View Asset</a>` : "";
-                                subjectsHtml += `
-                                    <div class="text-[11px] text-gray-300 flex items-start justify-between">
-                                        <span>${serialIdx + 1}. ${t.topicName} ${linkPart}</span>
-                                        <span class="text-[9px] text-gray-500 font-mono">${t.completionDate || ''}</span>
-                                    </div>`;
-                            });
-                            subjectsHtml += `</div></div>`;
-                        });
-                        subjectsHtml += `</div>`;
-                        catSection.innerHTML = catHeaderHtml + subjectsHtml;
-                        lifetimeAchievedBox.appendChild(catSection);
-                    }
-                });
-            }
-            
-            const uniqueRevContainer = document.getElementById('lifetime-unique-revision-container');
-            uniqueRevContainer.innerHTML = '';
-            
-            let reviewedTopics = allCompletedRecords.filter(t => (t.reviewsDone && t.reviewsDone.length > 0) || (t.customReviewHistoryDates && t.customReviewHistoryDates.length > 0));
-            
-            if(reviewedTopics.length === 0) {
-                uniqueRevContainer.innerHTML = `<div class="text-center py-8 text-xs text-gray-600 italic">No retention logs processed inside space loops.</div>`;
-            } else {
-                cats.forEach(catName => {
-                    if(groupedData[catName]) {
-                        let catHasReviews = false;
-                        Object.keys(groupedData[catName]).forEach(subName => {
-                            let matches = groupedData[catName][subName].filter(t => reviewedTopics.includes(t));
-                            if(matches.length > 0) catHasReviews = true;
-                        });
-                        
-                        if(catHasReviews) {
-                            let catSection = document.createElement('div');
-                            catSection.className = "mb-4 border-b border-gray-900/40 pb-3 last:border-0";
-                            let catHeaderHtml = `
-                                <div class="flex items-center gap-2 mb-2">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]"></span>
-                                    <h4 class="text-xs font-black text-amber-400 uppercase tracking-widest">${catName}</h4>
+                                    <button onclick="approveRadarRevisionCheckpoint(${t.id}, ${diffDays})" class="px-2.5 py-1 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-lg text-[10px] shadow-md cursor-pointer transition-all active:scale-90">Revise</button>
                                 </div>`;
-                            let subjectsHtml = `<div class="pl-3 space-y-2.5">`;
-                            
-                            Object.keys(groupedData[catName]).forEach(subName => {
-                                let subReviewedTopics = groupedData[catName][subName].filter(t => reviewedTopics.includes(t));
-                                if(subReviewedTopics.length > 0) {
-                                    subjectsHtml += `
-                                        <div class="bg-black/30 border border-gray-900/60 rounded-xl p-3">
-                                            <h5 class="text-[11px] font-bold text-indigo-300 mb-2 flex items-center gap-1.5">
-                                                <i class="fa-solid fa-folder text-[10px] text-indigo-500"></i> ${subName}
-                                            </h5>
-                                            <div class="space-y-3">`;
-                                    
-                                    subReviewedTopics.forEach((t, serialIdx) => {
-                                        let totalCount = (t.reviewsDone ? t.reviewsDone.length : 0) + (t.customReviewHistoryDates ? t.customReviewHistoryDates.length : 0);
-                                        let subTimelineHtml = `<div class="flex flex-wrap gap-1.5 mt-1.5">`;
-                                        
-                                        if(t.reviewsDone) {
-                                            t.reviewsDone.forEach(m => {
-                                                let stamp = t.reviewHistoryStamps ? t.reviewHistoryStamps[m] : '';
-                                                subTimelineHtml += `<span class="bg-blue-950/60 text-blue-400 border border-blue-900/40 text-[9px] px-1.5 py-0.5 rounded" title="Verified on: ${stamp}">Day ${m} ✓</span>`;
-                                            });
-                                        }
-                                        if(t.customReviewHistoryDates) {
-                                            t.customReviewHistoryDates.forEach(dStr => {
-                                                subTimelineHtml += `<span class="bg-purple-950/60 text-purple-400 border border-purple-900/40 text-[9px] px-1.5 py-0.5 rounded">Custom Retain (${dStr}) ✓</span>`;
-                                            });
-                                        }
-                                        subTimelineHtml += `</div>`;
-                                        
-                                        subjectsHtml += `
-                                            <div class="border-b border-gray-900/50 pb-2 last:border-b-0 last:pb-0">
-                                                <div class="text-[11px] text-gray-300 font-medium">${serialIdx + 1}. ${t.topicName} <span class="text-amber-400 font-bold">(${totalCount}x)</span></div>
-                                                ${subTimelineHtml}
-                                            </div>`;
-                                    });
-                                    subjectsHtml += `</div></div>`;
-                                }
-                            });
-                            subjectsHtml += `</div>`;
-                            catSection.innerHTML = catHeaderHtml + subjectsHtml;
-                            uniqueRevContainer.appendChild(catSection);
                         }
                     }
                 });
-            }
-            
-            const catSummary = document.getElementById('category-summary-list');
-            catSummary.innerHTML = '';
-            
-            cats.forEach(cName => {
-                let catTotalCount = 0;
-                let catCompletedCount = 0;
-                let lastAddedTopic = "None";
-                
-                Object.keys(dbTopics).forEach(dateStr => {
-                    dbTopics[dateStr].forEach(t => {
-                        if(t.category === cName) {
-                            catTotalCount++;
-                            if(t.status === 'Complete') catCompletedCount++;
-                            lastAddedTopic = t.topicName;
-                        }
-                    });
-                });
-                
-                let itemCard = document.createElement('div');
-                itemCard.className = "glass-panel p-4 rounded-xl flex flex-col justify-between border-[rgba(255,255,255,0.04)] hover:border-gray-800 transition-all table-row-stagger";
-                itemCard.innerHTML = `
-                    <div>
-                        <h4 class="text-xs font-black text-gray-300 tracking-wide uppercase">📁 ${cName}</h4>
-                        <p class="text-[11px] text-gray-400 font-medium mt-2">
-                            Global Allocated: <span class="text-indigo-400 font-bold">${catTotalCount}</span> | Terminated: <span class="text-emerald-400 font-bold">${catCompletedCount}</span>
-                        </p>
-                    </div>
-                    <p class="text-[10px] text-gray-500 italic mt-3 truncate border-t border-gray-900 pt-2">Track: ${lastAddedTopic}</p>`;
-                catSummary.appendChild(itemCard);
             });
-            
-            const cleanerTbody = document.getElementById('master-cleaner-tbody');
-            cleanerTbody.innerHTML = '';
-            
-            let flatListAll = [];
-            Object.keys(dbTopics).forEach(dateStr => {
-                dbTopics[dateStr].forEach(t => flatListAll.push({ ...t, loggedDateKey: dateStr }));
-            });
-            
-            flatListAll.sort((a, b) => b.id - a.id);
-            
-            if(flatListAll.length === 0) {
-                cleanerTbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-600 italic">Cluster database completely empty.</td></tr>`;
-            } else {
-                flatListAll.forEach(t => {
-                    let tr = document.createElement('tr');
-                    tr.className = "hover:bg-slate-900/40 border-b border-gray-900/60";
-                    tr.innerHTML = `
-                        <td class="p-3 text-gray-400 font-mono text-[10px]">${t.loggedDateKey}</td>
-                        <td class="p-3 text-gray-400 font-medium">${t.category}</td>
-                        <td class="p-3 text-indigo-400 font-semibold">${t.subject}</td>
-                        <td class="p-3 text-gray-300 font-normal max-w-xs truncate">${t.topicName}</td>
-                        <td class="p-3 text-center text-gray-500 font-mono text-[10px]">${t.id}</td>
-                        <td class="p-3 text-center">
-                            <span class="px-2 py-0.5 rounded text-[9px] font-bold ${t.status === 'Complete' ? 'bg-emerald-950 text-emerald-400 border border-emerald-900/30' : 'bg-rose-950 text-rose-400 border border-rose-900/30'}">${t.status}</span>
-                        </td>
-                        <td class="p-3 text-center">
-                            <button onclick="openPurgeModal(${t.id})" class="bg-rose-950/40 hover:bg-rose-900/60 text-rose-400 px-2 py-1 rounded-md text-[10px] font-bold border border-rose-900/30 transition-all cursor-pointer">Purge</button>
-                        </td>`;
-                    cleanerTbody.appendChild(tr);
-                });
+
+            if(suggestedCount === 0) {
+                container.innerHTML = `<p class="text-[11px] text-gray-600 italic py-2">No system spaced revision queues requested on radar for today.</p>`;
             }
-
-            // --- FEATURE 4: RENDER PROCRASTINATION WEEKLY TREND BARS ---
-            renderProcrastinationTrends();
         }
 
-        function showHistoryForDate(dateStr) {
-            const box = document.getElementById('selected-day-history-box');
-            const title = document.getElementById('history-box-title');
-            const content = document.getElementById('history-box-content');
-            
-            box.classList.remove('hidden');
-            title.innerText = `Matrix Cluster Logged on: ${dateStr}`;
-            content.innerHTML = '';
-            
-            let list = dbTopics[dateStr] || [];
-            if(list.length === 0) {
-                content.innerHTML = `<p class="text-gray-500 text-xs italic py-2 col-span-2">No database records captured under this precise milestone timeline link.</p>`;
-            } else {
-                list.forEach(t => {
-                    let isC = t.status === 'Complete';
-                    let linked = t.noteUrl ? `<a href="${t.noteUrl}" target="_blank" class="text-blue-400 block mt-1 hover:underline text-[10px]"><i class="fa-solid fa-link"></i> Linked Asset</a>` : "";
-                    content.innerHTML += `
-                        <div class="bg-black/40 p-3 rounded-xl border border-gray-900 flex justify-between items-center">
-                            <div>
-                                <span class="text-[9px] font-black text-indigo-400 block uppercase tracking-wider">${t.subject}</span>
-                                <span class="text-xs text-gray-300 font-medium mt-0.5 block">${t.topicName}</span>
-                                ${linked}
-                            </div>
-                            <span class="text-[9px] font-bold uppercase px-2 py-0.5 rounded ${isC ? 'bg-emerald-950 text-emerald-400 border border-emerald-900/20' : 'bg-rose-950 text-rose-400 border border-rose-900/20'}">${t.status}</span>
-                        </div>`;
-                });
-            }
-            populateInjectorSubjects();
-            renderProgressTab();
-        }
-
-        function openPurgeModal(id) {
-            pendingPurgeId = id;
-            document.getElementById('purge-modal').classList.remove('hidden');
-        }
-
-        function closePurgeModal() {
-            document.getElementById('purge-modal').classList.add('hidden');
-            pendingPurgeId = null;
-        }
-
-        document.getElementById('confirm-purge-btn').onclick = async function() {
-            if(!pendingPurgeId) return;
-            const targetId = pendingPurgeId;
-            
+        async function approveRadarRevisionCheckpoint(id, interval) {
+            let node = null;
             Object.keys(dbTopics).forEach(d => {
-                let idx = dbTopics[d].findIndex(t => t.id === targetId);
-                if(idx !== -1) dbTopics[d].splice(idx, 1);
-            });
-            
-            closePurgeModal();
-            renderProgressTab();
-            renderDailyLog();
-            calculateAndRenderDynamicStreak();
-            
-            try {
-                showSyncIndicator("Executing hard wipe purge...");
-                dbTopics = await apiDelete(`/topics/${targetId}`);
-                renderProgressTab();
-                renderDailyLog();
-                calculateAndRenderDynamicStreak();
-            } catch(e) { console.error('Purge error:', e); }
-            finally { hideSyncIndicator(); }
-        };
-
-        function calculateAndRenderDynamicStreak() {
-            let completedDates = new Set();
-            Object.keys(dbTopics).forEach(dStr => {
-                let hasComplete = dbTopics[dStr].some(t => t.status === 'Complete');
-                if(hasComplete) completedDates.add(dStr);
+                dbTopics[d].forEach(t => { if(t.id === id) node = t; });
             });
 
-            let streak = 0;
-            let checkDate = new Date(systemTodayStr);
-            let hasCompletedToday = completedDates.has(systemTodayStr);
+            if(!node) return;
+            if(!node.reviewsDone) node.reviewsDone = [];
             
-            if (!hasCompletedToday) {
-                checkDate.setDate(checkDate.getDate() - 1);
+            if(!node.reviewsDone.includes(String(interval))) {
+                node.reviewsDone.push(String(interval));
             }
 
-            while(true) {
-                let checkStr = checkDate.toISOString().split('T')[0];
-                if(completedDates.has(checkStr)) {
-                    streak++;
-                    checkDate.setDate(checkDate.getDate() - 1);
-                } else {
-                    break;
-                }
-            }
-
-            if(streak === 0 && completedDates.size > 0) {
-                streak = 1; 
-            }
-
-            const streakCounterEl = document.getElementById('streak-counter-value');
-            const oldVal = parseInt(streakCounterEl.innerText) || 0;
-            streakCounterEl.innerText = streak;
-
-            if(streak > oldVal) {
-                const fireNode = document.getElementById('streak-icon-holder');
-                if(fireNode) {
-                    fireNode.classList.remove('streak-fire-pulse');
-                    void fireNode.offsetWidth;
-                    fireNode.classList.add('streak-fire-pulse');
-                }
+            showSyncStatusIndicator("Logging Revision...", "amber");
+            let success = await postDataPayloadToCloudServer('/api/topics', node);
+            if(success) {
+                rewardXP(5, "রিভিশন সেশন সম্পন্ন!");
+                await synchronizeStateCacheWithCloudServer();
+                renderRadarSpacedSuggestions();
             }
         }
 
-
-        // =========================================================================
-        //                 ANTI-PROCRASTINATION ENGINE FEATURE CORE LOGIC
-        // =========================================================================
-
-        // --- FEATURE 1: POMODORO SYSTEM CONTROLLER ---
-        function triggerWebAudioBeep() {
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContext) return;
-                const ctx = new AudioContext();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(880, ctx.currentTime); // High pitch notification clear tone A5
-                gain.gain.setValueAtTime(0.3, ctx.currentTime);
-                
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                
-                osc.start();
-                osc.stop(ctx.currentTime + 0.4); // 400ms duration wave burst
-            } catch (e) {
-                console.error("Web Audio engine context locked by security protocols:", e);
-            }
-        }
-
-        function updatePomoVisuals() {
-            const mins = Math.floor(pomoSecondsLeft / 60);
-            const secs = pomoSecondsLeft % 60;
-            document.getElementById('pomo-time-display').innerText = 
-                `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        // --- VIEW CONTROLLER 3: GLOBAL LEDGER HISTORY LOG TABLE ---
+        function renderGlobalLedgerTable() {
+            let tbody = document.getElementById('ledger-table-rows-target');
+            tbody.innerHTML = "";
             
-            // Calculate dynamic radial circumference circle bounds matching 439.82 full layout ring
-            const totalDuration = pomoCurrentMode === 'focus' ? 25 * 60 : 5 * 60;
-            const percentagePassed = (totalDuration - pomoSecondsLeft) / totalDuration;
-            const currentDashoffset = 439.82 * percentagePassed;
-            document.getElementById('pomo-progress-ring').style.strokeDashoffset = currentDashoffset;
-            
-            document.getElementById('pomo-session-display').innerText = `Session ${pomoSessionCount} of ${POMO_TOTAL_SESSIONS}`;
-            document.getElementById('pomo-mode-label').innerText = pomoCurrentMode === 'focus' ? 'Focus Session' : 'Short Break';
-        }
+            let masterList = [];
+            Object.keys(dbTopics).forEach(d => {
+                dbTopics[d].forEach(t => masterList.push(t));
+            });
 
-        function togglePomoTimer() {
-            if (pomoIsRunning) {
-                // Pause sequence
-                clearInterval(pomoTimerInterval);
-                pomoIsRunning = false;
-                document.getElementById('pomo-btn-text').innerText = 'Resume Work';
-                document.getElementById('pomo-btn-icon').className = 'fa-solid fa-play text-[10px]';
-            } else {
-                // Start sequence
-                pomoIsRunning = true;
-                document.getElementById('pomo-btn-text').innerText = 'Pause Orbit';
-                document.getElementById('pomo-btn-icon').className = 'fa-solid fa-pause text-[10px]';
-                
-                pomoTimerInterval = setInterval(() => {
-                    if (pomoSecondsLeft > 0) {
-                        pomoSecondsLeft--;
-                        updatePomoVisuals();
-                    } else {
-                        clearInterval(pomoTimerInterval);
-                        pomoIsRunning = false;
-                        triggerWebAudioBeep();
-                        
-                        if (Notification.permission === 'granted') {
-                            new Notification(pomoCurrentMode === 'focus' ? 'Focus Block Terminated! 🎉' : 'Break Time Expired! ⏳', {
-                                body: pomoCurrentMode === 'focus' ? 'Excellent retention work. Commencing 5 minute automatic break cycle.' : 'Returning to operational focus state.'
-                            });
-                        }
-                        
-                        if (pomoCurrentMode === 'focus') {
-                            confetti({ particleCount: 80, spread: 60 });
-                            pomoCurrentMode = 'break';
-                            pomoSecondsLeft = 5 * 60;
-                        } else {
-                            pomoCurrentMode = 'focus';
-                            pomoSecondsLeft = 25 * 60;
-                            if (pomoSessionCount < POMO_TOTAL_SESSIONS) {
-                                pomoSessionCount++;
-                            } else {
-                                pomoSessionCount = 1; // Loop threshold configuration reset
-                            }
-                        }
-                        
-                        updatePomoVisuals();
-                        togglePomoTimer(); // Automatic forward cycle chaining
-                    }
-                }, 1000);
-            }
-        }
+            masterList.sort((a,b) => b.id - a.id);
 
-        function resetPomoTimer() {
-            clearInterval(pomoTimerInterval);
-            pomoIsRunning = false;
-            pomoCurrentMode = 'focus';
-            pomoSecondsLeft = 25 * 60;
-            document.getElementById('pomo-btn-text').innerText = 'Start Focus';
-            document.getElementById('pomo-btn-icon').className = 'fa-solid fa-play text-[10px]';
-            updatePomoVisuals();
-        }
-
-
-        // --- FEATURE 2: JUST 2 MINUTES FRICTION BREAKER ENGINE ---
-        function startTwoMinFrictionBreaker(topicId) {
-            const displayEl = document.getElementById(`twomin-timer-${topicId}`);
-            if (!displayEl) return;
-            
-            // Abort if already active
-            if (activeTwoMinIntervals[topicId]) return;
-            
-            displayEl.classList.remove('hidden');
-            let timeLeft = 2 * 60;
-            
-            activeTwoMinIntervals[topicId] = setInterval(() => {
-                if (timeLeft > 0) {
-                    timeLeft--;
-                    const m = Math.floor(timeLeft / 60);
-                    const s = timeLeft % 60;
-                    displayEl.innerText = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-                } else {
-                    clearInterval(activeTwoMinIntervals[topicId]);
-                    delete activeTwoMinIntervals[topicId];
-                    displayEl.classList.add('hidden');
-                    
-                    // Show custom system surprise alert toast interface module
-                    const container = document.getElementById('surprise-toast-container');
-                    const toast = document.createElement('div');
-                    toast.className = `surprise-alert pointer-events-auto w-full bg-gradient-to-r from-emerald-500 to-teal-500 p-4 rounded-xl shadow-2xl border border-white/10 text-white mb-3`;
-                    toast.innerHTML = `
-                        <div class="flex items-center gap-3">
-                            <div class="bg-black/20 p-2 rounded-lg text-sm">💪</div>
-                            <div>
-                                <h5 class="text-xs font-black tracking-wider uppercase">Great start! Keep going 💪</h5>
-                                <p class="text-[10px] opacity-90 font-medium">Friction barrier shattered. Maintain active progress.</p>
-                            </div>
-                        </div>`;
-                    container.appendChild(toast);
-                    confetti({ particleCount: 30, spread: 40 });
-                    setTimeout(() => { toast.remove(); }, 5000);
-                }
-            }, 1000);
-        }
-
-
-        // --- FEATURE 3: DAILY INTENTION PIPELINE MAP ---
-        function checkDailyIntentionPipeline() {
-            const key = `intention_${systemTodayStr}`;
-            const stored = localStorage.getItem(key);
-            
-            if (!stored) {
-                document.getElementById('intention-modal').classList.remove('hidden');
-            } else {
-                renderIntentionWidget(JSON.parse(stored));
-            }
-        }
-
-        function saveDailyIntentions() {
-            const g1 = document.getElementById('intention-input-1').value.trim();
-            const g2 = document.getElementById('intention-input-2').value.trim();
-            const g3 = document.getElementById('intention-input-3').value.trim();
-            
-            if (!g1 && !g2 && !g3) {
-                alert("কমপক্ষে ১টি লক্ষ্য ইনপুট দিন!");
+            if(masterList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="py-4 text-center text-gray-600 italic">No historical entries mapped inside database registry cluster.</td></tr>`;
                 return;
             }
-            
-            const data = {
-                date: systemTodayStr,
-                goals: [
-                    { text: g1 || "নির্দিষ্ট লক্ষ্য নির্ধারণ করা হয়নি", checked: false },
-                    { text: g2 || "নির্দিষ্ট লক্ষ্য নির্ধারণ করা হয়নি", checked: false },
-                    { text: g3 || "নির্দিষ্ট লক্ষ্য নির্ধারণ করা হয়নি", checked: false }
-                ]
-            };
-            
-            localStorage.setItem(`intention_${systemTodayStr}`, JSON.stringify(data));
-            document.getElementById('intention-modal').classList.add('hidden');
-            renderIntentionWidget(data);
-        }
 
-        function renderIntentionWidget(data) {
-            const widget = document.getElementById('sidebar-intention-widget');
-            const listEl = document.getElementById('widget-intention-list');
-            const reviewContainer = document.getElementById('widget-review-container');
-            
-            listEl.innerHTML = '';
-            widget.classList.remove('hidden');
-            
-            data.goals.forEach(g => {
-                listEl.innerHTML += `
-                    <li class="flex items-start gap-1.5 ${g.checked ? 'line-through opacity-50 text-emerald-400' : ''}">
-                        <span class="text-indigo-400 mt-0.5 select-none">•</span>
-                        <span>${g.text}</span>
-                    </li>`;
-            });
-            
-            // Check temporal restriction boundary parameter (8 PM / 20 hours indicator checkpoint)
-            const currentHour = new Date().getHours();
-            if (currentHour >= 20) {
-                reviewContainer.classList.remove('hidden');
-            } else {
-                reviewContainer.classList.add('hidden');
-            }
-        }
-
-        function openReviewIntentionModal() {
-            const key = `intention_${systemTodayStr}`;
-            const data = JSON.parse(localStorage.getItem(key));
-            if (!data) return;
-            
-            const container = document.getElementById('review-modal-checkbox-list');
-            container.innerHTML = '';
-            
-            data.goals.forEach((g, idx) => {
-                container.innerHTML += `
-                    <label class="flex items-center gap-3 p-3 bg-black/40 border border-gray-800 rounded-xl cursor-pointer hover:border-gray-700 transition-all select-none">
-                        <input type="checkbox" id="review-goal-check-${idx}" ${g.checked ? 'checked' : ''} class="w-4 h-4 rounded border-gray-800 text-indigo-600 focus:ring-indigo-500 accent-indigo-500">
-                        <span class="text-xs text-gray-200 font-medium ${g.checked ? 'line-through text-gray-500' : ''}">${g.text}</span>
-                    </label>
-                `;
-            });
-            
-            document.getElementById('intention-review-modal').classList.remove('hidden');
-        }
-
-        function closeReviewIntentionModal() {
-            document.getElementById('intention-review-modal').classList.add('hidden');
-        }
-
-        function submitIntentionReviewState() {
-            const key = `intention_${systemTodayStr}`;
-            const data = JSON.parse(localStorage.getItem(key));
-            if (!data) return;
-            
-            let allCompleted = true;
-            data.goals.forEach((g, idx) => {
-                const el = document.getElementById(`review-goal-check-${idx}`);
-                if (el) {
-                    g.checked = el.checked;
-                    if (!el.checked) allCompleted = false;
+            masterList.forEach(t => {
+                let isC = t.status === 'Complete';
+                let revBadges = "";
+                if(t.reviewsDone && t.reviewsDone.length > 0) {
+                    t.reviewsDone.forEach(r => {
+                        revBadges += `<span class="bg-purple-950 border border-purple-900 text-purple-400 font-mono text-[9px] px-1.5 py-0.5 rounded font-bold mr-1">R${r}</span>`;
+                    });
+                } else {
+                    revBadges = `<span class="text-gray-600 italic text-[10px]">None</span>`;
                 }
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-white/5 transition-colors border-b border-gray-950">
+                        <td class="py-3 px-3 font-mono text-[11px] text-gray-400">${t.date}</td>
+                        <td class="py-3 px-3 font-bold text-indigo-400 max-w-[120px] truncate" title="${t.subject}">${t.subject}</td>
+                        <td class="py-3 px-3 font-medium text-gray-200 max-w-[200px] truncate" title="${t.topicName}">${t.topicName}</td>
+                        <td class="py-3 px-3 text-gray-500 font-medium">${t.category}</td>
+                        <td class="py-3 px-3">
+                            <span class="px-2 py-0.5 rounded font-bold text-[9px] uppercase tracking-wider ${isC ? 'bg-emerald-950 text-emerald-400 border border-emerald-900/30' : 'bg-rose-950 text-rose-400 border border-rose-900/30'}">${t.status}</span>
+                        </td>
+                        <td class="py-3 px-3">${revBadges}</td>
+                        <td class="py-3 px-3 text-center">
+                            <button onclick="purgeTopicItemNodeElement(${t.id})" class="text-rose-500 hover:text-rose-400 font-bold text-[11px] transition-colors cursor-pointer"><i class="fa-solid fa-trash-can"></i></button>
+                        </td>
+                    </tr>`;
             });
+
+            calculateStatMetricsAnalytics(masterList);
+        }
+
+        function calculateStatMetricsAnalytics(list) {
+            let complete = list.filter(t => t.status === 'Complete').length;
+            let pending = list.filter(t => t.status === 'Pending').length;
+            let ratio = list.length > 0 ? Math.round((complete / list.length) * 100) : 0;
             
-            localStorage.setItem(key, JSON.stringify(data));
-            closeReviewIntentionModal();
-            renderIntentionWidget(data);
+            let revs = 0;
+            list.forEach(t => { if(t.reviewsDone) revs += t.reviewsDone.length; });
+
+            document.getElementById('stat-total-complete').innerText = complete;
+            document.getElementById('stat-total-pending').innerText = pending;
+            document.getElementById('stat-efficiency-ratio').innerText = `${ratio}%`;
+            document.getElementById('stat-total-reviews').innerText = revs;
+        }
+
+        async function purgeTopicItemNodeElement(id) {
+            if(!confirm("Are you sure you want to delete this topic from historical ledger?")) return;
             
-            if (allCompleted) {
-                triggerSurprise(1); // Royal streak unlock celebration matrix
+            try {
+                showSyncStatusIndicator("Purging Node...", "amber");
+                let response = await fetch(`/api/topics/${id}`, { method: 'DELETE' });
+                if(response.ok) {
+                    await synchronizeStateCacheWithCloudServer();
+                    renderGlobalLedgerTable();
+                }
+            } catch(e) {
+                alert("Failed to delete node from server cluster mapping.");
             }
         }
 
-
-        // --- FEATURE 4: PROCRASTINATION LAYER DATA WRAPPER ---
-        const procTips = {
-            tired: "৫ মিনিট চোখ বন্ধ করো, তারপর শুধু ১টা সহজ topic শুরু করো। বেশি প্রেশার নিও না।",
-            distracted: "ফোনটি অন্য রুমে রেখে দাও এবং ব্রাউজারের সব ট্যাব কেটে শুধু ২৫ মিনিট টাইমার অন করো।",
-            hard: "টপিকটি ছোট ছোট ভাগে ভাগ করো। দরকার হলে ইউটিউবে বেসিক ৫ মিনিটের একটা অ্যানিমেশন ভিডিও দেখো।",
-            nomotivation: "মোটিভেশনের জন্য বসে থেকো না। 'Just 2 Minutes' বাটন চেপে ২ মিনিট ট্রাই করো, মোটিভেশন চলে আসবে।",
-            other: "মন শান্ত করো। একটু পানি খাও এবং ডেস্কে বসে শুধু একটি লাইন বা ম্যাথ সলভ দিয়ে শুরু করো।"
-        };
-
-        function toggleProcrastinationPanel(open) {
-            const panel = document.getElementById('procrastination-slide-panel');
-            if (open) {
-                panel.classList.remove('translate-x-full');
-                document.getElementById('proc-reason-select').value = "";
-                document.getElementById('proc-tip-card').classList.add('hidden');
-            } else {
-                panel.classList.add('translate-x-full');
-            }
-        }
-
-        function handleProcrastinationLog(reason) {
-            if (!reason) return;
-            
-            // Build storage package entity context
-            let logs = JSON.parse(localStorage.getItem('procrastination_logs_v21')) || [];
-            logs.push({
-                timestamp: Date.now(),
-                date: systemTodayStr,
-                reason: reason
-            });
-            localStorage.setItem('procrastination_logs_v21', JSON.stringify(logs));
-            
-            // Expose response tip text content parameter matching target profile reason
-            const tipText = procTips[reason] || "শান্ত হয়ে কাজে মনোনিবেশ করুন।";
-            document.getElementById('proc-tip-text').innerText = tipText;
-            document.getElementById('proc-tip-card').classList.remove('hidden');
-        }
-
-        function renderProcrastinationTrends() {
-            const logs = JSON.parse(localStorage.getItem('procrastination_logs_v21')) || [];
-            
-            // Aggregate vector fields mapping structure
-            let counts = { tired: 0, distracted: 0, hard: 0, nomotivation: 0, other: 0 };
-            logs.forEach(l => {
-                if (counts[l.reason] !== undefined) counts[l.reason]++;
-            });
-            
-            const maxVal = Math.max(...Object.values(counts), 1);
-            const container = document.getElementById('procrastination-chart-container');
-            container.innerHTML = '';
-            
-            const mapKeys = ['tired', 'distracted', 'hard', 'nomotivation', 'other'];
-            const colors = ['bg-amber-500', 'bg-blue-500', 'bg-rose-500', 'bg-purple-500', 'bg-gray-500'];
-            
-            mapKeys.forEach((k, idx) => {
-                const heightPercentage = (counts[k] / maxVal) * 100;
-                container.innerHTML += `
-                    <div class="flex flex-col items-center h-full justify-end group relative">
-                        <span class="absolute -top-6 bg-slate-950 border border-gray-800 text-[10px] text-white px-1.5 py-0.2 rounded font-mono opacity-0 group-hover:opacity-100 transition-opacity z-10">${counts[k]}</span>
-                        <div class="${colors[idx]} rounded-t-md w-8 transition-all duration-500 shadow-lg shadow-black/40" style="height: ${heightPercentage}%"></div>
-                    </div>
-                `;
-            });
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
     </script>
 </body>
