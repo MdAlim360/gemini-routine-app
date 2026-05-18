@@ -47,7 +47,7 @@ const routineSchema = new mongoose.Schema({
 
 const Routine = mongoose.model('Routine', routineSchema);
 
-// Goal Tracking Schema (নতুন যুক্ত করা হয়েছে)
+// Goal Schema
 const goalSchema = new mongoose.Schema({
   userId: { type: String, default: 'default' },
   goals: { type: mongoose.Schema.Types.Mixed, default: {} }
@@ -62,7 +62,6 @@ const Goal = mongoose.model('Goal', goalSchema);
 app.get('/api/topics', async (req, res) => {
   try {
     const topics = await Topic.find({});
-    // Group by date text for client
     const grouped = {};
     topics.forEach(t => {
       if(!grouped[t.date]) grouped[t.date] = [];
@@ -77,7 +76,7 @@ app.get('/api/topics', async (req, res) => {
 // POST /api/topics — create multi topics
 app.post('/api/topics', async (req, res) => {
   try {
-    const items = req.body; // Array of topics
+    const items = req.body;
     const saved = await Topic.insertMany(items);
     res.json({ success: true, data: saved });
   } catch (err) {
@@ -114,7 +113,6 @@ app.delete('/api/topics', async (req, res) => {
 
 // ===================== ROUTES: ROUTINE =====================
 
-// GET /api/routine — fetch routine
 app.get('/api/routine', async (req, res) => {
   try {
     const routineDoc = await Routine.findOne({ userId: 'default' });
@@ -137,7 +135,6 @@ app.get('/api/routine', async (req, res) => {
   }
 });
 
-// PUT /api/routine — routine update
 app.put('/api/routine', async (req, res) => {
   try {
     const routineData = req.body;
@@ -153,9 +150,8 @@ app.put('/api/routine', async (req, res) => {
 });
 
 
-// ===================== ROUTES: GOALS (নতুন যুক্ত করা হয়েছে) =====================
+// ===================== ROUTES: GOALS =====================
 
-// GET /api/goals — সব ক্যাটাগরির গোল ও টার্গেট ডেটা নিয়ে আসবে
 app.get('/api/goals', async (req, res) => {
   try {
     let goalDoc = await Goal.findOne({ userId: 'default' });
@@ -177,7 +173,6 @@ app.get('/api/goals', async (req, res) => {
   }
 });
 
-// PUT /api/goals — গোল এডিট বা আপডেট করার জন্য
 app.put('/api/goals', async (req, res) => {
   try {
     const updatedGoals = req.body;
@@ -193,12 +188,11 @@ app.put('/api/goals', async (req, res) => {
 });
 
 
-// ===================== CATCH ALL: Serve frontend =====================
+// ===================== CATCH ALL =====================
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
-// ===================== START SERVER =====================
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);

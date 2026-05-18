@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Learning Routine - Legacy Edition v20.1</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4\"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,700;1,700&family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js\"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body { background-color: #060813; color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; }
         .main-title { font-family: 'Playfair Display', serif; }
@@ -15,7 +15,7 @@
         .tab-btn.active { background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%); color: white; border-color: #6366f1; box-shadow: 0 4px 20px rgba(79, 70, 229, 0.4); }
         .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #0b0f19; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; rounded: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
         .modal-animate { animation: fadeIn 0.2s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
     </style>
@@ -71,8 +71,7 @@
                             <span id="current-day-label" class="text-[10px] font-bold bg-slate-900 text-gray-300 px-2 py-0.5 rounded border border-gray-800">...</span>
                         </div>
                         <p class="text-[11px] text-gray-500 mb-4">আজকের রুটিনে নির্ধারিত ক্লাস বা টপিকগুলো নিচে দেখুন। এক ক্লিকে সেগুলোকে ট্র্যাকিং লিস্টে যুক্ত করতে পারবেন।</p>
-                        <div id="injector-slots-area" class="space-y-2.5">
-                            </div>
+                        <div id="injector-slots-area" class="space-y-2.5"></div>
                     </div>
                     
                     <div class="mt-6 pt-4 border-t border-gray-900/60">
@@ -94,9 +93,7 @@
                         </div>
                         <span id="matrix-counter-badge" class="text-xs bg-indigo-950 text-indigo-300 border border-indigo-900/50 px-2.5 py-1 rounded-lg font-black">0 Topics</span>
                     </div>
-                    
-                    <div id="active-matrix-list" class="space-y-3 max-h-[500px] overflow-y-auto custom-scrollbar pr-1">
-                        </div>
+                    <div id="active-matrix-list" class="space-y-3 max-h-[500px] overflow-y-auto custom-scrollbar pr-1"></div>
                 </div>
 
             </div>
@@ -116,9 +113,7 @@
                         <i class="fa-solid fa-gear"></i> Manage Goals
                     </button>
                 </div>
-                
-                <div id="goal-tracking-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    </div>
+                <div id="goal-tracking-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </div>
 
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -146,8 +141,7 @@
                         <i class="fa-solid fa-triangle-exclamation"></i> Retention Review Queue
                     </h3>
                     <p class="text-[11px] text-gray-500 mb-4">স্পেসড রিপিটিশন অনুযায়ী যে টপিকগুলো আজ রিভিশন দেওয়া দরকার:</p>
-                    <div id="review-queue-box" class="space-y-2.5 max-h-[350px] overflow-y-auto custom-scrollbar pr-1">
-                        </div>
+                    <div id="review-queue-box" class="space-y-2.5 max-h-[350px] overflow-y-auto custom-scrollbar pr-1"></div>
                 </div>
 
                 <div class="bg-[#090d22] border border-gray-900 p-5 rounded-2xl lg:col-span-2">
@@ -158,11 +152,9 @@
                         </div>
                         <input type="date" id="history-date-picker" onchange="loadHistoryDateLog()" class="bg-slate-950 border border-gray-900 font-bold text-xs text-white px-3 py-1.5 rounded-lg outline-none cursor-pointer">
                     </div>
-                    
                     <div class="bg-slate-950 border border-gray-900/60 p-4 rounded-xl">
                         <h4 id="history-box-title" class="text-xs font-bold text-gray-400 mb-3">Topics Logged on: None</h4>
-                        <div id="history-box-content" class="space-y-2 max-h-[250px] overflow-y-auto custom-scrollbar pr-1">
-                            </div>
+                        <div id="history-box-content" class="space-y-2 max-h-[250px] overflow-y-auto custom-scrollbar pr-1"></div>
                     </div>
                 </div>
             </div>
@@ -179,7 +171,6 @@
                         <i class="fa-solid fa-floppy-disk"></i> Save Routine Layout
                     </button>
                 </div>
-                
                 <div class="overflow-x-auto custom-scrollbar border border-gray-900 rounded-xl">
                     <table class="w-full text-left text-xs border-collapse">
                         <thead>
@@ -193,8 +184,7 @@
                                 <th class="p-3 text-center">Slot 6 (9-11)</th>
                             </tr>
                         </thead>
-                        <tbody id="routine-table-body" class="divide-y divide-gray-900 text-gray-300">
-                            </tbody>
+                        <tbody id="routine-table-body" class="divide-y divide-gray-900 text-gray-300"></tbody>
                     </table>
                 </div>
             </div>
@@ -244,10 +234,7 @@
                 <i class="fa-solid fa-sliders text-indigo-400"></i> Setup Target Finish Lines
             </h3>
             <p class="text-xs text-gray-400 mb-4">প্রতিটি ক্যাটাগরির জন্য কতটি টপিক শেষ করতে চান (Goal Target) তা নির্ধারণ করুন।</p>
-            
-            <div id="goal-inputs-container" class="space-y-3 max-h-[300px] overflow-y-auto custom-scrollbar pr-1">
-                </div>
-            
+            <div id="goal-inputs-container" class="space-y-3 max-h-[300px] overflow-y-auto custom-scrollbar pr-1"></div>
             <div class="flex justify-end gap-3 mt-6 border-t border-gray-900 pt-4">
                 <button onclick="closeGoalManagerModal()" class="px-4 py-2 text-xs font-medium text-gray-400 cursor-pointer">Cancel</button>
                 <button onclick="saveGoalTargets()" class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-indigo-600 text-white font-bold text-xs rounded-xl shadow-lg cursor-pointer">
@@ -257,11 +244,9 @@
         </div>
     </div>
 
-
     <script>
         const API_BASE = window.location.origin + '/api';
 
-        // STATIC SYSTEM TAXONOMY Configuration
         const dataset = {
             "Programming": ["JavaScript", "Python / ML", "Database SQL/NoSQL", "Data Structure / Algo"],
             "Academic / Gov Job": ["Structure–I", "Earth Quake Engineering", "Transportation", "Water Resource", "Foundation & Soil"],
@@ -285,14 +270,12 @@
             "Friday": [[], [], ["Geography", "English"], [], [], []]
         };
 
-        // GLOBAL IN-MEMORY DATABASE STATES
         let dbRoutine = {};
         let dbTopics = {};
-        let dbGoals = {}; // নতুন যুক্ত করা হয়েছে
+        let dbGoals = {};
         let activeDate = getTodayDateStr();
         let currentEditingId = null;
 
-        // HELPER: AJAX API CALLS
         async function apiGet(endpoint) {
             const res = await fetch(API_BASE + endpoint);
             const json = await res.json();
@@ -322,7 +305,6 @@
             return json.success;
         }
 
-        // BACKWARD COMPATIBILITY: AUTOMATIC LOCALSTORAGE MIGRATION LOGIC
         async function migrateFromLocalStorageIfNeeded() {
             if(localStorage.getItem('routine_db_topics')) {
                 try {
@@ -333,21 +315,14 @@
                     Object.keys(localTopics).forEach(d => {
                         localTopics[d].forEach(t => { flatArray.push(t); });
                     });
-                    if(flatArray.length > 0) {
-                        await apiPost('/topics', flatArray);
-                    }
-                    if(localRoutine) {
-                        await apiPut('/routine', localRoutine);
-                    }
-                    localStorage.clear(); // Clear all to avoid double mig
+                    if(flatArray.length > 0) await apiPost('/topics', flatArray);
+                    if(localRoutine) await apiPut('/routine', localRoutine);
+                    localStorage.clear();
                     console.log("✅ LocalStorage migration successful!");
-                } catch(err) {
-                    console.error("Migration failed:", err);
-                }
+                } catch(err) { console.error("Migration failed:", err); }
             }
         }
 
-        // INITIAL LIFE-CYCLE BOOTLOADER
         window.onload = async function() {
             document.getElementById('date-picker').value = activeDate;
             showSyncIndicator("Loading database...");
@@ -360,7 +335,7 @@
                 ]);
                 dbRoutine = routineData || defaultRoutine;
                 dbTopics = topicsData || {};
-                dbGoals = goalsData || {};
+                dbGoals = goalsData || { "Programming": 20, "Academic / Gov Job": 20, "BCS": 20, "English": 20, "Software": 20, "Research / ML": 20 };
             } catch(e) {
                 console.error('Initial load failed:', e);
                 dbRoutine = defaultRoutine;
@@ -382,7 +357,6 @@
             document.getElementById('sync-indicator').classList.add('opacity-0');
         }
 
-        // TIME UTILITY FUNCTIONS
         function getTodayDateStr() {
             const d = new Date();
             return d.toISOString().split('T')[0];
@@ -397,7 +371,6 @@
             return result.toISOString().split('T')[0];
         }
 
-        // ROUTER TAB SWITCHING ENGINE
         function switchTab(tabId) {
             document.querySelectorAll('.tab-view').forEach(el => el.classList.replace('block', 'hidden'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -407,7 +380,7 @@
 
             if(tabId === 'progress') {
                 renderProgressTab();
-                renderGoalTrackingDashboard(); // ট্যাব সুইচে গোল ড্যাশবোর্ড রেন্ডার
+                renderGoalTrackingDashboard();
             }
         }
 
@@ -416,101 +389,99 @@
             renderDailyLog();
         }
 
-        // ==================== 🛠️ ENGINE LOGIC: WORKBENCH ====================
         function setupInjectorOptions() {
             const catSel = document.getElementById('manual-cat');
+            if(!catSel) return;
             catSel.innerHTML = '';
             cats.forEach(c => { catSel.innerHTML += `<option value="${c}">${c}</option>`; });
             populateInjectorSubjects();
         }
 
         function populateInjectorSubjects() {
-            const cat = document.getElementById('manual-cat').value;
+            const catSel = document.getElementById('manual-cat');
             const subSel = document.getElementById('manual-sub');
+            if(!catSel || !subSel) return;
+            const cat = catSel.value;
             subSel.innerHTML = '';
             (dataset[cat] || []).forEach(s => { subSel.innerHTML += `<option value="${s}">${s}</option>`; });
         }
 
         function renderDailyLog() {
             const dayName = getDayNameFromDate(activeDate);
-            document.getElementById('current-day-label').innerText = activeDate + " (" + dayName + ")";
+            const labelEl = document.getElementById('current-day-label');
+            if(labelEl) labelEl.innerText = activeDate + " (" + dayName + ")";
             
-            // Render Injector Slots
             const slots = dbRoutine[dayName] || [[],[],[],[],[],[]];
             const injectorArea = document.getElementById('injector-slots-area');
-            injectorArea.innerHTML = '';
-
-            let hasSlots = false;
-            slots.forEach((slotArr, idx) => {
-                if(!slotArr || slotArr.length === 0) return;
-                hasSlots = true;
-                let subjectsText = slotArr.join(', ');
-                injectorArea.innerHTML += `
-                    <div class="bg-slate-950 p-3 rounded-xl border border-gray-900 flex justify-between items-center group">
-                        <div class="overflow-hidden pr-2">
-                            <span class="text-[9px] font-black tracking-wider text-indigo-400 block uppercase">SLOT ${idx+1}</span>
-                            <span class="text-xs font-semibold text-gray-300 block truncate">${subjectsText}</span>
-                        </div>
-                        <button onclick="injectSlotGroup('${dayName}', ${idx})" class="p-2 bg-indigo-600/10 hover:bg-indigo-600 text-indigo-400 hover:text-white rounded-lg text-[11px] font-bold transition-all whitespace-nowrap cursor-pointer">
-                            <i class="fa-solid fa-bolt"></i> Inject
-                        </button>
-                    </div>`;
-            });
-
-            if(!hasSlots) {
-                injectorArea.innerHTML = `<p class="text-gray-600 text-xs py-6 text-center">আজকের জন্য রুটিনে কোনো স্লট কনফিগার করা নেই।</p>`;
+            if(injectorArea) {
+                injectorArea.innerHTML = '';
+                let hasSlots = false;
+                slots.forEach((slotArr, idx) => {
+                    if(!slotArr || slotArr.length === 0) return;
+                    hasSlots = true;
+                    let subjectsText = slotArr.join(', ');
+                    injectorArea.innerHTML += `
+                        <div class="bg-slate-950 p-3 rounded-xl border border-gray-900 flex justify-between items-center group">
+                            <div class="overflow-hidden pr-2">
+                                <span class="text-[9px] font-black tracking-wider text-indigo-400 block uppercase">SLOT ${idx+1}</span>
+                                <span class="text-xs font-semibold text-gray-300 block truncate">${subjectsText}</span>
+                            </div>
+                            <button onclick="injectSlotGroup('${dayName}', ${idx})" class="p-2 bg-indigo-600/10 hover:bg-indigo-600 text-indigo-400 hover:text-white rounded-lg text-[11px] font-bold transition-all whitespace-nowrap cursor-pointer">
+                                <i class="fa-solid fa-bolt"></i> Inject
+                            </button>
+                        </div>`;
+                });
+                if(!hasSlots) {
+                    injectorArea.innerHTML = `<p class="text-gray-600 text-xs py-6 text-center">আজকের জন্য রুটিনে কোনো স্লট কনফিগার করা নেই।</p>`;
+                }
             }
 
-            // Render Active Logging Matrix
             const activeMatrix = document.getElementById('active-matrix-list');
-            activeMatrix.innerHTML = '';
-            const activeList = dbTopics[activeDate] || [];
-            
-            document.getElementById('matrix-counter-badge').innerText = `${activeList.length} Topics`;
-
-            if(activeList.length === 0) {
-                activeMatrix.innerHTML = `
-                    <div class="py-12 text-center border border-dashed border-gray-900 rounded-2xl">
-                        <i class="fa-solid fa-folder-open text-gray-700 text-xl mb-2 block"></i>
-                        <p class="text-gray-500 text-xs">আজকের কোনো পড়ার টপিক রেকর্ড করা হয়নি। ইনজেক্টর ব্যবহার করুন।</p>
-                    </div>`;
-                return;
-            }
-
-            activeList.forEach((t) => {
-                const isComplete = t.status === 'Complete';
-                const noteBtn = t.noteUrl ? `<a href="${t.noteUrl}" target="_blank" class="text-cyan-400 hover:underline text-[10px] flex items-center gap-1"><i class="fa-solid fa-link"></i> Note</a>` : '';
+            if(activeMatrix) {
+                activeMatrix.innerHTML = '';
+                const activeList = dbTopics[activeDate] || [];
                 
-                // Spaced Repetition Tags
-                let revBadge = '';
-                if(isComplete) {
-                    let totalR = t.reviewsDone ? t.reviewsDone.length : 0;
-                    revBadge = `<span class="text-[9px] font-black bg-slate-950 text-amber-500 border border-gray-900 px-1.5 py-0.5 rounded">R${totalR}</span>`;
+                const counterBadge = document.getElementById('matrix-counter-badge');
+                if(counterBadge) counterBadge.innerText = `${activeList.length} Topics`;
+
+                if(activeList.length === 0) {
+                    activeMatrix.innerHTML = `
+                        <div class="py-12 text-center border border-dashed border-gray-900 rounded-2xl">
+                            <i class="fa-solid fa-folder-open text-gray-700 text-xl mb-2 block"></i>
+                            <p class="text-gray-500 text-xs">আজকের কোনো পড়ার টপিক রেকর্ড করা হয়নি। ইনজেক্টর ব্যবহার করুন।</p>
+                        </div>`;
+                    return;
                 }
 
-                activeMatrix.innerHTML += `
-                    <div class="p-3 rounded-xl border ${isComplete ? 'bg-emerald-950/20 border-emerald-900/40' : 'bg-slate-950 border-gray-900/80'} flex justify-between items-center gap-3 group transition-all">
-                        <div class="flex items-start gap-3 overflow-hidden">
-                            <button onclick="toggleTopicStatus(${t.id})" class="mt-0.5 h-4 w-4 rounded-md border ${isComplete ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-gray-700 hover:border-indigo-500'} flex items-center justify-center text-[10px] transition-all cursor-pointer">
-                                ${isComplete ? '<i class="fa-solid fa-check"></i>' : ''}
-                            </button>
-                            <div class="overflow-hidden">
-                                <div class="flex items-center gap-2 mb-0.5 flex-wrap">
-                                    <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded uppercase tracking-wider bg-indigo-950/60 text-indigo-400 border border-indigo-900/30">${t.category}</span>
-                                    <span class="text-[10px] font-bold text-gray-400">${t.subject}</span>
-                                    ${revBadge}
+                activeList.forEach((t) => {
+                    const isComplete = t.status === 'Complete';
+                    const noteBtn = t.noteUrl ? `<a href="${t.noteUrl}" target="_blank" class="text-cyan-400 hover:underline text-[10px] flex items-center gap-1"><i class="fa-solid fa-link"></i> Note</a>` : '';
+                    let revBadge = isComplete ? `<span class="text-[9px] font-black bg-slate-950 text-amber-500 border border-gray-900 px-1.5 py-0.5 rounded">R${t.reviewsDone ? t.reviewsDone.length : 0}</span>` : '';
+
+                    activeMatrix.innerHTML += `
+                        <div class="p-3 rounded-xl border ${isComplete ? 'bg-emerald-950/20 border-emerald-900/40' : 'bg-slate-950 border-gray-900/80'} flex justify-between items-center gap-3 group transition-all">
+                            <div class="flex items-start gap-3 overflow-hidden">
+                                <button onclick="toggleTopicStatus(${t.id})" class="mt-0.5 h-4 w-4 rounded-md border ${isComplete ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-gray-700 hover:border-indigo-500'} flex items-center justify-center text-[10px] transition-all cursor-pointer">
+                                    ${isComplete ? '<i class="fa-solid fa-check"></i>' : ''}
+                                </button>
+                                <div class="overflow-hidden">
+                                    <div class="flex items-center gap-2 mb-0.5 flex-wrap">
+                                        <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded uppercase tracking-wider bg-indigo-950/60 text-indigo-400 border border-indigo-900/30">${t.category}</span>
+                                        <span class="text-[10px] font-bold text-gray-400">${t.subject}</span>
+                                        ${revBadge}
+                                    </div>
+                                    <h4 class="text-xs font-semibold ${isComplete ? 'text-gray-400 line-through' : 'text-gray-200'} truncate">${t.topicName}</h4>
+                                    ${noteBtn}
                                 </div>
-                                <h4 class="text-xs font-semibold ${isComplete ? 'text-gray-400 line-through' : 'text-gray-200'} truncate">${t.topicName}</h4>
-                                ${noteBtn}
                             </div>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <button onclick="openEditModal(${t.id})" class="opacity-0 group-hover:opacity-100 p-2 text-gray-500 hover:text-indigo-400 rounded-lg text-xs transition-all cursor-pointer">
-                                <i class="fa-solid fa-sliders"></i>
-                            </button>
-                        </div>
-                    </div>`;
-            });
+                            <div class="flex items-center gap-1">
+                                <button onclick="openEditModal(${t.id})" class="opacity-0 group-hover:opacity-100 p-2 text-gray-500 hover:text-indigo-400 rounded-lg text-xs transition-all cursor-pointer">
+                                    <i class="fa-solid fa-sliders"></i>
+                                </button>
+                            </div>
+                        </div>`;
+                });
+            }
         }
 
         async function injectSlotGroup(dayName, slotIdx) {
@@ -522,7 +493,6 @@
             let newItems = [];
 
             subjects.forEach((sub, i) => {
-                // Find matching category
                 let matchedCat = "Programming";
                 for (let c in dataset) {
                     if (dataset[c].includes(sub)) { matchedCat = c; break; }
@@ -550,7 +520,7 @@
                 if(!dbTopics[activeDate]) dbTopics[activeDate] = [];
                 dbTopics[activeDate] = dbTopics[activeDate].concat(saved);
                 renderDailyLog();
-                renderGoalTrackingDashboard(); // রি-রেন্ডার গোল
+                renderGoalTrackingDashboard();
             } catch(e) { console.error(e); }
             hideSyncIndicator();
         }
@@ -585,19 +555,16 @@
                 dbTopics[activeDate].push(saved[0]);
                 document.getElementById('manual-name').value = '';
                 renderDailyLog();
-                renderGoalTrackingDashboard(); // রি-রেন্ডার গোল
+                renderGoalTrackingDashboard();
             } catch(e) { console.error(e); }
             hideSyncIndicator();
         }
 
         async function toggleTopicStatus(id) {
             let found = null;
-            let targetDate = null;
-
-            // Find cross-date if needed, but activeDate is typical
             Object.keys(dbTopics).forEach(d => {
                 let idx = dbTopics[d].findIndex(t => t.id === id);
-                if(idx !== -1) { found = dbTopics[d][idx]; targetDate = d; }
+                if(idx !== -1) found = dbTopics[d][idx];
             });
 
             if(!found) return;
@@ -607,18 +574,12 @@
             found.status = newStatus;
             found.completionDate = (newStatus === 'Complete') ? activeDate : null;
 
-            // Setup automated spaced reviews if completed
             if(newStatus === 'Complete') {
                 found.reviewsDone = [];
                 found.reviewHistoryStamps = {};
-                
                 if(found.customReviewIntervalDays) {
                     found.customRevPendingOn = addDays(activeDate, found.customReviewIntervalDays);
-                } else {
-                    found.customRevPendingOn = null;
                 }
-                
-                // Success celebration confetti blast animation
                 confetti({ particleCount: 80, spread: 50, origin: { y: 0.7 } });
             } else {
                 found.customRevPendingOn = null;
@@ -627,12 +588,11 @@
             try {
                 await apiPut('/topics', found);
                 renderDailyLog();
-                renderGoalTrackingDashboard(); // ইনস্ট্যান্ট প্রোগ্রেস আপডেট
+                renderGoalTrackingDashboard();
             } catch(e) { console.error(e); }
             hideSyncIndicator();
         }
 
-        // ==================== ⚙️ EDIT & UPDATE MODAL LOGIC ====================
         function openEditModal(id) {
             currentEditingId = id;
             let found = null;
@@ -672,12 +632,10 @@
 
         async function saveTopicAction() {
             if(!currentEditingId) return;
-            
             let found = null;
-            let targetDate = null;
             Object.keys(dbTopics).forEach(d => {
                 let idx = dbTopics[d].findIndex(t => t.id === currentEditingId);
-                if(idx !== -1) { found = dbTopics[d][idx]; targetDate = d; }
+                if(idx !== -1) found = dbTopics[d][idx];
             });
 
             if(!found) return;
@@ -692,8 +650,7 @@
                 let daysVal = parseInt(document.getElementById('modal-custom-days').value);
                 found.customReviewIntervalDays = (isNaN(daysVal) || daysVal <= 0) ? null : daysVal;
                 if(found.status === 'Complete' && found.customReviewIntervalDays) {
-                    let base = found.completionDate || activeDate;
-                    found.customRevPendingOn = addDays(base, found.customReviewIntervalDays);
+                    found.customRevPendingOn = addDays(found.completionDate || activeDate, found.customReviewIntervalDays);
                 }
             } else {
                 found.customReviewIntervalDays = null;
@@ -704,7 +661,7 @@
                 await apiPut('/topics', found);
                 closeEditModal();
                 renderDailyLog();
-                renderGoalTrackingDashboard(); // গোল রি-রেন্ডার
+                renderGoalTrackingDashboard();
             } catch(e) { console.error(e); }
             hideSyncIndicator();
         }
@@ -722,13 +679,12 @@
                     });
                     closeEditModal();
                     renderDailyLog();
-                    renderGoalTrackingDashboard(); // গোল রি-রেন্ডার
+                    renderGoalTrackingDashboard();
                 }
             } catch(e) { console.error(e); }
             hideSyncIndicator();
         }
 
-        // ==================== 📊 ENGINE LOGIC: ANALYTICS & REVIEWS ====================
         function renderProgressTab() {
             let total = 0, complete = 0, pending = 0;
             let reviewQueue = [];
@@ -738,28 +694,17 @@
                     total++;
                     if(t.status === 'Complete') {
                         complete++;
-                        
-                        // Calculate Spaced Repetition Requirements
                         let baseDate = t.completionDate || t.date;
                         let rDone = t.reviewsDone || [];
-
-                        // Default interval algorithm milestones: 1 day, 3 days, 7 days, 14 days, 30 days
                         let standardIntervals = [1, 3, 7, 14, 30];
                         let nextOffset = standardIntervals[Math.min(rDone.length, standardIntervals.length - 1)];
                         let standardPendingDate = addDays(baseDate, nextOffset);
 
                         let isOverdue = false;
-                        if(standardPendingDate <= activeDate && rDone.length < 5) {
-                            isOverdue = true;
-                        }
-                        // Overwrite with custom interval logic if active
-                        if(t.customRevPendingOn) {
-                            isOverdue = (t.customRevPendingOn <= activeDate);
-                        }
+                        if(standardPendingDate <= activeDate && rDone.length < 5) isOverdue = true;
+                        if(t.customRevPendingOn) isOverdue = (t.customRevPendingOn <= activeDate);
 
-                        if(isOverdue) {
-                            reviewQueue.push(t);
-                        }
+                        if(isOverdue) reviewQueue.push(t);
                     } else {
                         pending++;
                     }
@@ -771,31 +716,28 @@
             document.getElementById('stat-pending').innerText = pending;
             document.getElementById('stat-ratio').innerText = total === 0 ? "0%" : Math.round((complete/total)*100) + "%";
 
-            // Render Review List Queue UI Box
             const qBox = document.getElementById('review-queue-box');
-            qBox.innerHTML = '';
-
-            if(reviewQueue.length === 0) {
-                qBox.innerHTML = `<p class="text-gray-600 text-xs py-4 text-center">আজকের কোনো রিভিশন ওভারডিউ পেন্ডিং নেই। চমৎকার ধারণ ক্ষমতা!</p>`;
-            } else {
-                reviewQueue.forEach(t => {
-                    let rCount = t.reviewsDone ? t.reviewsDone.length : 0;
-                    let typeLabel = t.customReviewIntervalDays ? `Custom (${t.customReviewIntervalDays}d)` : `Milestone ${rCount+1}`;
-                    
-                    qBox.innerHTML += `
-                        <div class="bg-slate-950 p-3 rounded-xl border border-orange-950/40 flex justify-between items-center gap-2">
-                            <div class="overflow-hidden">
-                                <span class="text-[9px] font-bold text-orange-400 block uppercase">${t.subject} • ${typeLabel}</span>
-                                <h4 class="text-xs text-gray-300 truncate font-semibold">${t.topicName}</h4>
-                            </div>
-                            <button onclick="triggerReviewClear(${t.id})" class="px-2.5 py-1.5 bg-orange-600/10 hover:bg-orange-600 text-orange-400 hover:text-white font-bold rounded-lg text-[10px] whitespace-nowrap transition-all cursor-pointer">
-                                <i class="fa-solid fa-square-check"></i> Clear
-                            </button>
-                        </div>`;
-                });
+            if(qBox) {
+                qBox.innerHTML = '';
+                if(reviewQueue.length === 0) {
+                    qBox.innerHTML = `<p class="text-gray-600 text-xs py-4 text-center">আজকের কোনো রিভিশন ওভারডিউ পেন্ডিং নেই।</p>`;
+                } else {
+                    reviewQueue.forEach(t => {
+                        let typeLabel = t.customReviewIntervalDays ? `Custom (${t.customReviewIntervalDays}d)` : `Milestone ${(t.reviewsDone?t.reviewsDone.length:0)+1}`;
+                        qBox.innerHTML += `
+                            <div class="bg-slate-950 p-3 rounded-xl border border-orange-950/40 flex justify-between items-center gap-2">
+                                <div class="overflow-hidden">
+                                    <span class="text-[9px] font-bold text-orange-400 block uppercase">${t.subject} • ${typeLabel}</span>
+                                    <h4 class="text-xs text-gray-300 truncate font-semibold">${t.topicName}</h4>
+                                </div>
+                                <button onclick="triggerReviewClear(${t.id})" class="px-2.5 py-1.5 bg-orange-600/10 hover:bg-orange-600 text-orange-400 hover:text-white font-bold rounded-lg text-[10px] whitespace-nowrap transition-all cursor-pointer">
+                                    <i class="fa-solid fa-square-check"></i> Clear
+                                </button>
+                            </div>`;
+                    });
+                }
             }
 
-            // Set default date for history viewer if empty
             if(!document.getElementById('history-date-picker').value) {
                 document.getElementById('history-date-picker').value = activeDate;
                 loadHistoryDateLog();
@@ -816,11 +758,9 @@
             if(!found.reviewHistoryStamps) found.reviewHistoryStamps = {};
 
             let nextIndex = found.reviewsDone.length + 1;
-            let stampKey = `Review_${nextIndex}`;
             found.reviewsDone.push(activeDate);
-            found.reviewHistoryStamps[stampKey] = activeDate;
+            found.reviewHistoryStamps[`Review_${nextIndex}`] = activeDate;
 
-            // Recalculate next custom interval if activated
             if(found.customReviewIntervalDays) {
                 found.customRevPendingOn = addDays(activeDate, found.customReviewIntervalDays);
             } else {
@@ -830,7 +770,7 @@
             try {
                 await apiPut('/topics', found);
                 renderProgressTab();
-                renderGoalTrackingDashboard(); // গোল রি-রেন্ডার
+                renderGoalTrackingDashboard();
                 confetti({ particleCount: 30, spread: 20, origin: { y: 0.6 } });
             } catch(e) { console.error(e); }
             hideSyncIndicator();
@@ -839,7 +779,7 @@
         function loadHistoryDateLog() {
             const dateStr = document.getElementById('history-date-picker').value;
             const content = document.getElementById('history-box-content');
-            if(!dateStr) return;
+            if(!dateStr || !content) return;
 
             document.getElementById('history-box-title').innerText = `Topics Logged on: ${dateStr}`;
             content.innerHTML = '';
@@ -864,15 +804,12 @@
             }
         }
 
-
-        // ===================== 🏎️ LIVE GOAL TRACKING ENGINE LOGIC (নতুন যুক্ত করা হয়েছে) =====================
-
+        // ===================== LIVE GOAL TRACKING RENDER ENGINE =====================
         function renderGoalTrackingDashboard() {
             const grid = document.getElementById('goal-tracking-grid');
             if (!grid) return;
             grid.innerHTML = '';
 
-            // ক্যাটাগরি ওয়াইজ অলরেডি কমপ্লিট হওয়া টপিক কাউন্ট বের করা
             const completedCounts = {};
             cats.forEach(c => completedCounts[c] = 0);
 
@@ -884,7 +821,6 @@
                 });
             });
 
-            // প্রতিটি ক্যাটাগরির জন্য প্রোগ্রেস বার এবং অ্যানিমেটেড ইউআই জেনারেট করা
             cats.forEach((cat, idx) => {
                 const completed = completedCounts[cat];
                 const target = dbGoals[cat] || 20; 
@@ -912,7 +848,6 @@
 
                         <div class="relative w-full h-3 bg-slate-950 rounded-full border border-gray-950 p-[2px] mb-3">
                             <div class="h-full rounded-full bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-500 shadow-[0_0_10px_rgba(168,85,247,0.4)] transition-all duration-1000 ease-out" style="width: ${percent}%"></div>
-                            
                             <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 mr-2 text-[10px] ${isGoalAchieved ? 'text-emerald-400 scale-125' : 'text-gray-600'} transition-all">
                                 <i class="fa-solid fa-flag-checkered"></i>
                             </div>
@@ -925,13 +860,13 @@
                                 : `<span class="text-gray-400">Remaining: <strong class="text-rose-400">${remaining}</strong> more</span>`
                             }
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
         }
 
         function openGoalManagerModal() {
             const container = document.getElementById('goal-inputs-container');
+            if(!container) return;
             container.innerHTML = '';
             
             cats.forEach(cat => {
@@ -942,10 +877,8 @@
                         <div class="w-32">
                             <input type="number" id="goal-input-${cat}" value="${currentTarget}" min="1" class="w-full bg-[#0a0f24] border border-gray-800 rounded-lg px-3 py-1.5 text-xs text-white text-center font-bold outline-none focus:border-indigo-500">
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
-            
             document.getElementById('goal-manager-modal').classList.remove('hidden');
         }
 
@@ -956,7 +889,8 @@
         async function saveGoalTargets() {
             const updatedGoals = {};
             cats.forEach(cat => {
-                const val = parseInt(document.getElementById(`goal-input-${cat}`).value);
+                const inputEl = document.getElementById(`goal-input-${cat}`);
+                const val = inputEl ? parseInt(inputEl.value) : 20;
                 updatedGoals[cat] = isNaN(val) || val <= 0 ? 20 : val;
             });
 
@@ -967,17 +901,13 @@
                 dbGoals = await apiPut('/goals', updatedGoals);
                 renderGoalTrackingDashboard();
                 confetti({ particleCount: 60, spread: 40, origin: { y: 0.8 } });
-            } catch(e) {
-                console.error('Failed to save goals:', e);
-            } finally {
-                hideSyncIndicator();
-            }
+            } catch(e) { console.error('Failed to save goals:', e); }
+            hideSyncIndicator();
         }
 
-
-        // ==================== 📅 ENGINE LOGIC: MASTER ROUTINE SETTINGS ====================
         function renderRoutineTable() {
             const tbody = document.getElementById('routine-table-body');
+            if(!tbody) return;
             tbody.innerHTML = '';
 
             days.forEach(day => {
@@ -985,18 +915,14 @@
                     <td class="p-3 font-bold text-indigo-400 border-r border-gray-900 bg-slate-950/40">${day}</td>`;
                 
                 const daySlots = dbRoutine[day] || [[],[],[],[],[],[]];
-                
-                // Construct standard 6 slots inputs
                 for(let i=0; i<6; i++) {
                     let slotSubjects = daySlots[i] || [];
                     let valueText = slotSubjects.join(', ');
-
                     rowHtml += `
                         <td class="p-2 border-r border-gray-900 text-center">
-                            <input type="text" id="cell-${day}-${i}" value="${valueText}" placeholder="e.g. Excel, JavaScript" class="w-full bg-[#070b1a] border border-gray-950 rounded px-2 py-1 text-center font-medium text-white outline-none focus:border-indigo-600 text-xs">
+                            <input type="text" id="cell-${day}-${i}" value="${valueText}" placeholder="e.g. Excel" class="w-full bg-[#070b1a] border border-gray-950 rounded px-2 py-1 text-center font-medium text-white outline-none focus:border-indigo-600 text-xs">
                         </td>`;
                 }
-
                 rowHtml += `</tr>`;
                 tbody.innerHTML += rowHtml;
             });
@@ -1009,11 +935,11 @@
             days.forEach(day => {
                 newLayout[day] = [];
                 for(let i=0; i<6; i++) {
-                    let rawVal = document.getElementById(`cell-${day}-${i}`).value.trim();
+                    let cell = document.getElementById(`cell-${day}-${i}`);
+                    let rawVal = cell ? cell.value.trim() : "";
                     if(rawVal === '') {
                         newLayout[day].push([]);
                     } else {
-                        // Split by comma and clean spaces
                         let cleanArr = rawVal.split(',').map(s => s.trim()).filter(s => s !== '');
                         newLayout[day].push(cleanArr);
                     }
