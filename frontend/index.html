@@ -3,687 +3,766 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alim's Unified Super Hub v3.5</title>
+    <title>My Learning Routine - Legacy Edition v20.1</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,700;1,700&family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
     <style>
-        body { background-color: #040612; color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: #060813; color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; }
         .main-title { font-family: 'Playfair Display', serif; }
-        .glass-panel { background: rgba(13, 18, 41, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); }
-        .tab-btn { transition: all 0.2s ease-in-out; }
-        .active-tab { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: #ffffff; box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4); }
-        .flip-card { perspective: 1000px; }
-        .flip-card-inner { transition: transform 0.6s; transform-style: preserve-3d; position: relative; }
-        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
-        .flip-card-front, .flip-card-back { backface-visibility: hidden; position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
-        .flip-card-back { transform: rotateY(180deg); }
+        .tab-btn { background: rgba(30, 41, 59, 0.3); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s ease; }
+        .tab-btn.active { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-color: #3b82f6; box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3); }
+        .glass-card { background: rgba(13, 18, 41, 0.45); border: 1px solid rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 99px; }
+        .day-grid-cell { background: rgba(7, 10, 29, 0.7); border: 1px solid rgba(255, 255, 255, 0.02); transition: all 0.2s ease; }
+        .day-grid-cell:hover { border-color: rgba(59, 130, 246, 0.3); background: rgba(13, 19, 48, 0.8); }
+        .day-grid-cell.active-day { background: linear-gradient(145deg, #0f1c42 0%, #060a1f 100%); border-color: #2563eb; box-shadow: inset 0 0 12px rgba(37, 99, 219, 0.2); }
     </style>
 </head>
-<body class="min-h-screen pb-12">
+<body class="min-h-screen pb-16 antialiased">
 
-    <nav class="sticky top-0 z-50 bg-[#060a1f]/90 border-b border-gray-900 backdrop-blur-md px-4 py-3 shadow-xl">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <header class="sticky top-0 z-50 bg-[#060813]/80 border-b border-gray-900/60 backdrop-blur-xl px-4 py-3.5">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <div class="p-2 bg-blue-600 rounded-xl"><i class="fa-solid fa-layer-group text-xl text-white"></i></div>
+                <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-700 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                    <i class="fa-solid fa-graduation-cap text-sm text-white"></i>
+                </div>
                 <div>
-                    <h1 class="text-md font-bold text-white tracking-wide">ALIM'S UNIFIED HUB</h1>
-                    <p class="text-[10px] text-gray-400">Routine Engine + Ecosystem v3.5</p>
+                    <h1 class="text-md font-bold text-white tracking-wide uppercase">Alim's Workspace</h1>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-wider">CIVIL ENGINEERING & DEPLOYMENT ARCHITECTURE</p>
                 </div>
             </div>
             
-            <div class="flex flex-wrap gap-1 bg-[#0a0f2b] p-1 rounded-xl border border-gray-900">
-                <button onclick="switchGlobalTab('home')" id="nav-home" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-calendar-day"></i> Routine & Injector</button>
-                <button onclick="switchGlobalTab('goals')" id="nav-goals" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-bullseye"></i> Goals</button>
-                <button onclick="switchGlobalTab('exam')" id="nav-exam" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-laptop-code"></i> AI Exam</button>
-                <button onclick="switchGlobalTab('flashcard')" id="nav-flashcard" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-layer-group"></i> Flashcard</button>
-                <button onclick="switchGlobalTab('performance')" id="nav-performance" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-chart-line"></i> Stats</button>
-                <button onclick="switchGlobalTab('pomodoro')" id="nav-pomodoro" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-stopwatch"></i> Pomodoro</button>
-                <button onclick="switchGlobalTab('library')" id="nav-library" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white flex items-center gap-1"><i class="fa-solid fa-vault"></i> Library</button>
-            </div>
-
-            <div class="flex items-center gap-3 bg-gray-950 px-3 py-1.5 rounded-xl border border-gray-800 text-xs">
-                <div class="text-center"><span class="block text-[9px] uppercase text-gray-500 font-bold">Tier Badge</span><span id="global-badge" class="font-bold text-amber-400 text-[11px]">Beginner</span></div>
-                <div class="h-6 w-px bg-gray-800"></div>
-                <div class="text-center"><span class="block text-[9px] uppercase text-gray-500 font-bold">Total XP</span><span id="global-xp" class="font-bold text-indigo-400 text-[11px]">0</span></div>
+            <div class="flex items-center gap-1.5 overflow-x-auto max-w-full custom-scrollbar p-0.5">
+                <button onclick="switchWorkspaceActiveTab('workspace')" id="tab-workspace" class="tab-btn active text-xs font-semibold px-4 py-2 rounded-xl text-gray-300 flex items-center gap-1.5 whitespace-nowrap cursor-pointer"><i class="fa-solid fa-calendar-check text-[11px]"></i> Routine Hub</button>
+                <button onclick="switchWorkspaceActiveTab('injector')" id="tab-injector" class="tab-btn text-xs font-semibold px-4 py-2 rounded-xl text-gray-400 hover:text-white flex items-center gap-1.5 whitespace-nowrap cursor-pointer"><i class="fa-solid fa-circle-plus text-[11px]"></i> Inject Vector</button>
+                <button onclick="switchWorkspaceActiveTab('scheduler')" id="tab-scheduler" class="tab-btn text-xs font-semibold px-4 py-2 rounded-xl text-gray-400 hover:text-white flex items-center gap-1.5 whitespace-nowrap cursor-pointer"><i class="fa-solid fa-sliders text-[11px]"></i> Edit Blueprint</button>
+                <button onclick="switchWorkspaceActiveTab('analytics')" id="tab-analytics" class="tab-btn text-xs font-semibold px-4 py-2 rounded-xl text-gray-400 hover:text-white flex items-center gap-1.5 whitespace-nowrap cursor-pointer"><i class="fa-solid fa-chart-pie text-[11px]"></i> Analytics</button>
+                <button onclick="switchWorkspaceActiveTab('history')" id="tab-history" class="tab-btn text-xs font-semibold px-4 py-2 rounded-xl text-gray-400 hover:text-white flex items-center gap-1.5 whitespace-nowrap cursor-pointer"><i class="fa-solid fa-database text-[11px]"></i> Archive</button>
             </div>
         </div>
-    </nav>
+    </header>
 
     <main class="max-w-7xl mx-auto px-4 mt-6">
         
-        <section id="section-home" class="global-section hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="glass-card rounded-2xl p-4 border border-gray-900/40 text-center md:text-left">
+                <span class="text-[9px] uppercase font-bold text-gray-500 tracking-widest block mb-1">Today's Remaining</span>
+                <div class="text-xl font-black text-rose-400" id="stat-pending-counter">0</div>
+            </div>
+            <div class="glass-card rounded-2xl p-4 border border-gray-900/40 text-center md:text-left">
+                <span class="text-[9px] uppercase font-bold text-gray-500 tracking-widest block mb-1">Total Finished Matrix</span>
+                <div class="text-xl font-black text-emerald-400" id="stat-completed-counter">0</div>
+            </div>
+            <div class="glass-card rounded-2xl p-4 border border-gray-900/40 text-center md:text-left">
+                <span class="text-[9px] uppercase font-bold text-gray-500 tracking-widest block mb-1">Yield Efficiency Ratio</span>
+                <div class="text-xl font-black text-blue-400" id="stat-efficiency-ratio">0%</div>
+            </div>
+            <div class="glass-card rounded-2xl p-4 border border-gray-900/40 text-center md:text-left">
+                <span class="text-[9px] uppercase font-bold text-gray-500 tracking-widest block mb-1">Ecosystem Log Rows</span>
+                <div class="text-xl font-black text-indigo-400" id="stat-total-records">0</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            
+            <div class="lg:col-span-4 space-y-6">
                 
-                <div class="lg:col-span-4 space-y-6">
-                    <div class="glass-panel p-4 rounded-2xl">
-                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Calendar Navigation Target</h3>
-                        <div class="grid grid-cols-4 gap-2 text-center text-xs" id="calendar-day-matrix">
-                            </div>
+                <div class="glass-card p-4.5 rounded-2xl border border-gray-900/40 shadow-xl">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-calendar-day text-blue-500 mr-1"></i> Context Node Focus</span>
+                        <button onclick="syncCalendarTimelineFocusToPresentTimeDate()" class="text-[9px] text-blue-400 font-bold tracking-tight hover:underline uppercase bg-blue-950/40 border border-blue-900/30 px-2 py-0.5 rounded-md">Today</button>
                     </div>
+                    <div class="grid grid-cols-4 gap-2 text-center" id="calendar-render-grid-cells">
+                        </div>
+                </div>
 
-                    <div class="glass-panel p-5 rounded-2xl">
-                        <h3 class="text-sm font-bold text-blue-400 uppercase tracking-wider mb-4"><i class="fa-solid fa-plus"></i> Inject Routine Topic</h3>
-                        <div class="space-y-3 text-xs text-gray-300">
-                            <div>
-                                <label class="block mb-1 text-gray-400">Target Segment Date</label>
-                                <input type="date" id="inj-date" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none">
-                            </div>
-                            <div>
-                                <label class="block mb-1 text-gray-400">Category Layout</label>
-                                <select id="inj-category" onchange="populateSubjectDropdown()" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none">
-                                    <option value="AI & Code">AI & Code</option>
-                                    <option value="Civil Engr">Civil Engr</option>
-                                    <option value="BCS & Job Prep">BCS & Job Prep</option>
-                                    <option value="Skills Vector">Skills Vector</option>
+                <div class="glass-card p-5 rounded-2xl border border-gray-900/40 shadow-xl space-y-4">
+                    <h3 class="text-xs font-black tracking-widest uppercase text-blue-400 border-b border-gray-900 pb-2 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Operational Node Params</h3>
+                    
+                    <div class="space-y-3.5 text-xs">
+                        <div>
+                            <label class="block mb-1 text-gray-400 font-medium">Target Context Execution Date</label>
+                            <input type="date" id="form-field-date" class="w-full bg-[#040613] border border-gray-800/80 rounded-xl p-2.5 text-white font-mono outline-none focus:border-blue-500 transition shadow-inner">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-400 font-medium">Domain Classification Category Layout</label>
+                            <select id="form-field-category" onchange="syncLinkedCategorySubjectsMappingDropdownPresets()" class="w-full bg-[#040613] border border-gray-800/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition shadow-inner">
+                                <option value="AI & Code">AI & Code</option>
+                                <option value="Civil Engr">Civil Engr</option>
+                                <option value="BCS & Job Prep">BCS & Job Prep</option>
+                                <option value="Skills Vector">Skills Vector</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-400 font-medium">Core Bound Structural Subject Index</label>
+                            <select id="form-field-subject" class="w-full bg-[#040613] border border-gray-800/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition shadow-inner">
                                 </select>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-400 font-medium">Topic Definition Statement</label>
+                            <input type="text" id="form-field-topic" class="w-full bg-[#040613] border border-gray-800/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition shadow-inner placeholder:text-gray-700" placeholder="e.g. Frame Matrix Method Evaluation">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-gray-400 font-medium">External Cloud Resource URI</label>
+                            <input type="url" id="form-field-url" class="w-full bg-[#040613] border border-gray-800/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition shadow-inner placeholder:text-gray-700" placeholder="https://drive.google.com/...">
+                        </div>
+                        
+                        <div class="bg-[#030510]/80 border border-gray-900/80 p-3 rounded-xl space-y-2">
+                            <span class="text-[9px] uppercase font-bold text-gray-500 tracking-wider block">Anki Spacing Buffer Logic Pipeline</span>
+                            <div class="grid grid-cols-2 gap-2 text-[10px]">
+                                <label class="flex items-center gap-1.5 cursor-pointer text-gray-300">
+                                    <input type="radio" name="spacing-mode" value="standard" checked onchange="toggleIntervalCustomModeDisplayState()" class="accent-blue-500"> Standard (1,3,7,14,30)
+                                </label>
+                                <label class="flex items-center gap-1.5 cursor-pointer text-gray-300">
+                                    <input type="radio" name="spacing-mode" value="custom" onchange="toggleIntervalCustomModeDisplayState()" class="accent-blue-500"> Custom Delta Offset
+                                </label>
                             </div>
+                            <div id="custom-interval-input-row" class="hidden pt-1">
+                                <input type="number" id="form-field-custom-interval" min="1" max="180" class="w-full bg-[#06091f] border border-gray-800 rounded-lg p-2 text-white font-mono text-center outline-none" placeholder="Days Interval Sequence">
+                            </div>
+                        </div>
+
+                        <button onclick="commitInjectedTopicDataRowToCluster()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 shadow-lg shadow-blue-900/20 py-2.5 rounded-xl text-white font-bold tracking-wide transition transform active:scale-98 cursor-pointer">Commit Transaction Log Node</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="lg:col-span-8">
+                
+                <div id="viewport-workspace" class="workspace-view-node space-y-6">
+                    <div class="glass-card p-5 rounded-2xl border border-gray-900/40 shadow-2xl">
+                        <div class="flex justify-between items-center mb-4 border-b border-gray-900 pb-3">
                             <div>
-                                <label class="block mb-1 text-gray-400">Linked Core Subject</label>
-                                <select id="inj-subject" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none">
-                                    </select>
+                                <h2 class="text-base font-bold main-title text-white tracking-wide" id="workspace-card-header-date">Workspace Logging Cluster...</h2>
+                                <p class="text-[10px] text-gray-400 font-mono tracking-tight uppercase" id="workspace-card-header-dayname">Baseline Day Index Tag</p>
                             </div>
+                            <span class="text-[9px] font-mono font-bold uppercase tracking-widest px-2.5 py-1 rounded-md bg-blue-950/60 border border-blue-900/40 text-blue-400">Live Context Data Engine</span>
+                        </div>
+
+                        <div class="space-y-3.5" id="workspace-render-target-list">
+                            </div>
+                    </div>
+                </div>
+
+                <div id="viewport-injector" class="workspace-view-node hidden">
+                    <div class="glass-card p-5 rounded-2xl border border-gray-900/40 shadow-2xl">
+                        <h2 class="text-sm font-bold uppercase tracking-wider mb-3 text-indigo-400"><i class="fa-solid fa-list-check"></i> Pending Transaction Buffers Sequence</h2>
+                        <div class="space-y-2.5 max-h-[500px] overflow-y-auto custom-scrollbar pr-1" id="injector-pending-render-target">
+                            </div>
+                    </div>
+                </div>
+
+                <div id="viewport-scheduler" class="workspace-view-node hidden">
+                    <div class="glass-card p-5 rounded-2xl border border-gray-900/40 shadow-2xl">
+                        <div class="flex justify-between items-center mb-4 border-b border-gray-900 pb-3">
                             <div>
-                                <label class="block mb-1 text-gray-400">Topic Statement</label>
-                                <input type="text" id="inj-topic" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none" placeholder="e.g. Frame Matrix Method Evaluation">
+                                <h2 class="text-sm font-bold text-white uppercase tracking-wider">Baseline Blueprint Routine Layout Matrix</h2>
+                                <p class="text-[10px] text-gray-500">Static template architecture parameters config profiles</p>
                             </div>
-                            <div>
-                                <label class="block mb-1 text-gray-400">Resource Note URL (Optional)</label>
-                                <input type="url" id="inj-url" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none" placeholder="https://...">
-                            </div>
-                            <button onclick="injectTopicToDatabase()" class="w-full bg-blue-600 hover:bg-blue-700 py-2.5 rounded-lg text-white font-bold tracking-wide transition">Commit Topic Injection</button>
+                            <button onclick="commitStaticRoutineTemplateMatrixToCluster()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-1.5 rounded-lg text-xs tracking-tight transition cursor-pointer">Save Blueprint</button>
                         </div>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-8 space-y-6">
-                    <div class="glass-panel p-5 rounded-2xl">
-                        <div class="flex justify-between items-center mb-4 border-b border-gray-800 pb-3">
-                            <div>
-                                <h2 class="text-lg font-bold main-title text-white" id="routine-focused-date-title">Routine Engine Loading...</h2>
-                                <p class="text-[11px] text-gray-400 font-mono" id="routine-focused-day-tag">Day Tag Profile</p>
-                            </div>
-                            <span class="text-xs font-mono font-bold uppercase tracking-wider px-3 py-1 rounded bg-blue-950 border border-blue-900 text-blue-400">Live Workspace</span>
-                        </div>
-
-                        <div class="space-y-3" id="active-day-topics-list">
+                        <div class="space-y-4 max-h-[500px] overflow-y-auto custom-scrollbar pr-1" id="scheduler-render-matrix-target">
                             </div>
                     </div>
                 </div>
 
-            </div>
-        </section>
-
-        <section id="section-goals" class="global-section hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="glass-panel p-5 rounded-2xl h-fit">
-                    <h3 class="text-sm font-bold uppercase text-indigo-400 mb-4 tracking-wider"><i class="fa-solid fa-plus-circle"></i> Create Goal</h3>
-                    <div class="space-y-3 text-xs">
-                        <div>
-                            <label class="block mb-1 text-gray-400">Goal Title</label>
-                            <input type="text" id="goal-title" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white outline-none" placeholder="e.g., Clear BCS Prelims">
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-400">Category Tag</label>
-                            <select id="goal-category" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white">
-                                <option value="BCS">BCS</option>
-                                <option value="Engineering">Engineering</option>
-                                <option value="Programming">Programming</option>
-                                <option value="English">English</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-400">Target Deadline</label>
-                            <input type="date" id="goal-deadline" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white">
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-400">Description</label>
-                            <textarea id="goal-desc" rows="3" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white"></textarea>
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-400">Milestones (Comma separated)</label>
-                            <input type="text" id="goal-milestones" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white" placeholder="Milestone 1, Milestone 2">
-                        </div>
-                        <button onclick="saveNewGoal()" class="w-full bg-indigo-600 hover:bg-indigo-700 py-2.5 text-white font-bold rounded-lg transition">Commit Goal Struct</button>
-                    </div>
-                </div>
-                <div class="lg:col-span-2 space-y-4">
-                    <div class="flex justify-between items-center"><h2 class="text-md font-bold uppercase">Active Targets</h2><span class="text-xs text-gray-400" id="goals-count">0</span></div>
-                    <div id="goals-render-target" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-                </div>
-            </div>
-        </section>
-
-        <section id="section-exam" class="global-section hidden">
-            <div class="max-w-3xl mx-auto glass-panel p-6 rounded-2xl">
-                <div id="exam-setup-box">
-                    <h2 class="text-lg font-bold mb-2">AI Diagnostic Exam Module</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs mb-4">
-                        <div>
-                            <label class="block mb-1 text-gray-400">Core Subject</label>
-                            <input type="text" id="exam-subject" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white" placeholder="Structural Analysis">
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-400">Topic Area</label>
-                            <input type="text" id="exam-topic" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white" placeholder="Frame Deflection Matrix">
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-gray-400">Exam Architectural Typology</label>
-                            <select id="exam-type" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2.5 text-white">
-                                <option value="MCQ">MCQ Matrix</option>
-                                <option value="True-False">True-False Core Evaluation</option>
-                            </select>
-                        </div>
-                        <div class="flex items-end">
-                            <button onclick="triggerAIExamGeneration()" class="w-full bg-cyan-600 hover:bg-cyan-700 py-2.5 text-white font-bold rounded-lg transition"><i class="fa-solid fa-wand-magic-sparkles"></i> Initialize AI Model Pipeline</button>
-                        </div>
-                    </div>
-                </div>
-                <div id="exam-simulation-matrix" class="hidden border-t border-gray-800 pt-6">
-                    <div id="exam-questions-box" class="space-y-6 text-xs"></div>
-                    <button onclick="submitExamForEvaluation()" class="mt-6 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition">Submit Matrix Responses</button>
-                </div>
-                <div id="exam-result-sheet" class="hidden text-center text-xs space-y-3">
-                    <div class="text-2xl font-black text-indigo-400" id="result-score-display">0 / 0</div>
-                    <p id="result-feedback-display" class="text-gray-400"></p>
-                    <button onclick="resetExamModule()" class="bg-gray-800 text-white px-4 py-2 rounded-lg">Reset Core Module</button>
-                </div>
-            </div>
-        </section>
-
-        <section id="section-flashcard" class="global-section hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="glass-panel p-5 rounded-2xl h-fit text-xs space-y-4">
-                    <h3 class="font-bold text-amber-400 uppercase">Create Flashcard</h3>
-                    <input type="text" id="card-subject" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2" placeholder="Subject">
-                    <input type="text" id="card-topic" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2" placeholder="Topic">
-                    <textarea id="card-front" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2" placeholder="Front Statement"></textarea>
-                    <textarea id="card-back" class="w-full bg-[#070a1e] border border-gray-800 rounded-lg p-2" placeholder="Back Explanation Vector"></textarea>
-                    <button onclick="createNewFlashcard()" class="w-full bg-amber-600 hover:bg-amber-700 py-2 rounded text-white font-bold">Commit Card Vector</button>
-                </div>
-                <div class="lg:col-span-2 space-y-4">
-                    <div class="flex justify-between items-center"><h2 class="text-md font-bold">Review Desk</h2><span id="card-due-count" class="text-xs text-amber-400">0 Due Today</span></div>
-                    <div id="deck-review-desk" class="hidden">
-                        <div id="active-flip-card" class="flip-card w-full h-48 cursor-pointer mb-6" onclick="this.classList.toggle('flipped')">
-                            <div class="flip-card-inner w-full h-full text-center">
-                                <div class="flip-card-front glass-panel rounded-2xl p-6 flex flex-col justify-between items-center border border-gray-800 shadow-2xl">
-                                    <p class="text-sm text-gray-100 font-bold" id="card-view-front"></p>
-                                    <span class="text-[9px] text-gray-500 uppercase"><i class="fa-solid fa-rotate"></i> Click to Reveal Answer</span>
-                                </div>
-                                <div class="flip-card-back bg-indigo-950/40 rounded-2xl p-6 flex flex-col justify-between items-center border border-indigo-900 shadow-2xl">
-                                    <p class="text-sm text-white font-bold" id="card-view-back"></p>
-                                    <span class="text-[9px] text-gray-500 uppercase">Revealed Profile Matrix</span>
-                                </div>
+                <div id="viewport-analytics" class="workspace-view-node hidden">
+                    <div class="glass-card p-5 rounded-2xl border border-gray-900/40 shadow-2xl space-y-6">
+                        <h2 class="text-sm font-bold uppercase text-blue-400 tracking-wider"><i class="fa-solid fa-chart-line"></i> Category Yield Velocity Tracking Graph Metrics</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="analytics-progress-tab-cards-target">
                             </div>
-                        </div>
-                        <div class="grid grid-cols-3 gap-3 text-xs">
-                            <button onclick="processCardReview('again')" class="bg-rose-950 border border-rose-800 text-rose-400 py-2.5 rounded-lg font-bold">AGAIN</button>
-                            <button onclick="processCardReview('hard')" class="bg-amber-950 border border-amber-800 text-amber-400 py-2.5 rounded-lg font-bold">HARD</button>
-                            <button onclick="processCardReview('easy')" class="bg-emerald-950 border border-emerald-800 text-emerald-400 py-2.5 rounded-lg font-bold">EASY</button>
-                        </div>
                     </div>
-                    <div id="deck-empty-state" class="glass-panel p-12 rounded-2xl text-center text-xs text-gray-500">All decks cleared for current parameter metrics!</div>
                 </div>
-            </div>
-        </section>
 
-        <section id="section-performance" class="global-section hidden">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <div class="glass-panel p-5 rounded-2xl text-center"><div class="text-3xl font-black text-orange-400" id="stats-streak-counter">0 Days</div><span class="text-[10px] text-gray-400 uppercase">Consistency Ledger</span></div>
-                <div class="glass-panel p-5 rounded-2xl text-center"><div class="text-2xl font-extrabold text-amber-400" id="stats-badge-name">Beginner</div><span class="text-[10px] text-gray-400 uppercase">Active Status Rank</span></div>
-                <div class="glass-panel p-5 rounded-2xl text-center"><div class="text-3xl font-black text-indigo-400" id="stats-xp-counter">0 XP</div><span class="text-[10px] text-gray-400 uppercase">Experience Index</span></div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="glass-panel p-5 rounded-2xl"><canvas id="weeklyHoursChart" class="h-48"></canvas></div>
-                <div class="glass-panel p-5 rounded-2xl"><canvas id="subjectRadarChart" class="h-48"></canvas></div>
-            </div>
-        </section>
+                <div id="viewport-history" class="workspace-view-node hidden space-y-4">
+                    <div class="glass-card p-4 rounded-xl border border-gray-900/30 flex gap-3 items-center">
+                        <i class="fa-solid fa-magnifying-glass text-gray-600 text-xs pl-1"></i>
+                        <input type="text" id="archive-search-field-query" oninput="executeArchiveLogsFilteringSearch()" class="w-full bg-transparent border-none text-xs text-white outline-none placeholder:text-gray-700 font-medium" placeholder="Query historical statements, database tags, or structural subject indices match parameter logs...">
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl border border-gray-900/40 shadow-2xl">
+                        <h3 class="text-xs font-bold font-mono uppercase tracking-wider text-gray-400 mb-3" id="history-box-title">Historical Backlog Tracker</h3>
+                        <div class="space-y-2.5 max-h-[400px] overflow-y-auto custom-scrollbar pr-1" id="archive-logs-render-target">
+                            </div>
+                    </div>
+                </div>
 
-        <section id="section-pomodoro" class="global-section hidden">
-            <div class="max-w-xl mx-auto glass-panel p-6 rounded-2xl flex flex-col items-center justify-center text-center relative overflow-hidden">
-                <div id="distraction-lock-screen" class="hidden absolute inset-0 bg-red-950/95 z-30 flex flex-col items-center justify-center p-6 text-center">
-                    <h3 class="font-bold text-white text-md tracking-wider">FOCUS STRUCT VIOLATION</h3>
-                    <button onclick="dismissLockWarning()" class="mt-4 bg-white text-black px-4 py-1.5 rounded-lg text-xs font-bold">Return Workspace</button>
-                </div>
-                <span class="text-xs uppercase font-bold text-gray-400 mb-2">Focus Session Alpha Vector</span>
-                <div class="text-5xl font-black font-mono tracking-tight text-white mb-6" id="pomo-timer-digits">25:00</div>
-                <div class="flex gap-4 w-full">
-                    <button onclick="togglePomodoroEngine()" id="pomo-master-btn" class="flex-1 bg-blue-600 hover:bg-blue-700 font-bold py-2.5 text-xs rounded-xl">Initialize Focus Matrix</button>
-                    <button onclick="resetPomodoroEngine()" class="bg-gray-900 border border-gray-800 text-gray-400 px-4 py-2 text-xs rounded-xl">Reset</button>
-                </div>
             </div>
-        </section>
 
-        <section id="section-library" class="global-section hidden">
-            <div id="library-vault-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
-            <div id="lib-editor-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                <div class="bg-[#090d22] w-full max-w-xl rounded-2xl border border-gray-800 p-5 text-xs space-y-4">
-                    <h3 id="modal-topic-title" class="text-sm font-bold text-white"></h3>
-                    <textarea id="modal-notes-area" rows="10" class="w-full bg-[#040614] border border-gray-900 rounded-xl p-3 text-white font-mono outline-none"></textarea>
-                    <div class="flex justify-end gap-2"><button onclick="closeLibraryEditor()" class="bg-gray-900 px-4 py-2 rounded-lg text-gray-400">Cancel</button><button onclick="saveLibraryNotesVector()" class="bg-blue-600 px-4 py-2 rounded-lg text-white">Commit Notes Buffer</button></div>
-                </div>
-            </div>
-        </section>
+        </div>
 
     </main>
 
     <script>
-        const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:5000' : '';
+        const API_BASE_ENDPOINT_URI = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:5000' : '';
 
-        // RUNTIME IN-MEMORY STORAGE STATE
+        // RUNTIME STATE REGISTRIES
         let dbTopics = {};
         let dbRoutine = {};
-        let globalStats = { xp: 0, level: 'Beginner', streak: 0 };
-        let memoryGoals = [];
-        let memoryFlashcards = [];
-        let memoryLibraryNotes = [];
-        
-        let selectedDateStr = new Date().toISOString().split('T')[0];
+        let selectedTimelineContextDateStr = new Date().toISOString().split('T')[0];
 
-        // SUBJ-MAP DATABASE PRESETS
-        const categorySubjectMatrix = {
+        // STATIC HARDCODED DATA STRUCT PRESETS MAP MATCH REFERENCES
+        const clusterCategorySubjectsPresetsMatrixMap = {
             "AI & Code": ["AI Engineering – L2", "JavaScript", "Typing Practice", "Programming Frameworks", "Software systems matrix"],
             "Civil Engr": ["Transportation", "Earth Quake Engineering", "Structure–I", "Residential Design", "Civil structural analysis"],
             "BCS & Job Prep": ["Geography", "English", "BCS General", "Analytical Struct"],
             "Skills Vector": ["Freehand Writing", "Excel", "Research Class"]
         };
 
+        const spacingRepetitionTimelineDeltaIntervalArraysMap = [1, 3, 7, 14, 30];
+
+        // LIFECYCLE HOOKS ROOT INITS ENTRY LINE PIPELINE
         window.addEventListener('DOMContentLoaded', async () => {
-            document.getElementById('inj-date').value = selectedDateStr;
-            populateSubjectDropdown();
-            await loadSystemDataPipeline();
-            renderCalendarDayMatrix();
-            renderActiveDayRoutineDeck();
-            switchGlobalTab('home');
-            initializeSystemCharts();
+            document.getElementById('form-field-date').value = selectedTimelineContextDateStr;
+            syncLinkedCategorySubjectsMappingDropdownPresets();
+            await synchronizeDatabaseClusterEcosystemPayload();
+            renderDynamicTimelineCalendarNavigationSliderMatrix();
+            executeActiveWorkspaceEngineRenderViewLoop();
+            switchWorkspaceActiveTab('workspace');
         });
 
-        // 1. DATA SYNCHRONIZATION FROM MONGODB
-        async function loadSystemDataPipeline() {
+        // 1. ASYNC DATA FETCH PIPELINE SYNCHRONIZER
+        async function synchronizeDatabaseClusterEcosystemPayload() {
             try {
-                // Legacy Topics
-                let rT = await fetch(`${API_BASE}/api/topics`);
-                let dT = await rT.json();
+                const responseTopics = await fetch(`${API_BASE_ENDPOINT_URI}/api/topics`);
+                const payloadTopics = await responseTopics.json();
                 dbTopics = {};
-                if(dT.success && dT.data) {
-                    dT.data.forEach(t => {
-                        if(!dbTopics[t.date]) dbTopics[t.date] = [];
-                        dbTopics[t.date].push(t);
+                if(payloadTopics.success && payloadTopics.data) {
+                    payloadTopics.data.forEach(topicRow => {
+                        if(!dbTopics[topicRow.date]) dbTopics[topicRow.date] = [];
+                        dbTopics[topicRow.date].push(topicRow);
                     });
                 }
 
-                // Legacy Routine
-                let rR = await fetch(`${API_BASE}/api/routine`);
-                let dR = await rR.json();
-                if(dR.success) dbRoutine = dR.data;
-
-                // Stats & Upgrades
-                let rS = await fetch(`${API_BASE}/api/stats`); let dS = await rS.json(); if(dS.success) globalStats = dS.data;
-                let rG = await fetch(`${API_BASE}/api/goals`); let dG = await rG.json(); if(dG.success) memoryGoals = dG.data;
-                let rC = await fetch(`${API_BASE}/api/flashcards`); let dC = await rC.json(); if(dC.success) memoryFlashcards = dC.data;
-                let rN = await fetch(`${API_BASE}/api/library/notes`); let dN = await rN.json(); if(dN.success) memoryLibraryNotes = dN.data;
-
-                updateGlobalUIWidgets();
-            } catch (err) { console.error("Database connection vector context maps error.", err); }
-        }
-
-        function updateGlobalUIWidgets() {
-            document.getElementById('global-xp').innerText = globalStats.xp;
-            document.getElementById('global-badge').innerText = globalStats.level;
-        }
-
-        // ==========================================
-        // LEGACY MANAGEMENT CORE ENGINE
-        // ==========================================
-        function populateSubjectDropdown() {
-            const cat = document.getElementById('inj-category').value;
-            const subDropdown = document.getElementById('inj-subject');
-            subDropdown.innerHTML = '';
-            (categorySubjectMatrix[cat] || []).forEach(s => {
-                subDropdown.innerHTML += `<option value="${s}">${s}</option>`;
-            });
-        }
-
-        function renderCalendarDayMatrix() {
-            const target = document.getElementById('calendar-day-matrix');
-            target.innerHTML = '';
-            let current = new Date();
-            current.setDate(current.getDate() - 4);
-
-            for (let i = 0; i < 8; i++) {
-                let dStr = current.toISOString().split('T')[0];
-                let isSel = dStr === selectedDateStr;
-                let dayName = current.toLocaleDateString('en-US', { weekday: 'short' });
-                let dateNum = current.getDate();
-
-                target.innerHTML += `
-                    <div onclick="setSelectedDateContext('${dStr}')" class="p-2 rounded-xl cursor-pointer transition border border-gray-900 ${isSel ? 'bg-blue-600 text-white font-bold' : 'bg-gray-950 text-gray-400 hover:text-white'}">
-                        <span class="block text-[9px] uppercase tracking-wider">${dayName}</span>
-                        <span class="text-sm block">${dateNum}</span>
-                    </div>
-                `;
-                current.setDate(current.getDate() + 1);
+                const responseRoutine = await fetch(`${API_BASE_ENDPOINT_URI}/api/routine`);
+                const payloadRoutine = await responseRoutine.json();
+                if(payloadRoutine.success) {
+                    dbRoutine = payloadRoutine.data;
+                }
+                executeGlobalDashboardStatsCountersEngineCalculation();
+            } catch (err) {
+                console.error("Critical connection failure maps interface data cluster.", err);
             }
         }
 
-        function setSelectedDateContext(dateStr) {
-            selectedDateStr = dateStr;
-            renderCalendarDayMatrix();
-            renderActiveDayRoutineDeck();
+        // 2. COUNTERS DASHBOARD PIPELINE COMPONENT MANAGEMENT MATRIX CALCULATOR
+        function executeGlobalDashboardStatsCountersEngineCalculation() {
+            let pendingCount = 0, completedCount = 0, totalRecordsCount = 0;
+            
+            Object.keys(dbTopics).forEach(dateKey => {
+                dbTopics[dateKey].forEach(t => {
+                    totalRecordsCount++;
+                    if(t.status === 'Complete') completedCount++;
+                    else {
+                        let todayStr = new Date().toISOString().split('T')[0];
+                        if(t.date <= todayStr) pendingCount++;
+                    }
+                });
+            });
+
+            document.getElementById('stat-pending-counter').innerText = pendingCount;
+            document.getElementById('stat-completed-counter').innerText = completedCount;
+            document.getElementById('stat-total-records').innerText = totalRecordsCount;
+            
+            let ratio = totalRecordsCount > 0 ? Math.round((completedCount / totalRecordsCount) * 100) : 0;
+            document.getElementById('stat-efficiency-ratio').innerText = `${ratio}%`;
         }
 
-        function renderActiveDayRoutineDeck() {
-            const dateObj = new Date(selectedDateStr);
-            const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'long' });
+        // 3. SELECTION DROP DOWN SYNC MATRIX
+        function syncLinkedCategorySubjectsMappingDropdownPresets() {
+            const activeCategory = document.getElementById('form-field-category').value;
+            const targetSubjectDropdown = document.getElementById('form-field-subject');
+            targetSubjectDropdown.innerHTML = '';
             
-            document.getElementById('routine-focused-date-title').innerText = dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-            document.getElementById('routine-focused-day-tag').innerText = `Scheduled Matrix Block Index — ${dayName}`;
+            const linkedSubjectsArray = clusterCategorySubjectsPresetsMatrixMap[activeCategory] || [];
+            linkedSubjectsArray.forEach(subjectNameString => {
+                targetSubjectDropdown.innerHTML += `<option value="${subjectNameString}">${subjectNameString}</option>`;
+            });
+        }
 
-            const listContainer = document.getElementById('active-day-topics-list');
-            listContainer.innerHTML = '';
+        function toggleIntervalCustomModeDisplayState() {
+            const activeSelectionValue = document.querySelector('input[name="spacing-mode"]:checked').value;
+            const containerRowInput = document.getElementById('custom-interval-input-row');
+            if(activeSelectionValue === 'custom') {
+                containerRowInput.classList.remove('hidden');
+            } else {
+                containerRowInput.classList.add('hidden');
+            }
+        }
 
-            // Render matching injected database topics 
-            let topicsList = dbTopics[selectedDateStr] || [];
-            if(topicsList.length > 0) {
-                listContainer.innerHTML += `<h4 class="text-xs font-bold text-blue-400 uppercase tracking-widest mt-2 mb-1">Injected Working Buffer Vectors:</h4>`;
-                topicsList.forEach(t => {
-                    let isC = t.status === 'Complete';
-                    listContainer.innerHTML += `
-                        <div class="bg-[#080d26] p-3.5 rounded-xl border border-gray-800 flex justify-between items-center text-xs">
-                            <div>
-                                <span class="text-[9px] font-black uppercase text-blue-400 block tracking-wide">${t.subject}</span>
-                                <span class="font-bold text-gray-200">${t.topicName}</span>
+        // 4. TIMELINE CONTROLS AND VISUAL DATE SLIDER GRIDS DECK
+        function renderDynamicTimelineCalendarNavigationSliderMatrix() {
+            const calendarTargetContainer = document.getElementById('calendar-render-grid-cells');
+            calendarTargetContainer.innerHTML = '';
+
+            let operationalCursorDate = new Date(selectedTimelineContextDateStr);
+            operationalCursorDate.setDate(operationalCursorDate.getDate() - 4);
+
+            for (let cellIndex = 0; cellIndex < 8; cellIndex++) {
+                let loopingDateStringKey = operationalCursorDate.toISOString().split('T')[0];
+                let isCurrentTargetContextSelection = loopingDateStringKey === selectedTimelineContextDateStr;
+                let dayWeekdayShortNameStr = operationalCursorDate.toLocaleDateString('en-US', { weekday: 'short' });
+                let dayOfMonthNumericValue = operationalCursorDate.getDate();
+
+                let pendingItemsIndicatorFlagBadge = "";
+                let dateDayTopicsList = dbTopics[loopingDateStringKey] || [];
+                let activePendingInjectedItemsCount = dateDayTopicsList.filter(x => x.status === 'Pending').length;
+                if(activePendingInjectedItemsCount > 0) {
+                    pendingItemsIndicatorFlagBadge = `<span class="absolute top-1 right-1 h-1.5 w-1.5 bg-rose-500 rounded-full animate-pulse"></span>`;
+                }
+
+                calendarTargetContainer.innerHTML += `
+                    <div onclick="updateSelectedTimelineFocusContextDateStringKey('${loopingDateStringKey}')" class="day-grid-cell relative p-2 rounded-xl cursor-pointer text-center transition ${isCurrentTargetContextSelection ? 'active-day text-white font-bold' : 'text-gray-400'}">
+                        ${pendingItemsIndicatorFlagBadge}
+                        <span class="block text-[8px] uppercase tracking-widest font-mono">${dayWeekdayShortNameStr}</span>
+                        <span class="text-xs font-black block mt-0.5">${dayOfMonthNumericValue}</span>
+                    </div>
+                `;
+                operationalCursorDate.setDate(operationalCursorDate.getDate() + 1);
+            }
+        }
+
+        function updateSelectedTimelineFocusContextDateStringKey(newTargetDateKeyStr) {
+            selectedTimelineContextDateStr = newTargetDateKeyStr;
+            document.getElementById('form-field-date').value = newTargetDateKeyStr;
+            renderDynamicTimelineCalendarNavigationSliderMatrix();
+            executeActiveWorkspaceEngineRenderViewLoop();
+        }
+
+        function syncCalendarTimelineFocusToPresentTimeDate() {
+            let presentTodayStrKey = new Date().toISOString().split('T')[0];
+            updateSelectedTimelineFocusContextDateStringKey(presentTodayStrKey);
+        }
+
+        // 5. VIEWPORTS LAYOUT MANAGEMENT TABS SWITCH ENGINE
+        function switchWorkspaceActiveTab(targetViewportId) {
+            document.querySelectorAll('.workspace-view-node').forEach(nodeSectionElement => {
+                nodeSectionElement.classList.add('hidden');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btnNodeElement => {
+                btnNodeElement.classList.remove('active');
+            });
+
+            const targetSectionNode = document.getElementById(`viewport-${targetViewportId}`);
+            const targetButtonNode = document.getElementById(`tab-${targetViewportId}`);
+            if(targetSectionNode) targetSectionNode.classList.remove('hidden');
+            if(targetButtonNode) targetButtonNode.classList.add('active');
+
+            if(targetViewportId === 'injector') executeInjectorViewportPendingListsViewLoop();
+            if(targetViewportId === 'scheduler') executeSchedulerStaticTemplateMatrixFormBuilderRender();
+            if(targetViewportId === 'analytics') executeAnalyticsDashboardProgressChartsEngineRender();
+            if(targetViewportId === 'history') executeArchiveLogsFilteringSearch();
+        }
+
+        // 6. MAIN WORKSPACE ENGINE RENDER VIEW LOOP
+        function executeActiveWorkspaceEngineRenderViewLoop() {
+            const contextFocusedDateObj = new Date(selectedTimelineContextDateStr);
+            const contextFocusedDayOfWeekLongNameStr = contextFocusedDateObj.toLocaleDateString('en-US', { weekday: 'long' });
+
+            document.getElementById('workspace-card-header-date').innerText = contextFocusedDateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            document.getElementById('workspace-card-header-dayname').innerText = `Baseline Day Profile Grid Node Index — ${contextFocusedDayOfWeekLongNameStr}`;
+
+            const workspaceRenderListTargetContainer = document.getElementById('workspace-render-target-list');
+            workspaceRenderListTargetContainer.innerHTML = '';
+
+            // Sub-stream Alpha: Injected Data Records matching explicit selection context constraints keys arrays
+            let operationalDateContextTopicsList = dbTopics[selectedTimelineContextDateStr] || [];
+            if(operationalDateContextTopicsList.length > 0) {
+                workspaceRenderListTargetContainer.innerHTML += `<h4 class="text-[9px] font-black text-blue-400 uppercase tracking-widest mt-1 mb-1.5 opacity-90"><i class="fa-solid fa-code-branch"></i> Injected Execution Buffer Nodes</h4>`;
+                operationalDateContextTopicsList.forEach(topicRowDataStruct => {
+                    let isCompleted = topicRowDataStruct.status === 'Complete';
+                    let linkedHrefAnchorNode = topicRowDataStruct.noteUrl ? `<a href="${topicRowDataStruct.noteUrl}" target="_blank" class="inline-flex items-center gap-1 text-cyan-400 hover:underline text-[9px] font-semibold mt-1 bg-cyan-950/40 border border-cyan-900/30 px-2 py-0.5 rounded"><i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i> Linked Notebook Source</a>` : '';
+                    
+                    workspaceRenderListTargetContainer.innerHTML += `
+                        <div class="bg-[#090e29] border border-gray-900/80 rounded-xl p-3.5 flex justify-between items-center transition hover:border-gray-800 text-xs shadow-md">
+                            <div class="space-y-0.5">
+                                <span class="text-[9px] uppercase font-black text-indigo-400 tracking-wider block">${topicRowDataStruct.subject}</span>
+                                <p class="text-gray-100 font-bold">${topicRowDataStruct.topicName}</p>
+                                ${linkedHrefAnchorNode}
                             </div>
                             <div class="flex items-center gap-3">
-                                <button onclick="toggleTopicStatusState(${t.id}, '${t.status}')" class="px-3 py-1 rounded text-[10px] font-bold uppercase transition ${isC ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-rose-950 text-rose-400 border border-rose-900'}">${t.status}</button>
-                                <button onclick="deleteTopicInstance(${t.id})" class="text-gray-600 hover:text-red-400 transition"><i class="fa-solid fa-trash"></i></button>
+                                <button onclick="toggleTransactionRowStatusStatePropertyValue(${topicRowDataStruct.id}, '${topicRowDataStruct.status}')" class="px-3 py-1 rounded-lg text-[9px] font-black uppercase font-mono tracking-wider cursor-pointer border transition ${isCompleted ? 'bg-emerald-950/80 text-emerald-400 border-emerald-900/50' : 'bg-rose-950/80 text-rose-400 border-rose-900/50'}">${topicRowDataStruct.status}</button>
+                                <button onclick="purgeTopicDataRowFromClusterCollection(${topicRowDataStruct.id})" class="text-gray-600 hover:text-rose-400 transition cursor-pointer text-xs p-1"><i class="fa-solid fa-trash-can"></i></button>
                             </div>
                         </div>
                     `;
                 });
             }
 
-            // Render Core Baseline Static Routine Blueprint Template
-            let dayRoutineBlueprintArray = dbRoutine[dayName] || [];
-            if(dayRoutineBlueprintArray.length > 0) {
-                listContainer.innerHTML += `<h4 class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-5 mb-1">Standard Core Routine Slot Vectors:</h4>`;
-                dayRoutineBlueprintArray.forEach((slot, idx) => {
-                    if(slot.length === 0) return;
-                    listContainer.innerHTML += `
-                        <div class="bg-[#050818] p-3 rounded-xl border border-gray-900 flex justify-between items-center text-xs opacity-75">
+            // Sub-stream Beta: Baseline Static Routine Template structural layouts parameters map lists
+            let operationalStaticDayRoutineTemplateBlueprintArray = dbRoutine[contextFocusedDayOfWeekLongNameStr] || [];
+            if(operationalStaticDayRoutineTemplateBlueprintArray.length > 0) {
+                workspaceRenderListTargetContainer.innerHTML += `<h4 class="text-[9px] font-black text-gray-500 uppercase tracking-widest mt-4 mb-1.5 opacity-90"><i class="fa-solid fa-layer-group"></i> Static Baseline Routine Blueprints</h4>`;
+                operationalStaticDayRoutineTemplateBlueprintArray.forEach((timeSlotSubjectsArrayData, loopSlotIndexValue) => {
+                    if(!timeSlotSubjectsArrayData || timeSlotSubjectsArrayData.length === 0) return;
+                    workspaceRenderListTargetContainer.innerHTML += `
+                        <div class="bg-[#050817] border border-gray-950 rounded-xl p-3 flex justify-between items-center text-xs opacity-60 hover:opacity-90 transition">
                             <div>
-                                <span class="text-[9px] text-gray-500 block uppercase font-bold font-mono">Routine Segment Target Node ${idx+1}</span>
-                                <span class="text-gray-300 font-medium">${slot.join(' • ')}</span>
+                                <span class="text-[8px] uppercase tracking-wider font-bold text-gray-500 block font-mono">Routine Slot Target Matrix Position ${loopSlotIndexValue + 1}</span>
+                                <p class="text-gray-300 font-medium mt-0.5">${timeSlotSubjectsArrayData.join(' &nbsp;•&nbsp; ')}</p>
                             </div>
-                            <i class="fa-solid fa-circle-nodes text-gray-800"></i>
+                            <i class="fa-solid fa-circle-nodes text-gray-800/80 text-xs"></i>
                         </div>
                     `;
                 });
+            }
+
+            if(operationalDateContextTopicsList.length === 0 && operationalStaticDayRoutineTemplateBlueprintArray.every(slot => slot.length === 0)) {
+                workspaceRenderListTargetContainer.innerHTML = `
+                    <div class="text-center py-10 text-gray-600 text-xs border border-dashed border-gray-900 rounded-xl">
+                        <i class="fa-solid fa-box-open text-xl block mb-2 text-gray-800"></i>
+                        No operational task sequences mapped or blueprint elements bound to current timeline coordinate metrics.
+                    </div>
+                `;
             }
         }
 
-        async function injectTopicToDatabase() {
-            const date = document.getElementById('inj-date').value;
-            const category = document.getElementById('inj-category').value;
-            const subject = document.getElementById('inj-subject').value;
-            const topicName = document.getElementById('inj-topic').value;
-            const noteUrl = document.getElementById('inj-url').value;
+        // 7. TRANSACTION WRITE HOOK PIPELINE: COMMIT TOPIC DATA NODE
+        async function commitInjectedTopicDataRowToCluster() {
+            const targetExecutionDateKeyStr = document.getElementById('form-field-date').value;
+            const categoryValueStr = document.getElementById('form-field-category').value;
+            const subjectValueStr = document.getElementById('form-field-subject').value;
+            const topicValueStatementStr = document.getElementById('form-field-topic').value.trim();
+            const resourceUrlStr = document.getElementById('form-field-url').value.trim();
+            
+            const spacingIntervalEngineModeSetting = document.querySelector('input[name="spacing-mode"]:checked').value;
 
-            if(!topicName) return alert("Define Topic vector input data parameter values.");
+            if(!topicValueStatementStr) return alert("Define Topic parameter value bounds.");
 
-            const payload = { id: Date.now(), date, category, subject, topicName, noteUrl, status: 'Pending' };
+            const transactionLogPacketPayload = {
+                id: Date.now(),
+                date: targetExecutionDateKeyStr,
+                originDate: targetExecutionDateKeyStr,
+                category: categoryValueStr,
+                subject: subjectValueStr,
+                topicName: topicValueStatementStr,
+                noteUrl: resourceUrlStr || null,
+                status: 'Pending',
+                reviewsDone: [],
+                reviewHistoryStamps: {}
+            };
+
+            // Calculate spacing intervals algorithms matrix schedules parameters maps pipeline
+            let calculatedIntervalOffsetDeltaValuesArray = [];
+            if(spacingIntervalEngineModeSetting === 'custom') {
+                const rawCustomIntervalInputVal = parseInt(document.getElementById('form-field-custom-interval').value);
+                if(isNaN(rawCustomIntervalInputVal) || rawCustomIntervalInputVal < 1) {
+                    return alert("Define valid custom interval step metrics value configurations.");
+                }
+                transactionLogPacketPayload.customReviewInterval = rawCustomIntervalInputVal;
+                calculatedIntervalOffsetDeltaValuesArray.push(rawCustomIntervalInputVal);
+            } else {
+                calculatedIntervalOffsetDeltaValuesArray = [...spacingRepetitionTimelineDeltaIntervalArraysMap];
+            }
 
             try {
-                let res = await fetch(`${API_BASE}/api/topics`, {
+                // Write primary instance row entry node
+                let primaryResponseNode = await fetch(`${API_BASE_ENDPOINT_URI}/api/topics`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify(transactionLogPacketPayload)
                 });
-                let data = await res.json();
-                if(data.success) {
-                    if(!dbTopics[date]) dbTopics[date] = [];
-                    dbTopics[date].push(data.data);
-                    document.getElementById('inj-topic').value = '';
-                    renderActiveDayRoutineDeck();
+                let primaryResponseData = await primaryResponseNode.json();
+                
+                if(primaryResponseData.success) {
+                    if(!dbTopics[targetExecutionDateKeyStr]) dbTopics[targetExecutionDateKeyStr] = [];
+                    dbTopics[targetExecutionDateKeyStr].push(primaryResponseData.data);
+
+                    // Execute Anki pipeline allocations entries
+                    let calculationsCursorBaseDateObj = new Date(targetExecutionDateKeyStr);
+                    for(let loopStep = 0; loopStep < calculatedIntervalOffsetDeltaValuesArray.length; loopStep++) {
+                        let stepDeltaDaysValue = calculatedIntervalOffsetDeltaValuesArray[loopStep];
+                        calculationsCursorBaseDateObj.setDate(calculationsCursorBaseDateObj.getDate() + stepDeltaDaysValue);
+                        
+                        let forwardScheduledDateKeyStringValue = calculationsCursorBaseDateObj.toISOString().split('T')[0];
+                        let recurrentCloneDataPayloadPacket = {
+                            ...transactionLogPacketPayload,
+                            id: Date.now() + loopStep + 1,
+                            date: forwardScheduledDateKeyStringValue,
+                            customRevPendingOn: forwardScheduledDateKeyStringValue
+                        };
+
+                        await fetch(`${API_BASE_ENDPOINT_URI}/api/topics`, {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify(recurrentCloneDataPayloadPacket)
+                        });
+                    }
+
+                    // Reset form configurations values references
+                    document.getElementById('form-field-topic').value = '';
+                    document.getElementById('form-field-url').value = '';
+                    
+                    confetti({ particleCount: 40, spread: 60, origin: { y: 0.8 } });
+                    await synchronizeDatabaseClusterEcosystemPayload();
+                    renderDynamicTimelineCalendarNavigationSliderMatrix();
+                    executeActiveWorkspaceEngineRenderViewLoop();
                 }
-            } catch(e) { console.error(e); }
+            } catch (err) {
+                console.error("Failure processing data transaction entries write ops pipelines.", err);
+            }
         }
 
-        async function toggleTopicStatusState(id, currentStatus) {
-            let found = null;
-            let targetDateKey = null;
-            Object.keys(dbTopics).forEach(d => {
-                let t = dbTopics[d].find(x => x.id === id);
-                if(t) { found = t; targetDateKey = d; }
+        // 8. UPDATE STATE LOG NODE PROPERTY VALUES
+        async function toggleTransactionRowStatusStatePropertyValue(idParameterKeyValue, currentStatusStringValue) {
+            let targetedRowObjectReference = null;
+            let targetedDateKeyIdentifierStr = null;
+
+            Object.keys(dbTopics).forEach(dateKey => {
+                let targetMatch = dbTopics[dateKey].find(x => x.id === idParameterKeyValue);
+                if(targetMatch) {
+                    targetedRowObjectReference = targetMatch;
+                    targetedDateKeyIdentifierStr = dateKey;
+                }
             });
 
-            if(!found) return;
-            found.status = currentStatus === 'Pending' ? 'Complete' : 'Pending';
+            if(!targetedRowObjectReference) return;
+
+            let updatedStatusStringTargetValue = currentStatusStringValue === 'Pending' ? 'Complete' : 'Pending';
+            targetedRowObjectReference.status = updatedStatusStringTargetValue;
+            targetedRowObjectReference.completionDate = updatedStatusStringTargetValue === 'Complete' ? new Date().toISOString().split('T')[0] : null;
 
             try {
-                let res = await fetch(`${API_BASE}/api/topics/${id}`, {
+                let updateResponseNode = await fetch(`${API_BASE_ENDPOINT_URI}/api/topics/${idParameterKeyValue}`, {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(found)
+                    body: JSON.stringify(targetedRowObjectReference)
                 });
-                if((await res.json()).success) {
-                    if(found.status === 'Complete') await allocateXPEnginePoints(10);
-                    renderActiveDayRoutineDeck();
+                let updateResponseData = await updateResponseNode.json();
+                if(updateResponseData.success) {
+                    if(updatedStatusStringTargetValue === 'Complete') {
+                        confetti({ particleCount: 25, angle: 60, spread: 55, origin: { x: 0 } });
+                        confetti({ particleCount: 25, angle: 120, spread: 55, origin: { x: 1 } });
+                    }
+                    await synchronizeDatabaseClusterEcosystemPayload();
+                    renderDynamicTimelineCalendarNavigationSliderMatrix();
+                    executeActiveWorkspaceEngineRenderViewLoop();
                 }
-            } catch(e) { console.error(e); }
+            } catch(e) {
+                console.error(e);
+            }
         }
 
-        async function deleteTopicInstance(id) {
-            if(!confirm("Purge active baseline injected node element reference tracker?")) return;
+        // 9. DELETE OPERATION HOOK DATA MATRIX PIPELINE
+        async function purgeTopicDataRowFromClusterCollection(idParameterKeyValue) {
+            if(!confirm("Purge selected data entry transaction logs row from cluster?")) return;
             try {
-                let res = await fetch(`${API_BASE}/api/topics/${id}`, { method: 'DELETE' });
-                if((await res.json()).success) {
-                    Object.keys(dbTopics).forEach(d => {
-                        dbTopics[d] = dbTopics[d].filter(x => x.id !== id);
+                let deleteResponseNode = await fetch(`${API_BASE_ENDPOINT_URI}/api/topics/${idParameterKeyValue}`, { method: 'DELETE' });
+                let deleteResponseData = await deleteResponseNode.json();
+                if(deleteResponseData.success) {
+                    Object.keys(dbTopics).forEach(dateKey => {
+                        dbTopics[dateKey] = dbTopics[dateKey].filter(x => x.id !== idParameterKeyValue);
                     });
-                    renderActiveDayRoutineDeck();
+                    await synchronizeDatabaseClusterEcosystemPayload();
+                    renderDynamicTimelineCalendarNavigationSliderMatrix();
+                    executeActiveWorkspaceEngineRenderViewLoop();
                 }
-            } catch(e) { console.error(e); }
+            } catch (err) {
+                console.error(err);
+            }
         }
 
-        // ==========================================
-        // ECOSYSTEM GLOBAL MODULES ENGINE SWITCH
-        // ==========================================
-        function switchGlobalTab(tabId) {
-            document.querySelectorAll('.global-section').forEach(s => s.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-tab'));
+        // 10. INJECTOR TRACKING WORKSPACE CONTROLLERS
+        function executeInjectorViewportPendingListsViewLoop() {
+            const targetContainer = document.getElementById('injector-pending-render-target');
+            targetContainer.innerHTML = '';
+
+            let todayStrKey = new Date().toISOString().split('T')[0];
+            let matchingAccumulatedRowsArray = [];
+
+            Object.keys(dbTopics).forEach(dateKey => {
+                dbTopics[dateKey].forEach(t => {
+                    if(t.status === 'Pending' && t.date <= todayStrKey) {
+                        matchingAccumulatedRowsArray.push(t);
+                    }
+                });
+            });
+
+            matchingAccumulatedRowsArray.sort((alpha, beta) => alpha.date.localeCompare(beta.date));
+
+            if(matchingAccumulatedRowsArray.length === 0) {
+                targetContainer.innerHTML = `<p class="text-gray-600 text-xs text-center py-6">All injected operational criteria status nodes cleared successfully!</p>`;
+                return;
+            }
+
+            matchingAccumulatedRowsArray.forEach(t => {
+                targetContainer.innerHTML += `
+                    <div class="bg-[#090d24] border border-gray-900 rounded-xl p-3 flex justify-between items-center text-xs">
+                        <div>
+                            <span class="text-[8px] font-mono font-bold uppercase text-rose-400 block tracking-tight">Due Execution Date Context: ${t.date}</span>
+                            <h5 class="text-gray-200 font-bold mt-0.5">${t.topicName}</h5>
+                            <span class="text-[9px] text-gray-500 font-medium block uppercase">${t.subject} &nbsp;•&nbsp; ${t.category}</span>
+                        </div>
+                        <button onclick="toggleTransactionRowStatusStatePropertyValue(${t.id}, 'Pending')" class="bg-blue-950 text-blue-400 border border-blue-900/60 font-bold uppercase font-mono tracking-wide px-2.5 py-1 rounded text-[9px] hover:bg-blue-900 hover:text-white transition cursor-pointer">Check Complete</button>
+                    </div>
+                `;
+            });
+        }
+
+        // 11. SCHEDULER STATIC ARCHITECTURE MODULE FORM GENERATION MATRIX
+        function executeSchedulerStaticTemplateMatrixFormBuilderRender() {
+            const targetContainer = document.getElementById('scheduler-render-matrix-target');
+            targetContainer.innerHTML = '';
+
+            const dayKeysIndexSequenceArray = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
             
-            const sec = document.getElementById(`section-${tabId}`);
-            const btn = document.getElementById(`nav-${tabId}`);
-            if(sec) sec.classList.remove('hidden');
-            if(btn) btn.classList.add('active-tab');
+            dayKeysIndexSequenceArray.forEach(dayNameKeyString => {
+                let slotSegmentsDataArray = dbRoutine[dayNameKeyString] || [[],[],[],[],[],[]];
+                let inputRowsMatrixHTMLString = "";
 
-            if(tabId === 'goals') renderGoalTrackingLayout();
-            if(tabId === 'flashcard') renderAnkiReviewDeck();
-            if(tabId === 'library') renderLibraryVaultMatrix();
-            if(tabId === 'performance') renderPerformanceVisualsEngine();
+                for(let segmentIndex = 0; segmentIndex < 6; segmentIndex++) {
+                    let textJoinedValue = slotSegmentsDataArray[segmentIndex] ? slotSegmentsDataArray[segmentIndex].join(', ') : "";
+                    inputRowsMatrixHTMLString += `
+                        <div>
+                            <label class="block text-[8px] uppercase tracking-wider text-gray-600 font-mono">Segment Slot Node Position ${segmentIndex + 1}</label>
+                            <input type="text" data-day="${dayNameKeyString}" data-slot="${segmentIndex}" class="blueprint-matrix-input-field w-full bg-[#030511] border border-gray-900 rounded-lg p-2 text-xs font-semibold text-gray-300 outline-none focus:border-indigo-900 mt-0.5 placeholder:text-gray-800" placeholder="e.g. Subject Alpha, Subject Beta" value="${textJoinedValue}">
+                        </div>
+                    `;
+                }
+
+                targetContainer.innerHTML += `
+                    <div class="bg-[#070a20]/60 border border-gray-900/60 rounded-xl p-4 space-y-3">
+                        <h4 class="text-xs font-black text-indigo-400 tracking-wider uppercase border-b border-gray-950 pb-1.5"><i class="fa-solid fa-calendar-days text-[10px]"></i> ${dayNameKeyString} Template Blueprint Config</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            ${inputRowsMatrixHTMLString}
+                        </div>
+                    </div>
+                `;
+            });
         }
 
-        async function allocateXPEnginePoints(amount) {
+        async function commitStaticRoutineTemplateMatrixToCluster() {
+            const compiledRoutineBuildMatrixPayload = {
+                "Saturday": [[],[],[],[],[],[]], "Sunday": [[],[],[],[],[],[]], "Monday": [[],[],[],[],[],[]],
+                "Tuesday": [[],[],[],[],[],[]], "Wednesday": [[],[],[],[],[],[]], "Thursday": [[],[],[],[],[],[]], "Friday": [[],[],[],[],[],[]]
+            };
+
+            const inputElementsNodeCollection = document.querySelectorAll('.blueprint-matrix-input-field');
+            inputElementsNodeCollection.forEach(inputNode => {
+                let targetDay = inputNode.getAttribute('data-day');
+                let targetSlotIdx = parseInt(inputNode.getAttribute('data-slot'));
+                let stringRawValue = inputNode.value.trim();
+
+                if(stringRawValue) {
+                    let splittedSubjectsArray = stringRawValue.split(',').map(s => s.trim()).filter(s => s.length > 0);
+                    compiledRoutineBuildMatrixPayload[targetDay][targetSlotIdx] = splittedSubjectsArray;
+                } else {
+                    compiledRoutineBuildMatrixPayload[targetDay][targetSlotIdx] = [];
+                }
+            });
+
             try {
-                let res = await fetch(`${API_BASE}/api/stats/xp`, {
-                    method: 'POST',
+                let responseNode = await fetch(`${API_BASE_ENDPOINT_URI}/api/routine`, {
+                    method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ xpAmount: amount })
+                    body: JSON.stringify(compiledRoutineBuildMatrixPayload)
                 });
-                let data = await res.json();
-                if(data.success) { globalStats = data.data; updateGlobalUIWidgets(); confetti({ particleCount: 30 }); }
-            } catch(e) { console.error(e); }
+                let responseData = await responseNode.json();
+                if(responseData.success) {
+                    alert("Ecosystem Routine Blueprint Matrix configurations committed successfully!");
+                    await synchronizeDatabaseClusterEcosystemPayload();
+                    executeActiveWorkspaceEngineRenderViewLoop();
+                    switchWorkspaceActiveTab('workspace');
+                }
+            } catch (err) {
+                console.error(err);
+            }
         }
 
-        // ==========================================
-        // MODULES FUNCTIONAL SUBSYSTEM CODE LOGIC
-        // ==========================================
-        async function saveNewGoal() {
-            const title = document.getElementById('goal-title').value;
-            const category = document.getElementById('goal-category').value;
-            const deadline = document.getElementById('goal-deadline').value;
-            const description = document.getElementById('goal-desc').value;
-            const msRaw = document.getElementById('goal-milestones').value;
-            if(!title || !deadline) return alert("Missing required constraints maps elements.");
+        // 12. PERFORMANCE VELOCITY METRICS PROGRESS PANEL GENERATION
+        function executeAnalyticsDashboardProgressChartsEngineRender() {
+            const targetContainer = document.getElementById('analytics-progress-tab-cards-target');
+            targetContainer.innerHTML = '';
 
-            const milestones = msRaw.split(',').filter(m => m.trim()).map((m, i) => ({ id: `m-${Date.now()}-${i}`, title: m.trim(), completed: false }));
-            try {
-                let res = await fetch(`${API_BASE}/api/goals`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ title, category, deadline, description, milestones }) });
-                let data = await res.json();
-                if(data.success) { memoryGoals.push(data.data); renderGoalTrackingLayout(); }
-            } catch(e) { console.error(e); }
-        }
+            const operationalSubjectCategoriesKeysArray = ["AI & Code", "Civil Engr", "BCS & Job Prep", "Skills Vector"];
+            
+            operationalSubjectCategoriesKeysArray.forEach(categoryKeyString => {
+                let categoryTotalCount = 0, categoryCompletedCount = 0;
 
-        function renderGoalTrackingLayout() {
-            const target = document.getElementById('goals-render-target');
-            document.getElementById('goals-count').innerText = `${memoryGoals.length} Items`;
-            target.innerHTML = '';
-            memoryGoals.forEach(g => {
-                target.innerHTML += `
-                    <div class="glass-panel p-4 rounded-xl text-xs space-y-2">
-                        <div class="flex justify-between font-bold text-indigo-400"><span>${g.category}</span><span class="text-[10px] font-mono text-gray-500">${g.deadline}</span></div>
-                        <h4 class="font-bold text-white">${g.title}</h4>
-                        <p class="text-gray-400 text-[11px]">${g.description}</p>
-                        <button onclick="purgeGoalEntity('${g._id}')" class="text-gray-600 hover:text-red-400 text-[10px] block pt-2"><i class="fa-solid fa-trash"></i> Delete Goal</button>
+                Object.keys(dbTopics).forEach(dateKey => {
+                    dbTopics[dateKey].forEach(t => {
+                        if(t.category === categoryKeyString) {
+                            categoryTotalCount++;
+                            if(t.status === 'Complete') categoryCompletedCount++;
+                        }
+                    });
+                });
+
+                let completionPercentageRatio = categoryTotalCount > 0 ? Math.round((categoryCompletedCount / categoryTotalCount) * 100) : 0;
+
+                targetContainer.innerHTML += `
+                    <div class="bg-[#080c24] border border-gray-900 rounded-2xl p-4 space-y-3 shadow-md">
+                        <div class="flex justify-between items-center font-bold">
+                            <span class="text-xs text-white uppercase tracking-wide">${categoryKeyString}</span>
+                            <span class="text-[11px] font-mono text-indigo-400 bg-indigo-950/40 border border-indigo-900/40 px-2 py-0.5 rounded-md">${categoryCompletedCount} / ${categoryTotalCount} Done</span>
+                        </div>
+                        <div class="w-full bg-[#040614] h-2 rounded-full overflow-hidden border border-gray-950 shadow-inner">
+                            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full transition-all duration-500" style="width: ${completionPercentageRatio}%"></div>
+                        </div>
+                        <div class="flex justify-between items-center text-[10px] font-mono text-gray-500">
+                            <span>Performance Efficiency Yield</span>
+                            <span class="font-bold text-gray-300">${completionPercentageRatio}%</span>
+                        </div>
                     </div>
                 `;
             });
         }
 
-        async function purgeGoalEntity(id) {
-            if(!confirm("Purge selected element reference profile tracker?")) return;
-            try { if((await (await fetch(`${API_BASE}/api/goals/${id}`, { method: 'DELETE' })).json()).success) { memoryGoals = memoryGoals.filter(x => x._id !== id); renderGoalTrackingLayout(); } } catch(e) { console.error(e); }
-        }
+        // 13. HISTORICAL ARCHIVE STREAM SEARCH MATRICES
+        function executeArchiveLogsFilteringSearch() {
+            const searchQueryValueString = document.getElementById('archive-search-field-query').value.trim().toLowerCase();
+            const archiveRenderContainer = document.getElementById('archive-logs-render-target');
+            archiveRenderContainer.innerHTML = '';
 
-        // --- EXAM SIMULATION MATRIX ---
-        let activeQuestions = [];
-        function triggerAIExamGeneration() {
-            document.getElementById('exam-setup-box').innerHTML = `<p class="text-xs text-gray-400 animate-pulse">Generating mock structural questions matrices pipelines templates via Claude pipeline execution layer...</p>`;
-            setTimeout(() => {
-                activeQuestions = [
-                    { q: "Assess baseline calculation validation criteria metrics vectors.", options: ["True optimization bound constraints", "Null state mapping profile alignment"], answer: 0 }
-                ];
-                document.getElementById('exam-setup-box').classList.add('hidden');
-                document.getElementById('exam-simulation-matrix').classList.remove('hidden');
-                const qB = document.getElementById('exam-questions-box'); qB.innerHTML = '';
-                activeQuestions.forEach((q, i) => {
-                    qB.innerHTML += `<div class="space-y-2 font-bold text-gray-200"><h4>${i+1}. ${q.q}</h4><input type="radio" name="ex-r-${i}" value="0"> ${q.options[0]} <br> <input type="radio" name="ex-r-${i}" value="1"> ${q.options[1]}</div>`;
+            let flatAccumulatedAllTopicsRowsArray = [];
+            Object.keys(dbTopics).forEach(dateKey => {
+                dbTopics[dateKey].forEach(t => {
+                    flatAccumulatedAllTopicsRowsArray.push(t);
                 });
-            }, 1500);
-        }
-        async function submitExamForEvaluation() {
-            document.getElementById('exam-simulation-matrix').classList.add('hidden');
-            document.getElementById('exam-result-sheet').classList.remove('hidden');
-            document.getElementById('result-score-display').innerText = "1 / 1";
-            document.getElementById('result-feedback-display').innerText = "Core structural criteria parameters validation checks complete.";
-            await allocateXPEnginePoints(15);
-        }
-        function resetExamModule() { window.location.reload(); }
+            });
 
-        // --- FLASHCARDS SYSTEM ---
-        let activeDueCards = []; let curCardIdx = 0;
-        async function createNewFlashcard() {
-            const front = document.getElementById('card-front').value; const back = document.getElementById('card-back').value;
-            const topic = document.getElementById('card-topic').value; const subject = document.getElementById('card-subject').value;
-            if(!front || !back) return alert("Empty configurations array.");
-            try {
-                let res = await fetch(`${API_BASE}/api/flashcards`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ front, back, topic, subject, nextReviewDate: new Date().toISOString().split('T')[0] }) });
-                if((await res.json()).success) { alert("Card index vector tracking saved."); renderAnkiReviewDeck(); }
-            } catch(e) { console.error(e); }
-        }
-        function renderAnkiReviewDeck() {
-            const t = new Date().toISOString().split('T')[0];
-            activeDueCards = memoryFlashcards.filter(c => c.nextReviewDate <= t);
-            document.getElementById('card-due-count').innerText = `${activeDueCards.length} Due Today`;
-            if(activeDueCards.length > 0) {
-                document.getElementById('deck-review-desk').classList.remove('hidden');
-                document.getElementById('deck-empty-state').classList.add('hidden');
-                curCardIdx = 0; showActiveCardElement();
-            } else {
-                document.getElementById('deck-review-desk').classList.add('hidden');
-                document.getElementById('deck-empty-state').classList.remove('hidden');
+            flatAccumulatedAllTopicsRowsArray.sort((alpha, beta) => beta.date.localeCompare(alpha.date));
+
+            let filteredResultsRowsArray = flatAccumulatedAllTopicsRowsArray.filter(t => {
+                if(!searchQueryValueString) return true;
+                return t.topicName.toLowerCase().includes(searchQueryValueString) || 
+                       t.subject.toLowerCase().includes(searchQueryValueString) || 
+                       t.category.toLowerCase().includes(searchQueryValueString) ||
+                       t.date.includes(searchQueryValueString);
+            });
+
+            document.getElementById('history-box-title').innerText = `Historical Archive Logs Collection Matrix (${filteredResultsRowsArray.length} Elements Mapped)`;
+
+            if(filteredResultsRowsArray.length === 0) {
+                archiveRenderContainer.innerHTML = `<p class="text-center text-gray-700 text-xs py-6">No historical transaction rows match active search criteria strings parameters maps.</p>`;
+                return;
             }
-        }
-        function showActiveCardElement() {
-            document.getElementById('active-flip-card').classList.remove('flipped');
-            const c = activeDueCards[curCardIdx];
-            if(!c) { renderAnkiReviewDeck(); return; }
-            document.getElementById('card-view-front').innerText = c.front;
-            document.getElementById('card-view-back').innerText = c.back;
-        }
-        async function processCardReview(r) {
-            const c = activeDueCards[curCardIdx]; if(!c) return;
-            let nextD = new Date(); nextD.setDate(nextD.getDate() + (r==='easy'? 7 : 2));
-            c.nextReviewDate = nextD.toISOString().split('T')[0];
-            try {
-                await fetch(`${API_BASE}/api/flashcards/${c._id}`, { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(c) });
-                await allocateXPEnginePoints(2); curCardIdx++;
-                if(curCardIdx >= activeDueCards.length) renderAnkiReviewDeck(); else showActiveCardElement();
-            } catch(e) { console.error(e); }
-        }
 
-        // --- POMODORO ---
-        let pomoSecs = 1500; let pomoRun = false; let pomoInt = null;
-        function togglePomodoroEngine() {
-            if(pomoRun) { clearInterval(pomoInt); pomoRun = false; document.getElementById('pomo-master-btn').innerText = "Resume Session"; }
-            else {
-                pomoRun = true; document.getElementById('pomo-master-btn').innerText = "Pause Matrix Session";
-                pomoInt = setInterval(() => {
-                    pomoSecs--;
-                    let m = Math.floor(pomoSecs / 60); let s = pomoSecs % 60;
-                    document.getElementById('pomo-timer-digits').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-                    if(pomoSecs<=0) { clearInterval(pomoInt); allocateXPEnginePoints(15); resetPomodoroEngine(); }
-                }, 1000);
-            }
-        }
-        function resetPomodoroEngine() { clearInterval(pomoInt); pomoSecs = 1500; pomoRun = false; document.getElementById('pomo-timer-digits').innerText = "25:00"; document.getElementById('pomo-master-btn').innerText = "Initialize Focus Matrix"; }
-        function dismissLockWarning() { document.getElementById('distraction-lock-screen').classList.add('hidden'); }
-        document.addEventListener('visibilitychange', () => { if(document.hidden && pomoRun) document.getElementById('distraction-lock-screen').classList.remove('hidden'); });
-
-        // --- KNOWLEDGE LIBRARY ---
-        function renderLibraryVaultMatrix() {
-            const g = document.getElementById('library-vault-grid'); g.innerHTML = '';
-            const staticTopics = [{ n: "Matrix Frame Deflection Analysis", s: "Civil structural analysis" }, { n: "Constitutional Core Amendments", s: "BCS General" }];
-            staticTopics.forEach(t => {
-                g.innerHTML += `
-                    <div class="glass-panel p-4 rounded-xl text-xs space-y-2 flex flex-col justify-between">
-                        <div><span class="text-[9px] bg-gray-950 text-blue-400 font-bold px-2 py-0.5 rounded uppercase">${t.s}</span><h4 class="font-bold text-white mt-1">${t.n}</h4></div>
-                        <button onclick="openLibEditor('${t.n}', '${t.s}')" class="bg-gray-900 border border-gray-800 py-1 rounded text-center text-gray-300 text-[10px] mt-2"><i class="fa-solid fa-pen"></i> Open Repo Notes</button>
+            filteredResultsRowsArray.forEach(t => {
+                let isC = t.status === 'Complete';
+                let resourceBadgeElement = t.noteUrl ? `<a href="${t.noteUrl}" target="_blank" class="text-cyan-400 hover:underline text-[9px] block font-mono"><i class="fa-solid fa-link text-[8px]"></i> Resource Linked</a>` : '';
+                
+                archiveRenderContainer.innerHTML += `
+                    <div class="bg-[#050819] p-3 rounded-xl border border-gray-950 flex justify-between items-center text-xs opacity-85 hover:opacity-100 transition">
+                        <div class="space-y-0.5">
+                            <span class="text-[8px] font-mono font-bold text-gray-500 uppercase block">${t.date} &nbsp;•&nbsp; ${t.category}</span>
+                            <h6 class="text-gray-300 font-semibold">${t.topicName}</h6>
+                            <p class="text-[10px] text-gray-500 font-medium">${t.subject}</p>
+                            ${resourceBadgeElement}
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-[9px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 border rounded-md ${isC ? 'bg-emerald-950/40 text-emerald-400 border-emerald-900/30' : 'bg-rose-950/40 text-rose-400 border-rose-900/30'}">${t.status}</span>
+                            <button onclick="purgeTopicDataRowFromClusterCollection(${t.id})" class="text-gray-700 hover:text-rose-400 transition cursor-pointer p-1"><i class="fa-solid fa-trash-can text-[11px]"></i></button>
+                        </div>
                     </div>
                 `;
             });
         }
-        let activeLibT = null; let activeLibS = null;
-        function openLibEditor(n, s) {
-            activeLibT = n; activeLibS = s; document.getElementById('modal-topic-title').innerText = n;
-            const record = memoryLibraryNotes.find(x => x.topicName === n); document.getElementById('modal-notes-area').value = record ? record.notes : '';
-            document.getElementById('lib-editor-modal').classList.remove('hidden');
-        }
-        function closeLibraryEditor() { document.getElementById('lib-editor-modal').classList.add('hidden'); }
-        async function saveLibraryNotesVector() {
-            const txt = document.getElementById('modal-notes-area').value;
-            try {
-                let res = await fetch(`${API_BASE}/api/library/notes`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ topicName: activeLibT, subject: activeLibS, notes: txt, lastUpdated: new Date().toISOString().split('T')[0] }) });
-                if((await res.json()).success) { closeLibraryEditor(); loadSystemDataPipeline(); }
-            } catch(e) { console.error(e); }
-        }
 
-        // --- CHARTS INITIALIZER ---
-        function initializeSystemCharts() {
-            const ch = document.getElementById('weeklyHoursChart');
-            if(ch) new Chart(ch, { type: 'bar', data: { labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], datasets: [{label:'Hours', data:[4,2,5,1,0,3,4], backgroundColor:'#2563eb'}] }, options:{responsive:true,maintainAspectRatio:false} });
-            const cr = document.getElementById('subjectRadarChart');
-            if(cr) new Chart(cr, { type: 'radar', data: { labels: ['Engr','BCS','Code','Skills','Analyt'], datasets: [{data:[80,75,90,60,70], backgroundColor:'rgba(37,99,235,0.2)',borderColor:'#2563eb'}] }, options:{responsive:true,maintainAspectRatio:false} });
-        }
-        function renderPerformanceVisualsEngine() {
-            document.getElementById('stats-xp-counter').innerText = `${globalStats.xp} XP`;
-            document.getElementById('stats-badge-name').innerText = globalStats.level;
-            document.getElementById('stats-streak-counter').innerText = `${globalStats.streak || 0} Days`;
-        }
     </script>
 </body>
 </html>
