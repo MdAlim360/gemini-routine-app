@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Learning Routine — AI Edition | Streak + Timer + AI Quiz</title>
+<title>My Learning Routine — Legacy Edition</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -41,6 +41,7 @@ body {
   min-height: 100vh;
 }
 
+/* Ambient glow background */
 body::before {
   content: '';
   position: fixed;
@@ -53,9 +54,453 @@ body::before {
   z-index: 0;
 }
 
+/* ─── SCROLLBAR ─── */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
 
+/* ─── PLAN MAP BUTTON ─── */
+.plan-map-btn {
+  background: rgba(77,184,240,0.1);
+  border: 1px solid rgba(77,184,240,0.22);
+  color: var(--sky);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.plan-map-btn:hover { background: rgba(77,184,240,0.2); }
+.plan-map-btn.has-plan {
+  background: rgba(124,106,247,0.12);
+  border-color: rgba(124,106,247,0.28);
+  color: var(--accent2);
+}
+.plan-map-btn.has-plan:hover { background: rgba(124,106,247,0.22); }
+
+/* Completed topic plan-map btn */
+.completed-plan-map-btn {
+  background: rgba(62,207,170,0.08);
+  border: 1px solid rgba(62,207,170,0.18);
+  color: var(--teal);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.2s;
+}
+.completed-plan-map-btn:hover { background: rgba(62,207,170,0.16); }
+
+/* ─── PLAN MAP MODAL ─── */
+.plan-map-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(10px);
+  z-index: 9998;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+}
+.plan-map-overlay.visible {
+  opacity: 1; pointer-events: all;
+}
+.plan-map-card {
+  background: var(--card);
+  border: 1px solid rgba(77,184,240,0.25);
+  border-radius: 24px;
+  padding: 32px 28px 24px;
+  max-width: 560px;
+  width: 92%;
+  max-height: 88vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 0 60px rgba(77,184,240,0.1), 0 24px 60px rgba(0,0,0,0.55);
+  transform: scale(0.94) translateY(14px);
+  transition: transform 0.35s cubic-bezier(0.34,1.2,0.64,1);
+}
+.plan-map-overlay.visible .plan-map-card {
+  transform: scale(1) translateY(0);
+}
+.plan-map-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--sky), var(--accent2), var(--teal));
+  border-radius: 24px 24px 0 0;
+}
+.pm-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--sky); font-weight: 600;
+  background: rgba(77,184,240,0.1); border: 1px solid rgba(77,184,240,0.2);
+  padding: 4px 12px; border-radius: 999px; margin-bottom: 14px;
+}
+.pm-topic-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px; font-weight: 400; color: var(--text);
+  line-height: 1.3; margin-bottom: 6px;
+}
+.pm-meta {
+  font-size: 11px; color: var(--muted); margin-bottom: 24px;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.pm-meta-pill {
+  background: var(--bg3); border: 1px solid var(--border);
+  padding: 3px 9px; border-radius: 6px; font-size: 10px;
+}
+
+/* Plan items list */
+.pm-items-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.pm-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 11px 14px;
+  transition: border-color 0.2s, background 0.2s;
+  position: relative;
+}
+.pm-item.done-item {
+  background: rgba(62,207,170,0.04);
+  border-color: rgba(62,207,170,0.18);
+}
+.pm-item-check {
+  width: 20px; height: 20px;
+  border-radius: 6px;
+  border: 2px solid rgba(255,255,255,0.15);
+  background: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  margin-top: 1px;
+}
+.pm-item-check:hover { border-color: var(--teal); }
+.pm-item-check.checked {
+  background: var(--teal);
+  border-color: var(--teal);
+}
+.pm-item-check.checked::after {
+  content: '✓';
+  font-size: 11px;
+  color: #000;
+  font-weight: 700;
+}
+.pm-item-text {
+  flex: 1;
+  font-size: 12px; color: var(--text); line-height: 1.5;
+  word-break: break-word;
+  outline: none;
+}
+.pm-item.done-item .pm-item-text {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+.pm-item-del {
+  background: none; border: none;
+  color: rgba(255,255,255,0.12);
+  cursor: pointer; padding: 2px 4px;
+  border-radius: 5px; font-size: 11px;
+  transition: color 0.2s;
+  flex-shrink: 0; margin-top: 1px;
+}
+.pm-item-del:hover { color: var(--rose); }
+
+/* Add new point row */
+.pm-add-row {
+  display: flex; gap: 8px; align-items: center;
+  margin-bottom: 20px;
+}
+.pm-add-input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 10px 14px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.pm-add-input:focus { border-color: rgba(77,184,240,0.45); }
+.pm-add-input::placeholder { color: var(--muted); }
+.pm-add-point-btn {
+  background: rgba(77,184,240,0.12);
+  border: 1px solid rgba(77,184,240,0.22);
+  color: var(--sky);
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-family: inherit; font-size: 12px; font-weight: 600;
+  cursor: pointer; white-space: nowrap;
+  display: flex; align-items: center; gap: 6px;
+  transition: background 0.2s;
+}
+.pm-add-point-btn:hover { background: rgba(77,184,240,0.22); }
+
+/* Progress bar inside modal */
+.pm-progress-bar-wrap {
+  margin-bottom: 20px;
+}
+.pm-progress-label {
+  display: flex; justify-content: space-between;
+  font-size: 10px; color: var(--muted); margin-bottom: 6px;
+}
+.pm-progress-track {
+  height: 5px; background: var(--bg3); border-radius: 99px; overflow: hidden;
+}
+.pm-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--sky), var(--teal));
+  border-radius: 99px;
+  transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* Actions */
+.pm-actions {
+  display: flex; gap: 10px; justify-content: flex-end; padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.pm-save-btn {
+  background: linear-gradient(135deg, var(--sky), #3a8fcf);
+  color: #fff; border: none; border-radius: 12px;
+  padding: 11px 24px; font-family: inherit; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: opacity 0.2s, transform 0.1s;
+  box-shadow: 0 4px 16px rgba(77,184,240,0.3);
+  display: flex; align-items: center; gap: 6px;
+}
+.pm-save-btn:hover { opacity: 0.9; }
+.pm-save-btn:active { transform: scale(0.97); }
+.pm-close-btn {
+  background: var(--bg2); color: var(--muted2);
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 11px 20px; font-family: inherit; font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: background 0.2s, color 0.2s;
+}
+.pm-close-btn:hover { background: var(--bg3); color: var(--text); }
+
+.pm-empty-hint {
+  text-align: center; padding: 20px 0 12px;
+  color: var(--muted); font-size: 11px; font-style: italic;
+}
+.pm-empty-hint i { font-size: 22px; opacity: 0.2; display: block; margin-bottom: 8px; }
+
+/* ─── AI MOTIVATOR MODAL ─── */
+.ai-motivator-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.35s;
+}
+.ai-motivator-overlay.visible {
+  opacity: 1; pointer-events: all;
+}
+.ai-motivator-card {
+  background: var(--card);
+  border: 1px solid rgba(124,106,247,0.3);
+  border-radius: 28px;
+  padding: 40px 36px 32px;
+  max-width: 480px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 0 80px rgba(124,106,247,0.15), 0 24px 60px rgba(0,0,0,0.5);
+  transform: scale(0.93) translateY(12px);
+  transition: transform 0.4s cubic-bezier(0.34,1.2,0.64,1);
+}
+.ai-motivator-overlay.visible .ai-motivator-card {
+  transform: scale(1) translateY(0);
+}
+.ai-motivator-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--teal), var(--gold));
+  border-radius: 28px 28px 0 0;
+}
+.ai-mot-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent2); font-weight: 600;
+  background: rgba(124,106,247,0.1); border: 1px solid rgba(124,106,247,0.2);
+  padding: 5px 14px; border-radius: 999px; margin-bottom: 20px;
+}
+.ai-mot-emoji { font-size: 52px; line-height: 1; margin-bottom: 16px; display: block; }
+.ai-mot-session-info {
+  font-size: 11px; color: var(--muted); margin-bottom: 18px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 8px 16px; display: inline-block;
+}
+.ai-mot-message {
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px; font-weight: 400; color: var(--text);
+  line-height: 1.5; margin-bottom: 12px; min-height: 60px;
+}
+.ai-mot-sub {
+  font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 28px; min-height: 40px;
+}
+.ai-mot-loading {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  color: var(--muted); font-size: 12px; min-height: 100px;
+}
+.ai-mot-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent2); animation: motdot 1.2s ease infinite;
+}
+.ai-mot-dot:nth-child(2) { animation-delay: 0.2s; }
+.ai-mot-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes motdot { 0%,80%,100%{transform:scale(0.6);opacity:0.4} 40%{transform:scale(1);opacity:1} }
+.ai-mot-actions { display: flex; gap: 10px; justify-content: center; }
+.ai-mot-close-btn {
+  background: linear-gradient(135deg, var(--accent), #5a4fd4);
+  color: #fff; border: none; border-radius: 14px;
+  padding: 12px 28px; font-family: inherit; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: opacity 0.2s, transform 0.1s;
+  box-shadow: 0 4px 18px rgba(124,106,247,0.3);
+}
+.ai-mot-close-btn:hover { opacity: 0.9; }
+.ai-mot-close-btn:active { transform: scale(0.97); }
+.ai-mot-again-btn {
+  background: var(--bg2); color: var(--muted2);
+  border: 1px solid var(--border); border-radius: 14px;
+  padding: 12px 20px; font-family: inherit; font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: background 0.2s, color 0.2s;
+}
+.ai-mot-again-btn:hover { background: var(--bg3); color: var(--text); }
+
+/* ─── PLAN DAY DRAWER ─── */
+.plan-drawer {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  margin-bottom: 24px;
+  overflow: hidden;
+  transition: border-color 0.3s;
+  position: relative;
+}
+.plan-drawer.open {
+  border-color: rgba(124,106,247,0.3);
+  box-shadow: 0 4px 32px rgba(124,106,247,0.08);
+}
+.plan-drawer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--teal));
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+.plan-drawer.open::before { opacity: 1; }
+
+.plan-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+}
+.plan-drawer-header:hover { background: rgba(255,255,255,0.02); }
+
+.plan-drawer-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: rgba(124,106,247,0.1);
+  border: 1px solid rgba(124,106,247,0.18);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; color: var(--accent2);
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+.plan-drawer.open .plan-drawer-icon {
+  background: rgba(124,106,247,0.18);
+  border-color: rgba(124,106,247,0.35);
+  box-shadow: 0 0 16px rgba(124,106,247,0.12);
+}
+
+.plan-drawer-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.plan-drawer-hint {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 1px;
+  transition: color 0.2s;
+}
+.plan-drawer.open .plan-drawer-hint { color: var(--accent2); }
+
+.plan-topic-count {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--teal);
+  background: rgba(62,207,170,0.1);
+  border: 1px solid rgba(62,207,170,0.2);
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+
+.plan-chevron {
+  color: var(--muted);
+  font-size: 12px;
+  transition: transform 0.3s cubic-bezier(0.34,1.2,0.64,1), color 0.2s;
+}
+.plan-drawer.open .plan-chevron {
+  transform: rotate(180deg);
+  color: var(--accent2);
+}
+
+.plan-drawer-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+.plan-drawer.open .plan-drawer-body {
+  max-height: 400px;
+}
+
+.plan-drawer-inner {
+  padding: 0 20px 20px;
+  border-top: 1px solid var(--border);
+}
+.plan-drawer-inner .form-row { margin-top: 18px; }
+
+.plan-close-btn {
+  background: rgba(62,207,170,0.1);
+  border: 1px solid rgba(62,207,170,0.2);
+  color: var(--teal);
+  border-radius: 12px;
+  padding: 11px 18px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.1s;
+  flex-shrink: 0;
+}
+.plan-close-btn:hover { background: rgba(62,207,170,0.18); }
+.plan-close-btn:active { transform: scale(0.97); }
+
+/* ─── HEADER ─── */
 .header {
   position: relative;
   z-index: 1;
@@ -91,12 +536,19 @@ body::before {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.header-sub {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 300;
+}
+
+/* ─── NAV TABS ─── */
 .nav {
   display: flex;
   justify-content: center;
   gap: 6px;
   margin-top: 36px;
-  flex-wrap: wrap;
 }
 .nav-btn {
   display: flex;
@@ -113,15 +565,21 @@ body::before {
   cursor: pointer;
   transition: all 0.25s;
 }
+.nav-btn:hover { color: var(--text); border-color: var(--border2); }
 .nav-btn.active {
   background: linear-gradient(135deg, var(--accent) 0%, #5a4fd4 100%);
   color: #fff;
   border-color: transparent;
   box-shadow: 0 4px 20px rgba(124,106,247,0.3);
 }
+
+/* ─── LAYOUT ─── */
 .container { max-width: 1200px; margin: 0 auto; padding: 0 24px 80px; position: relative; z-index: 1; }
+
 .tab-view { display: none; }
 .tab-view.active { display: block; }
+
+/* ─── SECTION LABEL ─── */
 .section-label {
   font-size: 10px;
   text-transform: uppercase;
@@ -139,274 +597,501 @@ body::before {
   height: 1px;
   background: var(--border);
 }
+
+/* ─── ROUTINE TABLE ─── */
+.routine-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  overflow: hidden;
+}
+.routine-table { width: 100%; border-collapse: collapse; min-width: 1000px; }
+.routine-table thead tr {
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+}
+.routine-table thead th {
+  padding: 14px 16px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  color: var(--muted2);
+  text-align: left;
+}
+.routine-table tbody tr {
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  transition: background 0.15s;
+}
+.routine-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+.routine-table td {
+  padding: 14px 16px;
+  vertical-align: top;
+}
+.day-cell {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted2);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  border-right: 1px solid var(--border);
+  width: 90px;
+}
+.subject-pill {
+  display: inline-flex;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 5px;
+  margin: 2px 2px 2px 0;
+}
+.s-prog { background: rgba(124,106,247,0.12); color: #a695ff; }
+.s-acad { background: rgba(224,90,122,0.12); color: #f08ca8; }
+.s-bcs  { background: rgba(212,168,67,0.12); color: var(--gold2); }
+.s-eng  { background: rgba(62,207,170,0.12); color: var(--teal); }
+.s-soft { background: rgba(77,184,240,0.12); color: var(--sky); }
+.s-res  { background: rgba(240,180,100,0.12); color: #f0b464; }
+
+.edit-btn {
+  display: none;
+  font-size: 10px;
+  color: var(--accent2);
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-top: 6px;
+  padding: 0;
+  font-family: inherit;
+}
+.routine-table tbody tr:hover .edit-btn { display: inline-flex; align-items: center; gap: 4px; }
+.empty-cell { color: rgba(255,255,255,0.12); font-size: 11px; font-style: italic; }
+
+/* ─── DAILY TAB ─── */
+.daily-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.daily-title { font-family: 'Instrument Serif', serif; font-size: 28px; font-weight: 400; }
+.daily-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+.date-picker-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px 14px;
+}
+.date-picker-wrap label { font-size: 11px; color: var(--muted); font-weight: 500; }
+.date-picker-wrap input[type="date"] {
+  background: none;
+  border: none;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+}
+.date-picker-wrap input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1) opacity(0.4); cursor: pointer; }
+
+/* ─── CARDS ─── */
 .card {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--r2);
   padding: 24px;
 }
-.streak-timer-row {
+
+.two-col { display: grid; grid-template-columns: 1fr 380px; gap: 24px; }
+@media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+
+/* ─── INJECTOR ─── */
+.injector-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  color: var(--accent2);
+  margin-bottom: 16px;
   display: flex;
-  gap: 16px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
 }
-.streak-card, .timer-card, .goal-card {
-  flex: 1;
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.form-group label {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.form-group select, .form-group input[type="text"] {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 12px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.form-group select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236b7080' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; background-size: 16px; padding-right: 32px; }
+.form-group select:focus, .form-group input[type="text"]:focus { border-color: rgba(124,106,247,0.5); }
+.form-group select option { background: #1a1d2e; }
+
+.inject-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent) 0%, #5a4fd4 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 11px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 14px;
+  transition: opacity 0.2s, transform 0.1s;
+  box-shadow: 0 4px 18px rgba(124,106,247,0.25);
+}
+.inject-btn:hover { opacity: 0.9; }
+.inject-btn:active { transform: scale(0.98); }
+
+/* ─── TOPIC ITEMS ─── */
+.topic-group {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--r2);
-  padding: 16px 20px;
+  padding: 18px;
+  margin-bottom: 12px;
 }
-.streak-flame { font-size: 28px; color: var(--rose); margin-right: 8px; }
-.timer-display { font-family: monospace; font-size: 32px; font-weight: 700; letter-spacing: 2px; color: var(--gold2); }
-.goal-progress-bar { height: 6px; background: var(--bg3); border-radius: 10px; margin-top: 8px; overflow: hidden; }
-.goal-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--accent2)); width: 0%; }
-.toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 1px solid var(--border2); border-radius: 14px; padding: 12px 16px; z-index: 300; display: flex; align-items: center; gap: 12px; animation: slideDown 0.3s ease; box-shadow: 0 8px 20px rgba(0,0,0,0.5); }
-@keyframes slideDown { from { opacity: 0; transform: translateX(-50%) translateY(-20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(8px);
-  display: none;
+.topic-group-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted2);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  z-index: 200;
+  gap: 6px;
 }
-.modal-overlay.visible { display: flex; }
-.modal {
-  background: var(--card);
-  border: 1px solid var(--border2);
-  border-radius: var(--r2);
-  padding: 28px;
-  max-width: 500px;
-  width: 90%;
+.topic-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  gap: 12px;
+  margin-bottom: 6px;
 }
-.modal h3 { font-size: 18px; margin-bottom: 12px; }
-.modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px; }
-.modal-confirm, .modal-cancel { padding: 8px 18px; border-radius: 10px; border: none; cursor: pointer; }
-.modal-confirm { background: var(--accent); color: white; }
-.ai-quiz-option { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin: 8px 0; cursor: pointer; transition: 0.1s; }
-.ai-quiz-option:hover { background: var(--bg3); border-color: var(--accent2); }
-.ai-quiz-option.correct-highlight { background: rgba(62,207,170,0.2); border-color: var(--teal); }
-.ai-quiz-feedback { margin-top: 12px; font-size: 12px; }
-.routine-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--r3); overflow: hidden; }
-.routine-table td, .routine-table th { padding: 12px; border-bottom: 1px solid var(--border); }
-.subject-pill { display: inline-block; background: rgba(124,106,247,0.15); padding: 4px 10px; border-radius: 20px; font-size: 11px; margin: 2px; }
-.edit-btn { background: none; border: none; color: var(--muted2); cursor: pointer; font-size: 10px; margin-left: 6px; }
+.topic-name { font-size: 12px; color: var(--text); font-weight: 400; flex: 1; }
+.topic-cat-badge {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  color: var(--accent2);
+  background: rgba(124,106,247,0.12);
+  padding: 2px 7px;
+  border-radius: 5px;
+  margin-top: 3px;
+  display: inline-block;
+}
+
+#toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; }
+#sync-ind { position: fixed; top: 20px; right: 20px; background: var(--card); border: 1px solid var(--border); padding: 6px 12px; border-radius: 20px; font-size: 11px; display: none; align-items: center; gap: 6px; color: var(--muted2); z-index: 999; }
 </style>
 </head>
 <body>
 
 <div id="toast-container"></div>
+<div id="sync-ind"><i class="fa-solid fa-circle-notch fa-spin"></i> <span id="sync-text">Syncing...</span></div>
 
 <div class="header">
-  <div class="header-badge"><i class="fa-solid fa-brain"></i> AI-Powered Learning Engine</div>
-  <h1>My <em>Learning Routine</em> <i class="fa-solid fa-bolt" style="font-size: 0.7em; color: var(--gold2);"></i></h1>
+  <div class="header-badge"><i class="fa-solid fa-seedling"></i> Lifetime Achievement Engine</div>
+  <h1>My <em>Learning Routine</em></h1>
+  <p class="header-sub">Track. Learn. Revise. Master.</p>
   <div class="nav">
-    <button class="nav-btn active" onclick="switchTab('routine')"><i class="fa-solid fa-table-cells-large"></i> Routine</button>
-    <button class="nav-btn" onclick="switchTab('daily')"><i class="fa-solid fa-pen-nib"></i> Daily Log</button>
-    <button class="nav-btn" onclick="switchTab('progress')"><i class="fa-solid fa-chart-line"></i> Analytics</button>
-    <button class="nav-btn" onclick="switchTab('ai')"><i class="fa-solid fa-robot"></i> AI Quiz & Summary</button>
+    <button class="nav-btn active" id="tab-routine" onclick="switchTab('routine')"><i class="fa-solid fa-table-cells-large"></i> Routine</button>
+    <button class="nav-btn" id="tab-daily" onclick="switchTab('daily')"><i class="fa-solid fa-pen-nib"></i> Daily Log</button>
   </div>
 </div>
 
 <div class="container">
-  <!-- ROUTINE TAB -->
   <div id="view-routine" class="tab-view active">
-    <div class="streak-timer-row">
-      <div class="streak-card"><i class="fa-solid fa-fire streak-flame"></i> <strong>Current Streak</strong><br><span id="streakDisplay" style="font-size: 28px; font-weight: bold;">0</span> <span style="font-size: 12px;">days</span><div id="streakWarning" style="color: var(--rose); font-size: 11px; margin-top: 5px;"></div></div>
-      <div class="timer-card"><i class="fa-solid fa-hourglass-half"></i> <strong>Pomodoro Timer</strong><br><span id="timerDisplay" class="timer-display">25:00</span><div><button id="startTimerBtn" class="inject-btn" style="margin-top: 8px; padding: 5px 12px;"><i class="fa-regular fa-play"></i> Start</button> <button id="stopTimerBtn" class="inject-btn" style="margin-top: 8px; background: #2a2a3a;">Stop</button></div></div>
-      <div class="goal-card"><i class="fa-solid fa-bullseye"></i> <strong>Today's Goal</strong><br><input type="text" id="dailyGoalInput" placeholder="e.g., Finish ML chapter" style="width: 100%; background: var(--bg2); border:1px solid var(--border); border-radius: 8px; padding: 6px; color: white; margin: 6px 0;"><button id="setGoalBtn" class="inject-btn" style="padding: 4px 10px;">Set Goal</button><div id="goalProgressText" style="font-size: 11px; margin-top: 6px;">No goal set</div><div class="goal-progress-bar"><div id="goalFillBar" class="goal-fill"></div></div></div>
-    </div>
     <p class="section-label"><i class="fa-solid fa-calendar-week"></i> Weekly Schedule</p>
-    <div class="routine-wrap" style="overflow-x: auto;"><table class="routine-table" id="routineTable"></table></div>
+    <div class="routine-wrap">
+      <table class="routine-table">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th style="color:#a695ff">Programming</th>
+            <th style="color:#f08ca8">Academic</th>
+            <th style="color:var(--gold2)">BCS</th>
+            <th style="color:var(--teal)">English</th>
+            <th style="color:var(--sky)">Software</th>
+            <th style="color:#f0b464">Research</th>
+          </tr>
+        </thead>
+        <tbody id="routine-tbody">
+          </tbody>
+      </table>
+    </div>
   </div>
 
-  <!-- DAILY LOG TAB (condensed but fully functional) -->
   <div id="view-daily" class="tab-view">
-    <div class="daily-header" style="display: flex; justify-content: space-between;"><h3>Workbench <span id="dailyDateLabel"></span></h3><input type="date" id="datePickerDaily" onchange="refreshDailyView()"></div>
-    <div class="two-col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-      <div><div class="card"><h4><i class="fa-solid fa-circle-plus"></i> Add Topic</h4><select id="injCat"></select><select id="injSub"></select><input type="text" id="injTopic" placeholder="Topic description"><button class="inject-btn" onclick="injectTopic()">Inject</button></div><div id="pendingTopicsList"></div><div id="completedList" style="margin-top: 20px;"></div></div>
-      <div><div class="radar-card" style="padding: 20px;"><h4><i class="fa-regular fa-clock"></i> Revision Radar</h4><div id="radarList"></div></div></div>
+    <div class="plan-drawer" id="plan-drawer">
+      <div class="plan-drawer-header" onclick="togglePlanDrawer()">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="plan-drawer-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+          <div>
+            <div class="plan-drawer-title">📋 Plan Day</div>
+            <div class="plan-drawer-hint">Add topics to your routine Database</div>
+          </div>
+        </div>
+      </div>
+      <div class="plan-drawer-body" id="plan-drawer-body" style="display:block; padding: 20px;">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Category</label>
+            <input type="text" id="inj-cat" placeholder="e.g. Programming">
+          </div>
+          <div class="form-group">
+            <label>Subject</label>
+            <input type="text" id="inj-sub" placeholder="e.g. Node.js">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:14px">
+          <label>Topic Name</label>
+          <input type="text" id="inj-topic" placeholder="Enter specific topic details…">
+        </div>
+        <button class="inject-btn" onclick="handleInject()"><i class="fa-solid fa-bolt"></i> Sync to MongoDB</button>
+      </div>
     </div>
-  </div>
 
-  <!-- PROGRESS + ANALYTICS TAB -->
-  <div id="view-progress" class="tab-view">
-    <div class="stats-grid" style="display: grid; grid-template-columns: repeat(4,1fr); gap: 14px;"><div class="stat-card"><div class="stat-num" id="totalComplete">0</div><div>Completed</div></div><div class="stat-card"><div class="stat-num" id="totalPending">0</div><div>Pending</div></div><div class="stat-card"><div class="stat-num" id="totalReviews">0</div><div>Reviews</div></div><div class="stat-card"><div class="stat-num" id="weeklyEfficiency">0%</div><div>Weekly Eff</div></div></div>
-    <div class="card"><h4>Weekly Performance Report <i class="fa-solid fa-chart-simple"></i></h4><canvas id="weeklyChart" width="400" height="200" style="max-height: 200px; width:100%; background: #0b0d1a; border-radius: 12px;"></canvas></div>
-    <div class="lifetime-box" style="margin-top: 20px;"><h3>AI Smart Suggestion</h3><p id="aiSmartSuggestion">Analyzing your learning patterns...</p></div>
-    <div class="cleaner-wrap" style="margin-top: 24px;"><h4>Master Log & Data Cleaner</h4><table id="cleanerTable" style="width:100%; font-size: 11px;"></table></div>
-  </div>
-
-  <!-- AI QUIZ & SUMMARY TAB (new) -->
-  <div id="view-ai" class="tab-view">
-    <div class="two-col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-      <div class="card"><h3><i class="fa-solid fa-pen-clip"></i> AI Quiz Generator</h3><p>Select a completed topic to generate MCQ / short Q&A:</p><select id="quizTopicSelect" style="width:100%; margin: 12px 0; background: var(--bg2); border:1px solid var(--border); padding: 8px; border-radius: 8px;"></select><button class="inject-btn" onclick="generateAIQuiz()"><i class="fa-regular fa-lightbulb"></i> Generate Quiz</button><div id="quizContainer" style="margin-top: 20px;"></div></div>
-      <div class="card"><h3><i class="fa-regular fa-note-sticky"></i> AI Topic Summary</h3><p>Get instant summary of a completed topic:</p><select id="summaryTopicSelect" style="width:100%; margin: 12px 0; background: var(--bg2); border:1px solid var(--border); padding: 8px; border-radius: 8px;"></select><button class="inject-btn" onclick="generateAISummary()"><i class="fa-regular fa-rectangle-list"></i> Generate Summary</button><div id="summaryOutput" style="margin-top: 20px; background: var(--bg2); border-radius: 12px; padding: 16px; white-space: pre-wrap;"></div></div>
+    <div class="two-col">
+      <div>
+        <p class="section-label"><i class="fa-solid fa-book-open"></i> Live Topics From MongoDB Database</p>
+        <div id="live-container"></div>
+      </div>
     </div>
-    <div class="card" style="margin-top: 20px;"><h3><i class="fa-regular fa-calendar-check"></i> Exam Countdown</h3><input type="date" id="examDate" style="background: var(--bg2); border:1px solid var(--border); padding: 8px; border-radius: 8px;"><button class="inject-btn" onclick="setExamCountdown()">Set Exam</button><div id="countdownDisplay" style="margin-top: 12px; font-size: 20px; font-family: monospace;"></div></div>
   </div>
 </div>
 
-<!-- MODALS -->
-<div id="aiQuizModal" class="modal-overlay"><div class="modal"><h3><i class="fa-solid fa-question"></i> AI Quiz Challenge</h3><div id="quizModalContent"></div><div class="modal-actions"><button class="modal-cancel" onclick="closeModal('aiQuizModal')">Close</button></div></div></div>
-
 <script>
-// ---------- GLOBAL STATE ----------
-let dbRoutine = {};
-let dbTopics = {};  // { "2025-01-01": [ {id,date,topicName,subject,category,status,completionDate,noteUrl,reviewsDone,reviewHistoryStamps,...} ] }
-let currentDate = new Date().toISOString().split('T')[0];
-let studyTimerInterval = null, timerSeconds = 25*60, timerRunning = false;
-let dailyStreak = 0, lastStudyDate = null;
-let dailyGoal = "", goalCompleted = false;
-let examTargetDate = null;
-const API_BASE = (window.location.hostname==='127.0.0.1'||window.location.hostname==='localhost') ? 'http://localhost:5000/api' : '/api';
-const cats = ["Programming","Academic / Gov Job","BCS","English","Software","Research / ML"];
-const days = ["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday"];
-const defaultRoutine = { Saturday:[["AI Engineering","JavaScript"],["Structure–II","R.C.C–II"],["Geography"],["English Speaking"],["QGIS"],["ML"]], Sunday:[["AI Engineering"],["Structure–II"],[],["English"],["QGIS"],["ML"]], Monday:[["AI Engineering"],["Geotech–II"],["Geography"],["Basic English"],["SAP 2000"],["ML"]], Tuesday:[["AI Engineering"],["Geotech–II"],[],["Basic English"],["SAP 2000"],["ML"]], Wednesday:[["AI Engineering"],["Transportation"],["Geography"],["Freehand Writing"],["Excel"],["Research"]], Thursday:[["AI Engineering"],["Transportation"],[],["Freehand Writing"],["Excel"],["Research"]], Friday:[[],[],["Geography"],[],[],[]] };
+// ==========================================
+// CORE DATABASE CONFIGURATION & INTEGRATION
+// ==========================================
 
-// Load initial data
-async function loadAll() {
-  try {
-    let [routineData, topicsData] = await Promise.all([fetch(API_BASE+'/routine').then(r=>r.json()), fetch(API_BASE+'/topics').then(r=>r.json())]);
-    dbRoutine = routineData.data || defaultRoutine;
-    dbTopics = topicsData.data || {};
-  } catch(e) { dbRoutine = defaultRoutine; dbTopics = {}; }
-  renderRoutineTable();
-  loadStreakFromLocal();
-  loadDailyGoalLocal();
-  loadExamCountdownLocal();
-  refreshDailyView();
-  renderProgressAnalytics();
-  updateSmartSuggestion();
-  updateQuizAndSummarySelects();
-}
-function renderRoutineTable() {
-  let html = `<thead><tr>${cats.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>`;
-  days.forEach(day=>{
-    html += `<tr><td style="font-weight:bold;">${day}</td>`;
-    for(let i=0;i<cats.length;i++){
-      let subs = (dbRoutine[day] && dbRoutine[day][i]) || [];
-      html += `<td>${subs.map(s=>`<span class="subject-pill">${s}</span>`).join(' ')} <button class="edit-btn" onclick="editRoutineCell('${day}',${i})"><i class="fa-regular fa-pen-to-square"></i></button></td>`;
+// Global variable array schema template
+let topicsArray = [];
+
+// Show loading spinner
+function showSyncSpinner(text = "Syncing") {
+    const ind = document.getElementById('sync-ind');
+    if(ind) {
+        document.getElementById('sync-text').innerText = text;
+        ind.style.display = 'inline-flex';
     }
-    html+=`</tr>`;
-  });
-  html+=`</tbody>`;
-  document.getElementById('routineTable').innerHTML = html;
 }
-window.editRoutineCell = function(day, idx){
-  let val = prompt(`Edit subjects for ${day} / ${cats[idx]} (comma separated):`, (dbRoutine[day][idx] || []).join(', '));
-  if(val!==null){
-    dbRoutine[day][idx] = val.split(',').map(s=>s.trim()).filter(s=>s);
-    renderRoutineTable();
-    fetch(API_BASE+'/routine', {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(dbRoutine)});
-  }
-};
-// Streak & Timer & Goal
-function loadStreakFromLocal(){
-  let stored = localStorage.getItem('studyStreak');
-  let lastDate = localStorage.getItem('lastStudyDate');
-  let todayStr = currentDate;
-  if(stored && lastDate === todayStr) dailyStreak = parseInt(stored);
-  else if(lastDate && new Date(lastDate).getTime() === new Date(todayStr).getTime()-86400000) { dailyStreak = (parseInt(stored)||0)+1; localStorage.setItem('studyStreak',dailyStreak); localStorage.setItem('lastStudyDate',todayStr); }
-  else if(lastDate !== todayStr) { dailyStreak = 1; localStorage.setItem('studyStreak',dailyStreak); localStorage.setItem('lastStudyDate',todayStr); }
-  else dailyStreak = parseInt(stored)||0;
-  document.getElementById('streakDisplay').innerText = dailyStreak;
-  if(dailyStreak>=3) document.getElementById('streakWarning').innerText = "🔥 Amazing! Keep the fire!";
-  else if(dailyStreak===1 && lastDate!==currentDate) document.getElementById('streakWarning').innerText = "New streak started! Don't break.";
-  else document.getElementById('streakWarning').innerHTML = dailyStreak===0?"Start today to build streak!":"";
+
+function hideSyncSpinner() {
+    const ind = document.getElementById('sync-ind');
+    if(ind) ind.style.display = 'none';
 }
-function recordStudyActivity(){
-  let today = currentDate;
-  let last = localStorage.getItem('lastStudyDate');
-  if(last !== today){
-    let oldStreak = parseInt(localStorage.getItem('studyStreak')||0);
-    let newStreak = (last && new Date(last).getTime() === new Date(today).getTime()-86400000) ? oldStreak+1 : 1;
-    localStorage.setItem('studyStreak', newStreak);
-    localStorage.setItem('lastStudyDate', today);
-    dailyStreak = newStreak;
-    document.getElementById('streakDisplay').innerText = dailyStreak;
-    showToast(`🔥 Streak updated: ${dailyStreak} days!`, "🎯");
-  }
+
+function showToast(msg) {
+    const container = document.getElementById('toast-container');
+    if(!container) return;
+    const toast = document.createElement('div');
+    toast.style.background = 'var(--card)';
+    toast.style.border = '1px solid var(--teal)';
+    toast.style.padding = '10px 16px';
+    toast.style.borderRadius = '8px';
+    toast.style.fontSize = '12px';
+    toast.innerText = msg;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
 }
-// Timer
-function updateTimerDisplay(){ let m=Math.floor(timerSeconds/60), s=timerSeconds%60; document.getElementById('timerDisplay').innerText=`${m}:${s<10?'0'+s:s}`; }
-function startTimer(){ if(studyTimerInterval) clearInterval(studyTimerInterval); timerRunning=true; studyTimerInterval=setInterval(()=>{ if(timerSeconds<=0){ clearInterval(studyTimerInterval); timerRunning=false; showToast("Pomodoro complete! Great focus session.", "🍅"); recordStudyActivity(); } else { timerSeconds--; updateTimerDisplay(); } },1000); }
-function stopTimer(){ if(studyTimerInterval) clearInterval(studyTimerInterval); timerRunning=false; }
-document.getElementById('startTimerBtn').onclick=()=>{ if(!timerRunning) startTimer(); };
-document.getElementById('stopTimerBtn').onclick=stopTimer;
-updateTimerDisplay();
-// Daily goal
-function loadDailyGoalLocal(){ let g=localStorage.getItem('dailyGoal'); let status=localStorage.getItem('goalCompleted'); if(g) dailyGoal=g; document.getElementById('dailyGoalInput').value=dailyGoal||""; updateGoalUI(); }
-function setDailyGoal(){ dailyGoal=document.getElementById('dailyGoalInput').value; localStorage.setItem('dailyGoal',dailyGoal); goalCompleted=false; localStorage.setItem('goalCompleted','false'); updateGoalUI(); showToast("Goal set! Complete it today.", "📌"); }
-document.getElementById('setGoalBtn').onclick=setDailyGoal;
-function markGoalComplete(){ if(dailyGoal && !goalCompleted){ goalCompleted=true; localStorage.setItem('goalCompleted','true'); updateGoalUI(); showToast("🎉 Goal achieved! Amazing progress.","🏆"); recordStudyActivity(); triggerSurpriseConfetti(); } }
-function updateGoalUI(){ let progText = dailyGoal? (goalCompleted?"✅ Completed: "+dailyGoal:"⏳ Pending: "+dailyGoal):"No goal set"; document.getElementById('goalProgressText').innerHTML=progText+(dailyGoal&&!goalCompleted?` <button class="edit-btn" onclick="markGoalComplete()">Mark Done</button>`:""); document.getElementById('goalFillBar').style.width = goalCompleted?"100%":"0%"; }
-window.markGoalComplete=markGoalComplete;
-// Inject topic
-function populateInjSubs(){ let ci=document.getElementById('injCat').value; let day=new Date(currentDate).toLocaleDateString('en-US',{weekday:'long'}); let subs=(dbRoutine[day]&&dbRoutine[day][ci])||[]; let sel=document.getElementById('injSub'); sel.innerHTML=subs.map(s=>`<option>${s}</option>`).join(''); }
-async function injectTopic(){ let ci=document.getElementById('injCat').value; let sub=document.getElementById('injSub').value; let topic=document.getElementById('injTopic').value.trim(); if(!sub||!topic){alert("Fill subject & topic");return;}
-  let newTopic={id:Date.now(),date:currentDate,originDate:currentDate,topicName:topic,category:cats[ci],subject:sub,status:'Pending',completionDate:null,reviewsDone:[],reviewHistoryStamps:{},customRevPendingOn:null,noteUrl:null};
-  if(!dbTopics[currentDate]) dbTopics[currentDate]=[];
-  dbTopics[currentDate].push(newTopic);
-  await fetch(API_BASE+'/topics', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(newTopic)});
-  refreshDailyView(); renderProgressAnalytics(); updateQuizAndSummarySelects(); updateSmartSuggestion();
+
+// 1. GET INITIAL LOAD DATA FROM MONGODB
+async function loadDataFromMongoDB() {
+    showSyncSpinner("Loading from DB...");
+    try {
+        const response = await fetch('/api/topics'); // Relative routing uses Render domain automatically
+        const result = await response.json();
+        
+        if (result.success && Array.isArray(result.data)) {
+            topicsArray = result.data;
+            renderLiveTopicsUI();
+            showToast("Successfully synced with MongoDB!");
+        } else {
+            console.warn("MongoDB returned alternative layout structure:", result);
+        }
+    } catch (err) {
+        console.error("Database connection failed:", err);
+        showToast("Error connecting to MongoDB server.");
+    } finally {
+        hideSyncSpinner();
+    }
 }
-function refreshDailyView(){ document.getElementById('dailyDateLabel').innerHTML=currentDate; let pending=(dbTopics[currentDate]||[]).filter(t=>t.status!=='Complete'); let completed=(dbTopics[currentDate]||[]).filter(t=>t.status==='Complete');
-  document.getElementById('pendingTopicsList').innerHTML=`<h4>📖 Today's Topics</h4>`+pending.map(t=>`<div class="topic-item" style="background:var(--bg2); padding:8px; margin:6px 0;"><b>${t.topicName}</b> (${t.subject})<button class="edit-btn" onclick="completeTopicNow(${t.id})">✅ Done</button> <button class="edit-btn" onclick="deleteTopicNow(${t.id})">🗑️</button></div>`).join('')||"<div class='empty'>Nothing pending</div>";
-  document.getElementById('completedList').innerHTML=`<h4>✔️ Completed Today</h4>`+completed.map(t=>`<div style="background:rgba(62,207,170,0.1); padding:6px; margin:4px;"><s>${t.topicName}</s> <span class="note-link" onclick="showNotePrompt(${t.id})"><i class="fa-regular fa-note-sticky"></i> Add Note</span></div>`).join('')||"<div class='empty'>—</div>";
-  renderRadar();
+
+// 2. PUSH / SYNC DATA TO MONGODB
+async function syncTopicToMongoDB(topicObj) {
+    showSyncSpinner("Saving to DB...");
+    try {
+        const response = await fetch('/api/topics/sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(topicObj)
+        });
+        const result = await response.json();
+        if(result.success) {
+            showToast("Data secured in MongoDB Atlas!");
+            return true;
+        }
+    } catch (err) {
+        console.error("Failed to push data object to MongoDB Server:", err);
+        showToast("Sync failed. Check terminal connection.");
+    } finally {
+        hideSyncSpinner();
+    }
+    return false;
 }
-window.completeTopicNow=async function(id){ let topic=findTopicById(id); if(topic){ topic.status='Complete'; topic.completionDate=currentDate; await fetch(API_BASE+'/topics/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(topic)}); refreshDailyView(); renderProgressAnalytics(); updateQuizAndSummarySelects(); updateSmartSuggestion(); showToast(`Completed: ${topic.topicName}`, "📘"); recordStudyActivity(); } };
-window.deleteTopicNow=async function(id){ if(confirm("Delete permanently?")){ await fetch(API_BASE+'/topics/'+id,{method:'DELETE'}); refreshDailyView(); renderProgressAnalytics(); updateQuizAndSummarySelects(); } };
-function findTopicById(id){ for(let arr of Object.values(dbTopics)) for(let t of arr) if(t.id==id) return t; return null; }
-function showNotePrompt(id){ let note=prompt("Paste Google Drive / Notion link:"); if(note){ let t=findTopicById(id); if(t){ t.noteUrl=note; fetch(API_BASE+'/topics/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(t)}); showToast("Note saved!","📎"); } } }
-function renderRadar(){ let today=new Date(currentDate); let radarHtml=""; for(let arr of Object.values(dbTopics)) for(let t of arr){ if(t.status!=='Complete') continue; let cd=new Date(t.completionDate); let diff=Math.floor((today-cd)/86400000); if([1,3,7,30].includes(diff) && !(t.reviewsDone||[]).includes(diff+'')) radarHtml+=`<div class="radar-item">📌 ${t.topicName} (Day ${diff}) <button onclick="markReviewDone(${t.id},${diff})" class="edit-btn">Mark Reviewed</button></div>`; if(t.customRevPendingOn===currentDate) radarHtml+=`<div class="radar-item">🎯 Custom: ${t.topicName} <button onclick="completeCustomReview(${t.id})" class="edit-btn">Review</button></div>`; }
-  document.getElementById('radarList').innerHTML=radarHtml||"✨ No revisions due today.";
+
+// 3. DELETE DATA FROM MONGODB
+async function deleteTopicFromMongoDB(id) {
+    showSyncSpinner("Deleting from DB...");
+    try {
+        const response = await fetch(`/api/topics/${id}`, {
+            method: 'DELETE'
+        });
+        const result = await response.json();
+        if(result.success) {
+            showToast("Permanently removed from MongoDB!");
+            return true;
+        }
+    } catch (err) {
+        console.error("Deletion query crashed:", err);
+    } finally {
+        hideSyncSpinner();
+    }
+    return false;
 }
-window.markReviewDone=async function(id,day){ let t=findTopicById(id); if(t){ if(!t.reviewsDone) t.reviewsDone=[]; t.reviewsDone.push(day+''); t.reviewHistoryStamps=t.reviewHistoryStamps||{}; t.reviewHistoryStamps[day]=currentDate; await fetch(API_BASE+'/topics/'+id,{method:'PUT',body:JSON.stringify(t),headers:{'Content-Type':'application/json'}}); refreshDailyView(); renderProgressAnalytics(); showToast(`Reviewed Day ${day}!`, "🔄"); } };
-window.completeCustomReview=async function(id){ let t=findTopicById(id); if(t){ t.customRevPendingOn=null; t.customReviewHistoryDates=t.customReviewHistoryDates||[]; t.customReviewHistoryDates.push(currentDate); await fetch(API_BASE+'/topics/'+id,{method:'PUT',body:JSON.stringify(t),headers:{'Content-Type':'application/json'}}); refreshDailyView(); renderProgressAnalytics(); } };
-// Analytics + Chart + Smart Suggestion
-function renderProgressAnalytics(){
-  let all=[], completed=0, pending=0, reviews=0;
-  Object.values(dbTopics).forEach(arr=>arr.forEach(t=>{ all.push(t); if(t.status==='Complete') completed++; else pending++; reviews+=(t.reviewsDone?.length||0)+(t.customReviewHistoryDates?.length||0); }));
-  document.getElementById('totalComplete').innerText=completed; document.getElementById('totalPending').innerText=pending; document.getElementById('totalReviews').innerText=reviews;
-  let weeklyDone=0, weeklyTotal=0; let last7=Array(7).fill(0);
-  for(let i=0;i<7;i++){ let d=new Date(); d.setDate(d.getDate()-i); let ds=d.toISOString().split('T')[0]; let cnt=(dbTopics[ds]||[]).filter(t=>t.status==='Complete').length; last7[6-i]=cnt; weeklyDone+=cnt; weeklyTotal+=(dbTopics[ds]||[]).length; }
-  let eff=weeklyTotal?Math.round((weeklyDone/weeklyTotal)*100):0; document.getElementById('weeklyEfficiency').innerText=eff+'%';
-  let ctx=document.getElementById('weeklyChart')?.getContext('2d'); if(ctx && window.myChart) window.myChart.destroy(); if(ctx){ window.myChart = new Chart(ctx, {type:'bar',data:{labels:['Day7','Day6','Day5','Day4','Day3','Day2','Today'], datasets:[{label:'Completed',data:last7,backgroundColor:'#3ecfaa'}]},options:{responsive:true, maintainAspectRatio:true}}); }
-  updateSmartSuggestion();
+
+// Handle Add / Submit Button Actions
+async function handleInject() {
+    const catInput = document.getElementById('inj-cat').value.trim();
+    const subInput = document.getElementById('inj-sub').value.trim();
+    const topicInput = document.getElementById('inj-topic').value.trim();
+
+    if (!catInput || !subInput || !topicInput) {
+        alert("Please fill all inputs before sync operation.");
+        return;
+    }
+
+    // Creating object that matches TopicSchema explicitly
+    const newTopic = {
+        id: Date.now(), // Unique numeric identifier
+        date: new Date().toISOString().split('T')[0],
+        category: catInput,
+        subject: subInput,
+        topicName: topicInput,
+        status: "Pending",
+        reviewsDone: [],
+        reviewHistoryStamps: {},
+        customReviewHistoryDates: []
+    };
+
+    // Push local
+    topicsArray.push(newTopic);
+    
+    // Sync sorasori MongoDB block target API
+    await syncTopicToMongoDB(newTopic);
+    
+    // Refresh Interface View Layouts
+    renderLiveTopicsUI();
+    
+    // Clear inputs
+    document.getElementById('inj-topic').value = '';
 }
-function updateSmartSuggestion(){
-  let allTopics=[]; Object.values(dbTopics).forEach(arr=>arr.forEach(t=>allTopics.push(t)));
-  let catCount={}; allTopics.forEach(t=>{ catCount[t.category]=(catCount[t.category]||0)+1; });
-  let weakest=Object.entries(catCount).sort((a,b)=>a[1]-b[1])[0];
-  document.getElementById('aiSmartSuggestion').innerHTML=weakest?`🧠 AI Insight: "${weakest[0]}" has the fewest topics (${weakest[1]}). Prioritize this category tomorrow for balanced growth!`:"✨ Keep adding topics, AI will suggest patterns soon.";
+
+// Render dynamic elements to interface container
+function renderLiveTopicsUI() {
+    const liveContainer = document.getElementById('live-container');
+    if (!liveContainer) return;
+    liveContainer.innerHTML = '';
+
+    if(topicsArray.length === 0) {
+        liveContainer.innerHTML = '<div class="empty-cell">No items inside database cluster collection.</div>';
+        return;
+    }
+
+    // Generate elements dynamically without changing CSS wrapper behaviors
+    topicsArray.forEach(t => {
+        const item = document.createElement('div');
+        item.className = 'topic-item';
+        item.innerHTML = `
+            <div>
+                <div class="topic-name"><strong>${t.topicName}</strong></div>
+                <span class="topic-cat-badge">${t.category} — ${t.subject}</span>
+            </div>
+            <button onclick="handleDeleteAction(${t.id})" style="background:none; border:none; color:var(--rose); cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
+        `;
+        liveContainer.appendChild(item);
+    });
 }
-// AI Quiz & Summary (mock simulation but looks realistic)
-function updateQuizAndSummarySelects(){ let completedTopics=[]; Object.values(dbTopics).forEach(arr=>arr.forEach(t=>{if(t.status==='Complete') completedTopics.push(t);})); let opts=completedTopics.map(t=>`<option value="${t.id}">${t.topicName} (${t.subject})</option>`).join(''); document.getElementById('quizTopicSelect').innerHTML=opts||'<option>-- No completed topics --</option>'; document.getElementById('summaryTopicSelect').innerHTML=opts||'<option>-- No completed topics --</option>'; }
-function generateAIQuiz(){ let select=document.getElementById('quizTopicSelect'); let id=select.value; let topic=findTopicById(parseInt(id)); if(!topic){alert("Select a completed topic first");return;}
-  let mcqs = [`❓ What is the core concept of "${topic.topicName}"? (A) Fundamentals (B) Advanced (C) Application (D) Theory`, `❓ Which practical skill is most related to "${topic.topicName}"? (A) Debugging (B) Analysis (C) Implementation (D) Documentation`, `❓ In context of "${topic.subject}", the primary goal is? (A) Memorization (B) Hands-on (C) Theory (D) Assessment`];
-  let modalDiv=document.getElementById('quizModalContent'); modalDiv.innerHTML=`<p><strong>${topic.topicName}</strong> - Quick AI Quiz</p><div>${mcqs.map(q=>`<div class="ai-quiz-option" onclick="alert('💡 Correct approach: Review core materials!'); closeModal('aiQuizModal');">${q}</div>`).join('')}</div><p class="ai-quiz-feedback">✨ AI generated: answer yourself to reinforce learning.</p>`;
-  document.getElementById('aiQuizModal').classList.add('visible');
+
+async function handleDeleteAction(id) {
+    if(confirm("Are you sure you want to delete this from MongoDB?")) {
+        const success = await deleteTopicFromMongoDB(id);
+        if(success) {
+            topicsArray = topicsArray.filter(t => t.id !== id);
+            renderLiveTopicsUI();
+        }
+    }
 }
-function generateAISummary(){ let select=document.getElementById('summaryTopicSelect'); let id=select.value; let topic=findTopicById(parseInt(id)); if(!topic) return; let summary=`📝 AI Summary for "${topic.topicName}":\n\nThis topic covers key principles in ${topic.subject} (${topic.category}). Focus areas: practical application, theoretical foundations, and real-world examples. Recommended revision: review notes and practice exercises. ${topic.noteUrl?`📎 Reference: ${topic.noteUrl}`:"Add a note for deeper insight."}`; document.getElementById('summaryOutput').innerHTML=summary.replace(/\n/g,'<br>'); showToast("Summary generated!", "🤖"); }
-// Exam countdown
-function setExamCountdown(){ examTargetDate=document.getElementById('examDate').value; localStorage.setItem('examTarget',examTargetDate); updateCountdown(); }
-function updateCountdown(){ if(examTargetDate){ let diff=Math.ceil((new Date(examTargetDate)-new Date())/86400000); document.getElementById('countdownDisplay').innerHTML=diff>0?`📅 ${diff} days left until exam. Stay focused!`:`🎯 Exam day! Good luck!`; } else document.getElementById('countdownDisplay').innerHTML="Set exam date to see countdown."; }
-function loadExamCountdownLocal(){ let ex=localStorage.getItem('examTarget'); if(ex){ examTargetDate=ex; document.getElementById('examDate').value=ex; updateCountdown(); } }
-// helpers
-function showToast(msg,icon){ let toast=document.createElement('div'); toast.className='toast'; toast.innerHTML=`<i class="fa-regular fa-bell"></i> ${msg}`; document.body.appendChild(toast); setTimeout(()=>toast.remove(),2500); }
-function triggerSurpriseConfetti(){ confetti({particleCount:100,spread:70,origin:{y:0.6},colors:['#7c6af7','#3ecfaa']}); }
-function closeModal(id){ document.getElementById(id).classList.remove('visible'); }
-function switchTab(tab){ document.querySelectorAll('.tab-view').forEach(v=>v.classList.remove('active')); document.getElementById(`view-${tab}`).classList.add('active'); if(tab==='progress') renderProgressAnalytics(); if(tab==='daily') refreshDailyView(); if(tab==='ai'){ updateQuizAndSummarySelects(); updateCountdown();} }
-document.getElementById('datePickerDaily').addEventListener('change',(e)=>{currentDate=e.target.value;refreshDailyView();});
-window.onload=()=>{ document.getElementById('datePickerDaily').value=currentDate; let catSel=document.getElementById('injCat'); cats.forEach((c,i)=>{ let opt=document.createElement('option'); opt.value=i; opt.innerText=c; catSel.appendChild(opt);}); catSel.onchange=populateInjSubs; populateInjSubs(); loadAll(); setInterval(updateCountdown,60000); };
-window.showToast=showToast;
+
+// Tab layouts toggle state logic
+function switchTab(tabName) {
+    document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    
+    document.getElementById(`view-${tabName}`).classList.add('active');
+    document.getElementById(`tab-${tabName}`).classList.add('active');
+}
+
+function togglePlanDrawer() {
+    const body = document.getElementById('plan-drawer-body');
+    if(body) {
+        body.style.display = (body.style.display === 'none' || body.style.display === '') ? 'block' : 'none';
+    }
+}
+
+// Window operational lifecycle initial load triggers
+window.addEventListener('DOMContentLoaded', () => {
+    loadDataFromMongoDB();
+});
 </script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </body>
 </html>
