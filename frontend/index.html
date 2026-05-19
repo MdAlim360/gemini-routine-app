@@ -3,999 +3,1713 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Learning Routine - Legacy Studio v3.0</title>
+    <title>My Learning Routine — Premium Edition v21</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,700;1,700&family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
     <style>
-        body { background-color: #060813; color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .main-title { font-family: 'Playfair Display', serif; }
-        .tab-btn { background: rgba(30, 41, 59, 0.3); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s ease; }
-        .tab-btn.active { background: rgba(99, 102, 241, 0.2); border-color: rgba(99, 102, 241, 0.4); color: #818cf8; box-shadow: 0 0 15px rgba(99, 102, 241, 0.15); }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.01); }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
-        .surprise-alert { animation: slideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        :root {
+            --bg-dark: #0a0a0f;
+            --card-bg: rgba(18, 18, 29, 0.6);
+            --border-glass: rgba(255, 255, 255, 0.05);
+            --primary-grad: linear-gradient(135deg, #4f8ef7 0%, #a855f7 100%);
+        }
         
-        /* Glassmorphism Utility Classes */
-        .glass-panel { background: rgba(10, 15, 36, 0.6) !important; backdrop-filter: blur(14px) !important; -webkit-backdrop-filter: blur(14px) !important; border: 1px solid rgba(255, 255, 255, 0.05) !important; }
-        .badge-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .badge-card.unlocked-badge { background: rgba(99, 102, 241, 0.08); border-color: rgba(99, 102, 241, 0.3); box-shadow: 0 0 20px rgba(99, 102, 241, 0.15); animation: badgeFlip 0.6s ease-out forwards; }
-        @keyframes badgeFlip { 0% { transform: rotateY(90deg) scale(0.9); opacity: 0; } 100% { transform: rotateY(0) scale(1); opacity: 1; } }
+        body { 
+            background-color: var(--bg-dark); 
+            color: #f3f4f6; 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Premium Base */
+        .glass-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--border-glass);
+        }
+
+        /* Nav & Layout elements */
+        .nav-link.active {
+            background: var(--primary-grad);
+            color: white;
+            box-shadow: 0 4px 20px rgba(168, 85, 247, 0.3);
+        }
+
+        /* Staggered Cards Animation on Page Load */
+        .stagger-card {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .stagger-card:nth-child(1) { animation-delay: 0.05s; }
+        .stagger-card:nth-child(2) { animation-delay: 0.1s; }
+        .stagger-card:nth-child(3) { animation-delay: 0.15s; }
+        .stagger-card:nth-child(4) { animation-delay: 0.2s; }
+        .stagger-card:nth-child(5) { animation-delay: 0.25s; }
+        .stagger-card:nth-child(n+6) { animation-delay: 0.3s; }
+
+        @keyframes cardSlideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Success Pulse Animation */
+        .complete-glow-pulse {
+            animation: greenPulse 1.2s cubic-bezier(0.25, 0, 0, 1) forwards;
+        }
+        @keyframes greenPulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); border-color: #10b981; }
+            100% { box-shadow: 0 0 25px 2px rgba(16, 185, 129, 0); border-color: rgba(255, 255, 255, 0.05); }
+        }
+
+        /* Fire Emoji Animation */
+        .streak-fire-pulse {
+            animation: firePulse 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 2 alternate;
+        }
+        @keyframes firePulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.4) rotate(10deg); filter: drop-shadow(0 0 10px #f59e0b); }
+        }
+
+        /* Progress Bar Soft Width Transition */
+        .progress-bar-fill {
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Interactive Premium States */
+        .premium-btn-hover {
+            transition: all 0.2s ease;
+        }
+        .premium-btn-hover:hover {
+            transform: scale(1.04);
+            box-shadow: 0 0 15px rgba(79, 142, 247, 0.4);
+        }
+
+        /* Tab Switch Animations */
+        .tab-view {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .tab-view.hidden {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        /* Scrollbars Custom Styling */
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 999px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #4f8ef7; }
+
+        /* Categorized Highlight Overlays */
+        .cat-prog { border-left: 4px solid #4f8ef7 !important; background: rgba(79, 142, 247, 0.03); }
+        .cat-acad { border-left: 4px solid #f43f5e !important; background: rgba(244, 63, 94, 0.03); }
+        .cat-bcs { border-left: 4px solid #fbbf24 !important; background: rgba(251, 191, 36, 0.02); }
+        .cat-eng { border-left: 4px solid #34d399 !important; background: rgba(52, 211, 153, 0.03); }
+        .cat-soft { border-left: 4px solid #38bdf8 !important; background: rgba(56, 189, 248, 0.03); }
+        .cat-res { border-left: 4px solid #f472b6 !important; background: rgba(244, 114, 182, 0.03); }
+
+        .surprise-alert { animation: slideDownToast 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes slideDownToast { 0% { transform: translateY(-30px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+        .modal-animate { animation: scaleUpModal 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+        @keyframes scaleUpModal { 0% { transform: scale(0.95); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+        /* SVG Circular Timer Properties */
+        .pomo-circle {
+            transition: stroke-dashoffset 1s linear;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        
+        /* Procrastination Side/Slide Overlay Panel */
+        .slide-panel {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Shimmer Animation for Quote Card */
+        .shimmer-card {
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.15);
+        }
+        .shimmer-card::after {
+            content: '';
+            position: absolute;
+            top: -50%; right: -50%; bottom: -50%; left: -50%;
+            background: linear-gradient(to bottom right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.04) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(25deg);
+            animation: cardShimmer 4s ease-in-out infinite;
+        }
+        @keyframes cardShimmer {
+            0% { transform: translate(-30%, -30%) rotate(25deg); }
+            100% { transform: translate(30%, 30%) rotate(25deg); }
+        }
+
+        /* Heatmap Styling */
+        .heatmap-grid {
+            display: grid;
+            grid-template-flow: column;
+            grid-auto-flow: column;
+            grid-template-rows: repeat(7, minmax(0, 1fr));
+            gap: 3px;
+        }
+        .heatmap-cell {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            transition: transform 0.1s ease;
+        }
+        .heatmap-cell:hover {
+            transform: scale(1.3);
+            z-index: 10;
+            box-shadow: 0 0 8px rgba(255,255,255,0.3);
+        }
+
+        /* Circular Progress Ring CSS */
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        /* Custom Keyboard Keys Styling */
+        .kbd-key {
+            background: #1e1e2f;
+            border: 1px solid #3b3b54;
+            border-bottom: 3px solid #3b3b54;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+            color: #60a5fa;
+        }
     </style>
 </head>
-<body class="min-h-screen pb-24 selection:bg-indigo-500/30 selection:text-indigo-200">
+<body class="min-h-screen bg-[#0a0a0f]">
 
-    <div id="surprise-toast-container" class="fixed bottom-6 right-6 z-50 pointer-events-none flex flex-col gap-3 max-w-sm w-full"></div>
+    <div id="offline-banner" class="hidden bg-rose-950/90 border-b border-rose-800 text-rose-300 px-4 py-2 text-center text-xs font-bold fixed top-0 left-0 right-0 z-50 animate-bounce">
+        <i class="fa-solid fa-wifi-slash mr-2"></i> অফলাইনে আছ — cached data দেখাচ্ছ
+    </div>
 
-    <div id="level-up-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden flex flex-col items-center justify-center z-50 p-4">
-        <div class="text-center space-y-4 max-w-md p-8 rounded-2xl bg-[#0a0f24]/60 border border-white/10 shadow-2xl">
-            <div class="w-24 h-24 bg-indigo-600/20 border-2 border-indigo-500 rounded-full flex items-center justify-center mx-auto shadow-[0_0_50px_rgba(99,102,241,0.5)]">
-                <i class="fa-solid fa-up-long text-4xl text-indigo-400 animate-bounce"></i>
+    <div id="surprise-toast-container" class="fixed top-12 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm px-4 pointer-events-none"></div>
+
+    <div class="flex flex-col lg:flex-row min-h-screen">
+        
+        <aside class="w-full lg:w-72 glass-panel lg:min-h-screen lg:sticky lg:top-0 border-b lg:border-b-0 lg:border-r border-[rgba(255,255,255,0.06)] z-40 flex flex-col justify-between">
+            <div>
+                <div class="p-6 border-b border-[rgba(255,255,255,0.06)] flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div onclick="openAvatarModal()" class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-500 to-purple-600 flex flex-col items-center justify-center shadow-lg shadow-purple-950/40 relative cursor-pointer group hover:opacity-80 transition-all">
+                            <span id="header-avatar-crown" class="absolute -top-3.5 text-[11px] font-bold text-amber-400"></span>
+                            <span id="header-avatar-emoji" class="text-xl">🧑‍💻</span>
+                            <span id="header-avatar-accessory" class="absolute -bottom-1 -right-1 text-[10px]"></span>
+                        </div>
+                        <div>
+                            <h1 id="app-brand-title" class="text-sm font-extrabold tracking-tight text-white uppercase">আমার পাঠশালা</h1>
+                            <p class="text-[10px] text-gray-500 font-bold tracking-widest">PREMIUM SUITE V21</p>
+                        </div>
+                    </div>
+                    <button onclick="toggleAudioSystem()" id="sound-toggle-btn" class="text-xs bg-slate-900 px-2 py-1.5 rounded border border-gray-800 text-gray-400 font-bold flex items-center gap-1 hover:border-indigo-500 transition-all">
+                        🔊 ON
+                    </button>
+                </div>
+
+                <div class="p-4 border-b border-[rgba(255,255,255,0.04)] bg-purple-950/10">
+                    <div class="flex items-center justify-between text-[11px] mb-1 font-bold">
+                        <span class="text-purple-400 flex items-center gap-1">
+                            <i class="fa-solid fa-star"></i> LEVEL <span id="sidebar-level-val">1</span>
+                        </span>
+                        <span class="text-gray-400"><span id="sidebar-xp-current">0</span> / <span id="sidebar-xp-next">100</span> XP</span>
+                    </div>
+                    <div class="w-full bg-gray-900 h-2 rounded-full overflow-hidden border border-gray-800">
+                        <div id="sidebar-xp-progress" class="bg-gradient-to-r from-blue-500 to-purple-500 h-full progress-bar-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <nav class="p-4 space-y-2 flex flex-row lg:flex-col items-center justify-around lg:justify-start w-full overflow-x-auto lg:overflow-x-visible custom-scrollbar">
+                    <button onclick="switchTab('routine')" id="tab-routine" class="nav-link tab-btn active w-full text-xs font-bold px-4 py-3.5 rounded-xl cursor-pointer flex items-center gap-3 text-gray-400 transition-all premium-btn-hover whitespace-nowrap">
+                        <i class="fa-solid fa-calendar-days text-sm"></i> <span class="hidden md:inline lg:inline">Weekly Routine</span>
+                    </button>
+                    <button onclick="switchTab('daily')" id="tab-daily" class="nav-link tab-btn w-full text-xs font-bold px-4 py-3.5 rounded-xl cursor-pointer flex items-center gap-3 text-gray-400 transition-all premium-btn-hover whitespace-nowrap">
+                        <i class="fa-solid fa-cube text-sm"></i> <span class="hidden md:inline lg:inline">Daily Log & Workbench</span>
+                    </button>
+                    <button onclick="switchTab('pomo')" id="tab-pomo" class="nav-link tab-btn w-full text-xs font-bold px-4 py-3.5 rounded-xl cursor-pointer flex items-center gap-3 text-gray-400 transition-all premium-btn-hover whitespace-nowrap">
+                        <i class="fa-solid fa-stopwatch text-sm"></i> <span class="hidden md:inline lg:inline">Pomodoro Focus</span>
+                    </button>
+                    <button onclick="switchTab('progress')" id="tab-progress" class="nav-link tab-btn w-full text-xs font-bold px-4 py-3.5 rounded-xl cursor-pointer flex items-center gap-3 text-gray-400 transition-all premium-btn-hover whitespace-nowrap">
+                        <i class="fa-solid fa-bolt text-sm"></i> <span class="hidden md:inline lg:inline">Analytics & Progress</span>
+                    </button>
+                </nav>
             </div>
-            <h2 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-500">⭐ LEVEL UP!</h2>
-            <p id="level-up-announcement-text" class="text-xl font-bold text-gray-200"></p>
-            <p class="text-xs text-gray-500">আপনার নতুন মেধা স্তর সিস্টেমে আপগ্রেড করা হয়েছে</p>
-        </div>
-    </div>
 
-    <div id="badge-unlock-modal" class="fixed inset-0 bg-black/95 backdrop-blur-lg hidden flex flex-col items-center justify-center z-50 p-4">
-        <div class="text-center space-y-4 max-w-sm p-6 bg-slate-900/80 border border-white/5 rounded-2xl shadow-2xl">
-            <p class="text-[10px] font-bold uppercase tracking-widest text-emerald-400 animate-pulse">✨ নতুন অর্জন আনলক হয়েছে ✨</p>
-            <div id="unlocked-badge-icon-holder" class="w-24 h-24 mx-auto flex items-center justify-center text-5xl rounded-full bg-slate-950 border border-gray-800 shadow-[0_0_40px_rgba(251,191,36,0.3)]"></div>
-            <h3 id="unlocked-badge-title-holder" class="text-2xl font-black text-amber-400"></h3>
-            <p id="unlocked-badge-desc-holder" class="text-xs text-gray-300 px-4"></p>
-            <button onclick="closeBadgeUnlockModal()" class="mt-4 px-6 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 font-bold text-xs rounded-xl text-white shadow-lg cursor-pointer transition-transform active:scale-95">
-                দারুণ! সামনে বাড়ি 🚀
-            </button>
-        </div>
-    </div>
+            <div class="p-4 hidden lg:block border-t border-[rgba(255,255,255,0.04)]">
+                <button id="pwa-install-btn" class="hidden w-full text-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-xs py-2 px-3 rounded-xl mb-3 shadow-lg shadow-blue-950/50 hover:from-blue-500 transition-all animate-pulse">
+                    অ্যাপটি Install করো 📲
+                </button>
 
-    <div id="weekly-report-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-[#0a0f26] border border-indigo-950 rounded-2xl w-full max-w-md p-6 shadow-[0_0_40px_rgba(99,102,241,0.3)] text-center relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-sky-400 via-indigo-500 to-purple-600"></div>
-            <h3 class="text-base font-black text-sky-400 mb-1 flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-chart-bar"></i> সাপ্তাহিক রিপোর্ট 📊
-            </h3>
-            <p class="text-[11px] text-gray-500 mb-4">বিগত ৭ দিনের সার্বিক পারফরম্যান্স বিশ্লেষণ</p>
+                <div id="sidebar-intention-widget" class="p-3 bg-black/40 rounded-xl border border-gray-900/60 mb-3 hidden">
+                    <p class="text-[9px] text-indigo-400 font-extrabold uppercase tracking-wider mb-2 flex items-center gap-1">
+                        <i class="fa-solid fa-crosshair"></i> আজকের লক্ষ্যসমূহ
+                    </p>
+                    <ul id="widget-intention-list" class="text-[11px] space-y-1.5 text-gray-300"></ul>
+                </div>
+
+                <div class="p-3 bg-black/30 rounded-xl border border-gray-900 text-center">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Keyboard Help</p>
+                    <p class="text-[11px] text-indigo-400 mt-1 cursor-pointer hover:underline" onclick="toggleKeyboardModal(true)">
+                        Press <kbd class="px-1.5 py-0.5 bg-gray-800 rounded border border-gray-700 text-white font-mono text-[10px]">?</kbd> for Shortcuts
+                    </p>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 p-4 md:p-8 lg:p-10 space-y-6 max-w-7xl mx-auto w-full">
             
-            <div class="grid grid-cols-2 gap-3 text-left text-xs mb-4">
-                <div class="bg-[#060a1c] p-3 border border-gray-900 rounded-xl">
-                    <span class="text-[10px] text-gray-500 block">টপিক সম্পন্ন:</span>
-                    <span id="rep-topics-count" class="font-bold text-white text-sm">0 টি</span>
+            <section id="motivational-quote-wrapper" class="glass-panel p-4 md:p-5 rounded-2xl shimmer-card border-purple-500/20 bg-gradient-to-r from-purple-950/10 via-slate-900/60 to-blue-950/10 flex items-center gap-4 stagger-card">
+                <div class="w-10 h-10 rounded-full bg-purple-900/40 border border-purple-700/40 flex items-center justify-center text-purple-400 flex-shrink-0">
+                    <i class="fa-solid fa-quote-left text-sm"></i>
                 </div>
-                <div class="bg-[#060a1c] p-3 border border-gray-900 rounded-xl">
-                    <span class="text-[10px] text-gray-500 block">অর্জিত এক্সপি (XP):</span>
-                    <span id="rep-xp-count" class="font-bold text-indigo-400 text-sm">+0 XP</span>
+                <div>
+                    <p id="motivational-quote-text" class="text-xs md:text-sm font-medium tracking-wide text-gray-200 leading-relaxed">"লোড হচ্ছে..."</p>
+                    <span id="motivational-quote-author" class="text-[10px] font-bold text-purple-400 block mt-1 uppercase tracking-wider">— সংগৃহীত</span>
                 </div>
-                <div class="bg-[#060a1c] p-3 border border-gray-900 rounded-xl">
-                    <span class="text-[10px] text-gray-500 block">সেরা সক্রিয় দিন:</span>
-                    <span id="rep-best-day" class="font-bold text-amber-400 text-xs">-</span>
+            </section>
+
+            <header class="glass-panel p-4 md:p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xl border-[rgba(255,255,255,0.04)] stagger-card">
+                <div>
+                    <span class="text-[10px] font-black tracking-widest text-indigo-400 uppercase">SYSTEM ACTIVE TIMESTAMP</span>
+                    <h2 id="current-live-date-header" class="text-base font-bold text-white mt-0.5 flex items-center gap-2">
+                        <i class="fa-solid fa-clock text-gray-500 text-xs"></i> Loading Terminal State...
+                    </h2>
                 </div>
-                <div class="bg-[#060a1c] p-3 border border-gray-900 rounded-xl">
-                    <span class="text-[10px] text-gray-500 block">টানা পড়াশোনা (Streak):</span>
-                    <span id="rep-streak-status" class="font-bold text-emerald-400 text-xs">-</span>
-                </div>
-            </div>
-
-            <div class="bg-[#060a1c] p-3 border border-gray-900 rounded-xl text-left text-xs mb-4">
-                <span class="text-[10px] text-gray-500 block">এই সপ্তাহের প্রিয় সাবজেক্ট:</span>
-                <span id="rep-best-subject" class="font-bold text-purple-400 text-xs">-</span>
-            </div>
-
-            <div class="p-4 bg-indigo-950/20 border border-indigo-900/40 rounded-xl mb-6">
-                <p id="rep-motivation-message" class="text-xs font-medium text-gray-200 leading-relaxed"></p>
-            </div>
-
-            <button onclick="document.getElementById('weekly-report-modal').classList.add('hidden')" class="w-full py-2.5 bg-slate-900 border border-gray-800 text-gray-300 hover:text-white font-bold text-xs rounded-xl cursor-pointer">
-                বন্ধ করুন
-            </button>
-        </div>
-    </div>
-
-    <header class="max-w-7xl mx-auto px-4 pt-8 pb-4 text-center relative">
-        <div class="absolute top-4 right-4 flex items-center gap-2">
-            <span id="sync-status-indicator" class="text-[10px] bg-emerald-950/80 text-emerald-400 border border-emerald-900 px-2 py-0.5 rounded-full font-mono flex items-center gap-1">
-                <i class="fa-solid fa-cloud shadow-sm animate-pulse"></i> Sync Connected
-            </span>
-        </div>
-
-        <h1 class="main-title text-4xl md:text-6xl font-bold tracking-tight text-white mb-2">My Learning Routine</h1>
-        <p class="text-xs tracking-widest text-indigo-400 uppercase font-bold font-mono">Spaced Repetition & Engine Architecture v3.0</p>
-
-        <div class="max-w-4xl mx-auto mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 items-center p-4 rounded-2xl bg-[#0a0f24]/60 border border-gray-900/50 backdrop-blur-md">
-            <div class="flex items-center gap-3 justify-center sm:justify-start">
-                <span id="header-streak-display" class="text-sm font-bold bg-amber-950/40 text-amber-400 border border-amber-900/40 px-3 py-1.5 rounded-xl">
-                    🔥 0 Days Streak
-                </span>
-                <span id="header-level-name" class="text-xs font-black uppercase tracking-wider bg-indigo-950/40 text-indigo-400 border border-indigo-900/40 px-3 py-1.5 rounded-xl">
-                    স্তর: নবীন
-                </span>
-            </div>
-            <div class="w-full space-y-1">
-                <div class="flex justify-between text-[10px] uppercase tracking-wider font-extrabold text-gray-400 px-1">
-                    <span id="xp-counter-text">XP: 0 / 100</span>
-                    <span class="text-indigo-400" id="xp-percent-text">0%</span>
-                </div>
-                <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-gray-900">
-                    <div id="xp-bar-fill-element" class="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-0 transition-all duration-500"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex justify-center flex-wrap gap-2 mt-6">
-            <button onclick="switchTab('routine')" id="tab-routine" class="tab-btn active text-xs font-semibold px-4 py-2 rounded-xl cursor-pointer">
-                <i class="fa-solid fa-table mr-1"></i> Routine
-            </button>
-            <button onclick="switchTab('daily')" id="tab-daily" class="tab-btn text-xs font-semibold px-4 py-2 rounded-xl cursor-pointer">
-                <i class="fa-solid fa-pen mr-1"></i> Daily Log & Workbench
-            </button>
-            <button onclick="switchTab('progress')" id="tab-progress" class="tab-btn text-xs font-semibold px-4 py-2 rounded-xl cursor-pointer">
-                <i class="fa-solid fa-trophy mr-1"></i> Progress & Legacy Ledger
-            </button>
-            <button onclick="switchTab('badges')" id="tab-badges" class="tab-btn text-xs font-semibold px-4 py-2 rounded-xl cursor-pointer">
-                <i class="fa-solid fa-medal mr-1 text-amber-400"></i> আমার অর্জন 🏅
-            </button>
-            <button onclick="triggerManualWeeklyReport()" class="tab-btn text-xs font-semibold px-4 py-2 rounded-xl cursor-pointer text-sky-400">
-                <i class="fa-solid fa-chart-bar mr-1"></i> সাপ্তাহিক রিপোর্ট 📊
-            </button>
-        </div>
-    </header>
-
-    <div class="max-w-7xl mx-auto px-4 mt-4">
-
-        <div id="view-routine" class="tab-view space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="routine-days-container"></div>
-        </div>
-
-        <div id="view-daily" class="tab-view hidden space-y-6">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
-                <div class="lg:col-span-1 space-y-6">
-                    <div class="p-6 rounded-2xl bg-[#0e132e]/40 border border-gray-900/60 shadow-xl backdrop-blur-md">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-sm font-bold text-gray-100 flex items-center gap-1.5">
-                                <i class="fa-solid fa-bolt text-indigo-400 text-xs"></i> Log Target Completed
-                            </h3>
-                            <input type="date" id="workbench-active-date" onchange="syncActiveWorkbenchSessionDate()" class="bg-[#050714] border border-gray-900 text-gray-300 text-[11px] rounded-lg px-2 py-1 font-mono focus:outline-none">
-                        </div>
-                        
-                        <div class="space-y-3 text-xs">
-                            <div>
-                                <label class="block text-gray-400 font-medium mb-1">Subject Vector Stream:</label>
-                                <select id="form-subject-selector" class="w-full bg-[#050714] border border-gray-900 rounded-xl p-2.5 text-gray-300 focus:outline-none focus:border-indigo-500"></select>
-                            </div>
-                            <div>
-                                <label class="block text-gray-400 font-medium mb-1">Category Type:</label>
-                                <select id="form-category-selector" class="w-full bg-[#050714] border border-gray-900 rounded-xl p-2.5 text-gray-300 focus:outline-none focus:border-indigo-500">
-                                    <option value="Syllabus Experiment">Syllabus Experiment</option>
-                                    <option value="Theory Lecture">Theory Lecture</option>
-                                    <option value="Programming Concept">Programming Concept</option>
-                                    <option value="Project Implementation">Project Implementation</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-gray-400 font-medium mb-1">Topic Name Description:</label>
-                                <input type="text" id="form-topic-name" placeholder="e.g., Experiment 1: Open Channel Flow" class="w-full bg-[#050714] border border-gray-900 rounded-xl p-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500">
-                            </div>
-                            <div>
-                                <label class="block text-gray-400 font-medium mb-1">Reference Notes URL Link (Optional):</label>
-                                <input type="url" id="form-note-url" placeholder="https://drive.google.com/..." class="w-full bg-[#050714] border border-gray-900 rounded-xl p-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500">
-                            </div>
-                            <button onclick="submitTopicLogToWorkbench()" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-2.5 rounded-xl cursor-pointer shadow-lg transition-all active:scale-95 text-xs">
-                                Log Active Session & Claim XP
-                            </button>
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-3 bg-gradient-to-r from-amber-500/10 to-orange-600/10 border border-amber-500/20 px-4 py-2 rounded-xl">
+                        <div id="streak-icon-holder" class="text-lg">🔥</div>
+                        <div>
+                            <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wide">Dynamic Running Streak</div>
+                            <div class="text-sm font-black text-amber-400 mt-0.5"><span id="streak-counter-value">0</span> Days Active</div>
                         </div>
                     </div>
+                </div>
+            </header>
 
-                    <div class="p-5 rounded-2xl bg-[#090d22]/50 border border-gray-900/60">
-                        <h4 class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-3 flex items-center gap-1.5">
-                            <i class="fa-solid fa-satellite-dish animate-pulse"></i> Spaced Repetition Radar
-                        </h4>
-                        <p class="text-[11px] text-gray-400 mb-3 leading-relaxed">সিস্টেম স্বয়ংক্রিয়ভাবে স্পেসড ইন্টারভ্যালে (১ দিন, ৩ দিন, ৭ দিন) রিভিশন সাজেস্ট করবে।</p>
-                        <div id="radar-suggestions-container" class="space-y-2 max-h-[220px] overflow-y-auto custom-scrollbar"></div>
+            <section id="spaced-repetition-alert-box" class="hidden glass-panel p-5 rounded-2xl border-rose-500/20 bg-gradient-to-b from-rose-950/10 to-transparent shadow-xl space-y-3 stagger-card">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xs font-black text-rose-400 uppercase tracking-widest flex items-center gap-2">
+                        <i class="fa-solid fa-bell animate-swing"></i> আজকের Review স্টেশন
+                    </h3>
+                    <span class="text-[10px] bg-rose-950 text-rose-400 px-2 py-0.5 rounded border border-rose-900 font-extrabold" id="due-review-count-badge">0 DUE</span>
+                </div>
+                <div id="due-reviews-target-list" class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-48 overflow-y-auto custom-scrollbar">
                     </div>
-                </div>
+            </section>
 
-                <div class="lg:col-span-2 space-y-4">
-                    <div class="p-5 rounded-2xl bg-[#070a1a]/80 border border-gray-900/80 shadow-2xl backdrop-blur-md">
-                        <h3 id="history-box-title" class="text-sm font-bold text-white mb-4">Topics Logged on: Loading...</h3>
-                        <div id="daily-workbench-feed-target" class="space-y-3 min-h-[300px]"></div>
+            <div id="subject-balance-warning-banner" class="space-y-2"></div>
+
+            <div id="view-routine" class="tab-view block space-y-4">
+                <div class="flex items-center justify-between stagger-card">
+                    <div>
+                        <h3 class="text-lg font-bold text-white tracking-tight">Structured Master Routine Matrix</h3>
+                        <p class="text-xs text-gray-500 mt-0.5">High-impact execution pathways mapped across category channels.</p>
                     </div>
+                    <button onclick="generateWeeklyPDFReport()" class="bg-slate-900 border border-gray-800 text-gray-300 font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 hover:border-purple-500 transition-all premium-btn-hover">
+                        <i class="fa-solid fa-file-pdf text-rose-400"></i> PDF Download করো 📄
+                    </button>
                 </div>
-
-            </div>
-        </div>
-
-        <div id="view-progress" class="tab-view hidden space-y-6">
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
-                <div class="bg-[#0b0f24]/60 p-4 border border-gray-900 rounded-xl text-center">
-                    <span class="text-[10px] text-gray-500 block uppercase font-bold">Total Completed Units</span>
-                    <span id="stat-total-complete" class="text-2xl font-black text-emerald-400 block mt-1">0</span>
-                </div>
-                <div class="bg-[#0b0f24]/60 p-4 border border-gray-900 rounded-xl text-center">
-                    <span class="text-[10px] text-gray-500 block uppercase font-bold">Pending Pipeline Load</span>
-                    <span id="stat-total-pending" class="text-2xl font-black text-rose-400 block mt-1">0</span>
-                </div>
-                <div class="bg-[#0b0f24]/60 p-4 border border-gray-900 rounded-xl text-center">
-                    <span class="text-[10px] text-gray-500 block uppercase font-bold">Efficiency Performance Scale</span>
-                    <span id="stat-efficiency-ratio" class="text-2xl font-black text-indigo-400 block mt-1">0%</span>
-                </div>
-                <div class="bg-[#0b0f24]/60 p-4 border border-gray-900 rounded-xl text-center">
-                    <span class="text-[10px] text-gray-500 block uppercase font-bold">Total Revision Reps</span>
-                    <span id="stat-total-reviews" class="text-2xl font-black text-purple-400 block mt-1">0</span>
-                </div>
-            </div>
-
-            <div class="p-5 rounded-2xl bg-[#080c20]/90 border border-gray-900/60 shadow-xl">
-                <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-database text-indigo-400"></i> Global Learning History Registry Ledger
-                </h3>
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-left border-collapse text-xs">
+                
+                <div class="overflow-x-auto glass-panel border border-[rgba(255,255,255,0.05)] rounded-2xl p-6 shadow-2xl custom-scrollbar stagger-card">
+                    <table class="w-full text-left border-collapse min-w-[1100px]">
                         <thead>
-                            <tr class="border-b border-gray-900 text-gray-400 font-bold">
-                                <th class="py-2.5 px-3">Date Record</th>
-                                <th class="py-2.5 px-3">Subject</th>
-                                <th class="py-2.5 px-3">Topic Unit Description</th>
-                                <th class="py-2.5 px-3">Classification</th>
-                                <th class="py-2.5 px-3">State Status</th>
-                                <th class="py-2.5 px-3">Revision Checkpoints History</th>
-                                <th class="py-2.5 px-3">Actions Execution</th>
+                            <tr class="text-[10px] font-black uppercase tracking-widest border-b border-gray-800/60 pb-4 text-gray-400">
+                                <th class="p-3 w-32">Temporal Orbit</th>
+                                <th class="p-3 text-blue-400">✨ Programming</th>
+                                <th class="p-3 text-rose-400">✨ Academic / Gov Job</th>
+                                <th class="p-3 text-amber-400">✨ BCS Matrix</th>
+                                <th class="p-3 text-emerald-400">✨ English Skill</th>
+                                <th class="p-3 text-sky-400">✨ Engineering Software</th>
+                                <th class="p-3 text-pink-400">✨ Research / ML</th>
                             </tr>
                         </thead>
-                        <tbody id="ledger-table-rows-target" class="divide-y divide-gray-950 text-gray-300"></tbody>
+                        <tbody id="routine-table-body" class="divide-y divide-gray-900/40 text-xs"></tbody>
                     </table>
                 </div>
             </div>
-        </div>
 
-        <div id="view-badges" class="tab-view hidden space-y-6">
-            <div class="text-center max-w-xl mx-auto py-4">
-                <h2 class="text-xl font-bold text-white flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-award text-amber-400"></i> মেডেল রুম ও অনার গ্যালারি
-                </h2>
-                <p class="text-xs text-gray-500 mt-1">আপনার কঠোর পরিশ্রম ও অর্জিত মাইলস্টোনগুলোর লাইভ ট্র্যাকার। লক থাকা মেডেলগুলো সিলুয়েট হিসেবে দেখা যাবে।</p>
-            </div>
-            <div id="badges-grid-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div id="view-daily" class="tab-view hidden space-y-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-gray-900 pb-4">
+                    <div>
+                        <h2 id="daily-day-title" class="text-xl font-bold text-white tracking-tight">Active Core Workbench</h2>
+                        <p id="daily-date-subtitle" class="text-xs text-gray-400 mt-0.5"></p>
+                    </div>
+                    <div class="flex items-center gap-3 bg-black/40 border border-gray-800 p-2 rounded-xl">
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider pl-1">Jump Orbit:</span>
+                        <input type="date" id="date-picker" onchange="handleDateChange(this.value)" class="bg-[#12121e] border border-gray-800 rounded-lg px-2.5 py-1 text-xs font-semibold text-white outline-none focus:border-purple-500 transition-all">
+                    </div>
                 </div>
-        </div>
 
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="glass-panel p-5 rounded-2xl shadow-xl border-[rgba(255,255,255,0.06)] relative overflow-hidden">
+                            <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500"></div>
+                            <h3 class="text-xs font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-circle-nodes text-blue-400 text-[10px]"></i> System Injection Terminal (Press 'N')
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                                <div>
+                                    <label class="text-[9px] text-gray-400 uppercase font-black tracking-wider block mb-1">Select Channel Category</label>
+                                    <select id="injector-cat-select" onchange="populateInjectorSubjects()" class="w-full bg-[#11111b] border border-gray-800 rounded-xl px-3 py-2.5 text-xs text-gray-300 outline-none focus:border-blue-500 transition-all"></select>
+                                </div>
+                                <div>
+                                    <label class="text-[9px] text-gray-400 uppercase font-black tracking-wider block mb-1">Select Active Core Subject</label>
+                                    <select id="injector-sub-select" class="w-full bg-[#11111b] border border-gray-800 rounded-xl px-3 py-2.5 text-xs text-gray-300 outline-none focus:border-purple-500 transition-all"></select>
+                                </div>
+                            </div>
+                            <div class="space-y-3 mb-4">
+                                <div>
+                                    <label class="text-[9px] text-gray-400 uppercase font-black tracking-wider block mb-1">Target Topic Blueprint / Details</label>
+                                    <input type="text" id="injector-topic-name" placeholder="Enter high performance target specific parameters..." class="w-full bg-[#0a0a0f] border border-gray-800 rounded-xl px-3 py-2.5 text-xs text-white outline-none focus:border-blue-500 transition-all">
+                                </div>
+                            </div>
+                            <div class="flex justify-end">
+                                <button onclick="handleInjectorSubmit()" class="w-full md:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-extrabold px-6 py-2.5 rounded-xl text-xs cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-purple-950/50 premium-btn-hover">
+                                    <i class="fa-solid fa-arrow-right-to-bracket text-[10px]"></i> Inject Task Into Matrix
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                                <i class="fa-solid fa-chart-simple text-blue-400"></i> Active Scheduled Targets
+                            </h3>
+                            <div id="daily-live-topics-container" class="grid grid-cols-1 gap-4"></div>
+                        </div>
+
+                        <div class="glass-panel p-5 rounded-2xl border-emerald-500/10 shadow-xl bg-gradient-to-b from-slate-900/10 to-emerald-950/5">
+                            <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-square-check text-xs"></i> Completed Node Index (Archived History)
+                            </h3>
+                            <div id="daily-completed-topics-container" class="space-y-2.5"></div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="glass-panel p-5 rounded-2xl shadow-xl border-purple-500/10 bg-gradient-to-b from-[#11111c]/80 to-black/20">
+                            <h3 class="text-amber-400 font-extrabold text-xs uppercase tracking-widest flex items-center gap-2">
+                                <i class="fa-solid fa-satellite-dish text-amber-500"></i> Spaced Revision Radar Array
+                            </h3>
+                            <p class="text-[10px] text-gray-500 mt-1 mb-4 leading-relaxed">Automated critical historical logs tracking and review vectors aggregated continuously from baseline data.</p>
+                            <div id="automatic-revision-list" class="space-y-3 max-h-[580px] overflow-y-auto custom-scrollbar pr-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-pomo" class="tab-view hidden max-w-xl mx-auto space-y-6">
+                <div class="glass-panel p-8 rounded-3xl border-purple-500/10 shadow-2xl bg-gradient-to-b from-[#131322] to-[#0d0d16] text-center space-y-6 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+                    <div>
+                        <h2 class="text-xl font-extrabold tracking-tight text-white flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-brain text-purple-400"></i> Deep Work Focus Station
+                        </h2>
+                        <p id="pomo-mode-label" class="text-xs font-bold text-indigo-400 uppercase tracking-widest mt-1">Focus Session (Press 'T')</p>
+                    </div>
+                    <div class="relative w-64 h-64 mx-auto flex items-center justify-center">
+                        <svg class="w-full h-full transform" viewBox="0 0 160 160">
+                            <circle cx="80" cy="80" r="70" stroke="rgba(255,255,255,0.02)" stroke-width="6" fill="transparent"/>
+                            <circle id="pomo-progress-ring" cx="80" cy="80" r="70" stroke="url(#pomoGrad)" stroke-width="7" fill="transparent" stroke-dasharray="439.8" stroke-dashoffset="0" class="pomo-circle" stroke-linecap="round"/>
+                            <defs>
+                                <linearGradient id="pomoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#3b82f6" />
+                                    <stop offset="100%" stop-color="#a855f7" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="pomo-time-display" class="text-4xl font-black tracking-tighter text-white font-mono">25:00</span>
+                            <span class="text-[9px] font-black tracking-widest text-gray-500 uppercase mt-1">OPERATIONAL TIME</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center gap-3">
+                        <button onclick="togglePomoTimer()" id="pomo-start-btn" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white font-black text-xs px-6 py-3 rounded-xl flex items-center gap-2 hover:from-blue-500 transition-all shadow-lg shadow-purple-950/40">
+                            <i class="fa-solid fa-play"></i> Start Engine
+                        </button>
+                        <button onclick="resetPomoTimer()" class="bg-slate-900 border border-gray-800 text-gray-400 hover:text-white font-bold text-xs px-5 py-3 rounded-xl transition-all">
+                            Reset Vector
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-progress" class="tab-view hidden space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="glass-panel p-5 rounded-2xl border-blue-500/10 bg-gradient-to-br from-slate-900/60 to-blue-950/10 flex items-center justify-between shadow-xl">
+                        <div class="space-y-1">
+                            <span class="text-[10px] font-black text-blue-400 uppercase tracking-widest block">Completion Forecast</span>
+                            <h4 class="text-sm font-bold text-white leading-tight" id="prediction-text-display">Calculating data...</h4>
+                            <p class="text-[10px] text-gray-400" id="prediction-date-display">Estimated target completion date: N/A</p>
+                        </div>
+                        <div class="relative w-16 h-16 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-full h-full" viewBox="0 0 40 40">
+                                <circle cx="20" cy="20" r="16" stroke="rgba(255,255,255,0.03)" stroke-width="3.5" fill="transparent"/>
+                                <circle id="prediction-progress-ring-circle" cx="20" cy="20" r="16" stroke="#2563eb" stroke-width="3.5" fill="transparent" stroke-dasharray="100.5" stroke-dashoffset="100.5" class="progress-ring-circle" stroke-linecap="round"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center text-[11px] font-black text-white font-mono" id="prediction-percent-value">0%</div>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-5 rounded-2xl border-purple-500/10 bg-gradient-to-br from-slate-900/60 to-purple-950/10 flex items-center justify-between shadow-xl">
+                        <div class="space-y-0.5">
+                            <span class="text-[10px] font-black text-purple-400 uppercase tracking-widest block">Velocity Index</span>
+                            <h4 class="text-xl font-black text-white tracking-tight" id="analytics-velocity-rate">0.0</h4>
+                            <p class="text-[10px] text-gray-400">Average topics completed per day (Last 14 days)</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-5 rounded-2xl border-emerald-500/10 bg-gradient-to-br from-slate-900/60 to-emerald-950/10 flex items-center justify-between shadow-xl">
+                        <div class="space-y-0.5">
+                            <span class="text-[10px] font-black text-emerald-400 uppercase tracking-widest block">System Density</span>
+                            <h4 class="text-xl font-black text-white tracking-tight" id="analytics-density-ratio">0 / 0</h4>
+                            <p class="text-[10px] text-gray-400">Completed nodes vs Total managed targets</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-7 glass-panel p-6 rounded-2xl shadow-xl flex flex-col justify-between overflow-x-auto custom-scrollbar">
+                        <div>
+                            <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-2">
+                                <i class="fa-solid fa-border-all text-blue-400"></i> Activity Heatmap Array (Last 365 Days)
+                            </h3>
+                            <p class="text-[10px] text-gray-500 mb-4">Tracking high performance completed node velocity grids continuously.</p>
+                        </div>
+                        
+                        <div class="py-2 overflow-x-auto custom-scrollbar flex flex-col justify-center min-w-[580px]">
+                            <div id="heatmap-grid-container" class="heatmap-grid"></div>
+                            <div class="flex items-center gap-2 mt-4 text-[9px] font-bold text-gray-500 justify-end px-2">
+                                <span>Less</span>
+                                <div class="w-2.5 h-2.5 rounded-sm bg-[#1a1a2e]"></div>
+                                <div class="w-2.5 h-2.5 rounded-sm bg-[#1e3a5f]"></div>
+                                <div class="w-2.5 h-2.5 rounded-sm bg-[#2563eb]"></div>
+                                <div class="w-2.5 h-2.5 rounded-sm bg-[#60a5fa]"></div>
+                                <span>More</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5 glass-panel p-6 rounded-2xl shadow-xl flex flex-col justify-center">
+                        <div>
+                            <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-2">
+                                <i class="fa-solid fa-circle-nodes text-purple-400"></i> Subject Balance Vector Chart
+                            </h3>
+                            <p class="text-[10px] text-gray-500 mb-4">Visualizing real-time distribution density across channels.</p>
+                        </div>
+                        <div class="relative w-full aspect-square max-w-[320px] mx-auto">
+                            <canvas id="subjectRadarChartCanvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <div id="avatar-picker-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="glass-panel max-w-md w-full rounded-3xl p-6 border-purple-500/20 bg-[#0e0e18] shadow-2xl modal-animate space-y-4">
+            <div class="flex items-center justify-between border-b border-gray-900 pb-3">
+                <h3 class="text-sm font-black text-white uppercase tracking-wider">Custom Identity Avatar Matrix</h3>
+                <button onclick="closeAvatarModal()" class="text-gray-500 hover:text-white transition-all"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p class="text-xs text-gray-400">Choose your premium avatar entity preset below. Your rank determines accessories attached dynamically based on user operational metrics levels.</p>
+            
+            <div class="grid grid-cols-4 gap-3 py-2" id="avatar-presets-grid-container">
+                </div>
+            
+            <div class="p-3 bg-purple-950/20 border border-purple-900/40 rounded-xl space-y-1">
+                <span class="text-[9px] font-black text-purple-400 uppercase tracking-widest block">Rank Evolution Roadmap</span>
+                <p class="text-[11px] text-gray-300">🏅 <b>Level 1-4 (Novice):</b> Base selected icon channel.</p>
+                <p class="text-[11px] text-indigo-300">🏅 <b>Level 5-9 (Scholar):</b> Bookshelf accessory unlocked beside icon (📚).</p>
+                <p class="text-[11px] text-amber-400">🏅 <b>Level 10+ (Master):</b> Celestial Crown attachment assigned on top (⭐).</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="keyboard-shortcuts-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="glass-panel max-w-md w-full rounded-3xl p-6 border-blue-500/20 bg-[#0c0c16] shadow-2xl modal-animate space-y-4">
+            <div class="flex items-center justify-between border-b border-gray-900 pb-3">
+                <h3 class="text-sm font-black text-white uppercase tracking-wider">System Command Shortcuts Mapping</h3>
+                <button onclick="toggleKeyboardModal(false)" class="text-gray-500 hover:text-white transition-all"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-3 py-1">
+                <div class="flex items-center justify-between border-b border-gray-900 pb-2 text-xs">
+                    <span class="text-gray-300"><span class="kbd-key">N</span> Inject New Topic Focus Panel Input</span>
+                    <span class="text-gray-500 font-bold">Open Entry Input</span>
+                </div>
+                <div class="flex items-center justify-between border-b border-gray-900 pb-2 text-xs">
+                    <span class="text-gray-300"><span class="kbd-key">T</span> Trigger Pomodoro Timer Relay Engine</span>
+                    <span class="text-gray-500 font-bold">Start/Pause Clock</span>
+                </div>
+                <div class="flex items-center justify-between border-b border-gray-900 pb-2 text-xs">
+                    <span class="text-gray-300"><span class="kbd-key">R</span> Jump viewport segment directly to Spaced Reviews</span>
+                    <span class="text-gray-500 font-bold">Scroll to Array</span>
+                </div>
+                <div class="flex items-center justify-between border-b border-gray-900 pb-2 text-xs">
+                    <span class="text-gray-300"><span class="kbd-key">A</span> Toggle view layer straight to Analytics Tab</span>
+                    <span class="text-gray-500 font-bold">Analytics Switch</span>
+                </div>
+                <div class="flex items-center justify-between border-b border-gray-900 pb-2 text-xs">
+                    <span class="text-gray-300"><span class="kbd-key">H</span> Return route back to Home Routine Dashboard Matrix</span>
+                    <span class="text-gray-500 font-bold">Home Switch</span>
+                </div>
+                <div class="flex items-center justify-between text-xs">
+                    <span class="text-gray-300"><span class="kbd-key">Esc</span> Terminate and close active popups/modals</span>
+                    <span class="text-gray-500 font-bold">Dismiss Popups</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // --- GLOBAL VARIABLES SCHEMA AND LOCALSTORAGE CACHE INTEGRITY MAPPING ---
-        let dbTopics = {};
-        let activeDate = "";
+        // GLOBAL APPLICATION PERSISTED APP CONFIG DATA LAYER STATES
+        let currentActiveTab = 'routine';
+        let activeSelectedDate = '';
+        let systemMasterRoutineData = {};
         
-        // Gamification Engine Native State Matrix
-        let gameData = {
-            xp: 0,
-            streakCount: 0,
-            lastActiveDate: null,
-            unlockedBadges: [],
-            weeklyReportGeneratedFor: []
+        // Comprehensive Local Cache Arrays populated gracefully from localStorage
+        let dbTopicsList = []; 
+        let globalUserExperienceMetrics = { level: 1, currentXp: 0, nextLevelXp: 100, dynamicStreak: 0, lastCheckInDate: '' };
+        let userSelectedIdentityAvatar = '🧑‍💻';
+        let soundSystemAudioToggleState = true;
+
+        // Static Master Engine Constants Channels Categories Map Mapping Keys Definitions
+        const CATEGORIES_STATIC_DATA_MAP = {
+            "Programming": ["JavaScript", "Python", "Data Structures", "Algorithms", "React Engine"],
+            "Academic / Gov Job": ["Civil Engineering", "Geotech Engineering", "Transportation", "Structure–I", "Fluid Mechanics"],
+            "BCS Matrix": ["Bangla Literature", "Bangladesh Affairs", "International Orbits", "Geography", "General Science"],
+            "English Skill": ["Freehand Writing", "Vocabulary Core", "Grammar Matrix", "Phonetics Real-time"],
+            "Engineering Software": ["ETABS Structural", "AutoCAD Design", "STAAD Pro", "GIS Systems Mapping"],
+            "Research / ML": ["AI Engineering – L2", "Machine Learning", "Research Citation Class", "Data Science Modeling"]
         };
 
-        const SUBJECTS_CATALOG = [
-            "AI Engineering – L2", "JavaScript", "Typing Practice",
-            "Transportation", "Earth Quake Engineering", "Structure–I",
-            "Geography", "English", "Freehand Writing", "Excel", "Research Class"
+        // Premium Curated Seed List for Feature 1 (30 Quotes English/Bangla Combo)
+        const PREMIUM_MOTIVATIONAL_QUOTES = [
+            { text: "পরিশ্রম কখনো বৃথা যায় না, আজকের কষ্ট আগামীকালের সাফল্যের চাবিকাঠি।", author: "Persistence Growth" },
+            { text: "The expert in anything was once a beginner.", author: "Helen Hayes" },
+            { text: "সাফল্য হলো প্রতিদিনের ছোট ছোট প্রচেষ্টার সমষ্টি।", author: "Mindset Horizon" },
+            { text: "Don't let what you cannot do interfere with what you can do.", author: "John Wooden" },
+            { text: "শিক্ষা কোনো গন্তব্য নয়, এটি একটি আজীবন চলমান সুন্দর যাত্রা।", author: "Civil Scholar" },
+            { text: "It always seems impossible until it's done.", author: "Nelson Mandela" },
+            { text: "আজকের অলসতা তোমার আগামীকালের স্বপ্নের সবচেয়ে বড় শত্রু।", author: "Anti Procrastination" },
+            { text: "Quality means doing it right when no one is looking.", author: "Henry Ford" },
+            { text: "নিজের প্রতি বিশ্বাস রাখো, তোমার মেধা ও পরিশ্রম তোমাকে লক্ষ্যে পৌঁছাবেই।", author: "Self Reliance" },
+            { text: "Focus on progress, not perfection.", author: "Bill Gates" },
+            { text: "শৃঙ্খলাই স্বাধীনতাহীন লক্ষ্যকে বাস্তবতায় রূপান্তর করার মাধ্যম।", author: "Daily Routine Core" },
+            { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+            { text: "কঠিন ইঞ্জিনিয়ারিং কাঠামোর মতোই মজবুত করো তোমার অধ্যবসায়ের ভিত্তি।", author: "Structural Ethos" },
+            { text: "Action is the foundational key to all success.", author: "Pablo Picasso" },
+            { text: "ভুল করা মানে তুমি হাল ছেড়ে দাওনি, তুমি চেষ্টা করে যাচ্ছ।", author: "Growth Curve" },
+            { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+            { text: "ধৈর্য এবং ধারাবাহিকতা যেকোনো কঠিন বিষয়কে সহজ করে তোলে।", author: "Alim Core" },
+            { text: "Strive for continuous improvement, instead of perfection.", author: "Kim Collins" },
+            { text: "আজকে ছোট এক কদম নাও, এক বছর পর দেখবে অনেক দূর এগিয়ে গেছ।", author: "Compound Effect" },
+            { text: "Your talent determines what you can do. Your motivation determines how much you are willing to do.", author: "Lou Holtz" },
+            { text: "জ্ঞানার্জনের কোনো বয়স বা শেষ সীমা নেই, শিখতে থাকো প্রতিনিয়ত।", author: "Mastery Index" },
+            { text: "There are no shortcuts to any place worth going.", author: "Beverly Sills" },
+            { text: "তোমার আজকের কাজের ওপরই নির্ভর করছে তোমার আগামীকালের ভবিষ্যৎ।", author: "Future Blueprint" },
+            { text: "The only way to learn a new programming language is by writing programs in it.", author: "Dennis Ritchie" },
+            { text: "হতাশ না হয়ে প্রতিটি ব্যর্থতাকে নতুন করে শেখার সুযোগ হিসেবে গ্রহণ করো।", author: "Resilient Mind" },
+            { text: "Small daily improvements over time lead to stunning results.", author: "Robin Sharma" },
+            { text: "বড় অর্জনের জন্য সবার আগে বড় লক্ষ্য স্থির করতে হবে এবং লেগে থাকতে হবে।", author: "Vision Vector" },
+            { text: "You don't have to be great to start, but you have to start to be great.", author: "Zig Ziglar" },
+            { text: "কোডিং বা সিভিল ডিজাইন—যা-ই করো না কেন, গভীরে গিয়ে বোঝার চেষ্টা করো।", author: "Engineering Matrix" },
+            { text: "Energy and persistence conquer all things.", author: "Benjamin Franklin" }
         ];
 
-        const WEEK_DAYS_SEQUENCE = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+        // GLOBAL CHART OBJECT POINTERS STATE
+        let subjectRadarChartInstance = null;
 
-        const BADGES_DATABASE = [
-            { id: "first_step", title: "প্রথম পদক্ষেপ", desc: "প্রথম topic complete করা হয়েছে", icon: "🔥", color: "from-orange-500 to-red-600" },
-            { id: "reader_10", title: "পাঠক", desc: "১০টি topics complete করা হয়েছে", icon: "📚", color: "from-blue-500 to-indigo-600" },
-            { id: "pioneer_50", title: "অগ্রযাত্রী", desc: "৫০টি topics complete করা হয়েছে", icon: "🚀", color: "from-purple-500 to-pink-600" },
-            { id: "hardworker_7", title: "পরিশ্রমী", desc: "৭ দিন টানা রানিং স্ট্রিক বজায় রেখেছেন", icon: "💎", color: "from-amber-400 to-orange-500" },
-            { id: "unstoppable_30", title: "অদম্য", desc: "৩০ দিন টানা রানিং স্ট্রিক বজায় রেখেছেন", icon: "⚡", color: "from-red-500 to-rose-600" },
-            { id: "genius_100", title: "মেধাবী", desc: "১০০টি topics complete করা হয়েছে", icon: "🧠", color: "from-cyan-500 to-teal-600" },
-            { id: "master_level", title: "মাস্টার", desc: "Reach Master Level System Rank (১০০১+ XP)", icon: "🌟", color: "from-yellow-400 via-amber-500 to-orange-600" }
-        ];
-
-        // System Core Lifecycle Bootloader
-        window.onload = async function() {
-            setSystemClockTodayDefaultDate();
-            initializeFormSelectors();
-            await synchronizeStateCacheWithCloudServer();
-            loadGamificationSystem();
-            renderRoutineScheduleMatrixGrid();
-            renderDailyWorkbenchFeedEntries();
-            checkWeeklyReportAutoTrigger();
+        // WEB AUDIO API SOUND CHASSIS CORE CONTROLLER GENERATOR (FEATURE 2)
+        const playNativeAudioChime = (type) => {
+            if (!soundSystemAudioToggleState) return;
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const ctx = new AudioContext();
+                
+                if (type === 'ding') {
+                    // Topic Complete Pleasant Ding
+                    let osc = ctx.createOscillator();
+                    let gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5 Node
+                    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.3);
+                } else if (type === 'levelup') {
+                    // Ascending 3-Note Premium Chime
+                    const notes = [440.00, 554.37, 659.25]; // A4, C#5, E5
+                    notes.forEach((freq, idx) => {
+                        let osc = ctx.createOscillator();
+                        let gain = ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, ctx.currentTime + (idx * 0.12));
+                        gain.gain.setValueAtTime(0.12, ctx.currentTime + (idx * 0.12));
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (idx * 0.12) + 0.25);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(ctx.currentTime + (idx * 0.12));
+                        osc.stop(ctx.currentTime + (idx * 0.12) + 0.25);
+                    });
+                } else if (type === 'streak') {
+                    // Short Fanfare Arpeggio
+                    const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                    notes.forEach((freq, idx) => {
+                        let osc = ctx.createOscillator();
+                        let gain = ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, ctx.currentTime + (idx * 0.08));
+                        gain.gain.setValueAtTime(0.1, ctx.currentTime + (idx * 0.08));
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (idx * 0.08) + 0.2);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(ctx.currentTime + (idx * 0.08));
+                        osc.stop(ctx.currentTime + (idx * 0.08) + 0.2);
+                    });
+                } else if (type === 'badge') {
+                    // Magical Sparkle Twinkle Sound Engine
+                    for (let i = 0; i < 6; i++) {
+                        let randFreq = 800 + Math.random() * 600;
+                        let timeShift = i * 0.06;
+                        let osc = ctx.createOscillator();
+                        let gain = ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(randFreq, ctx.currentTime + timeShift);
+                        gain.gain.setValueAtTime(0.08, ctx.currentTime + timeShift);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + timeShift + 0.15);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(ctx.currentTime + timeShift);
+                        osc.stop(ctx.currentTime + timeShift + 0.15);
+                    }
+                }
+            } catch (err) { console.warn("Audio Context processing deferred until interaction.", err); }
         };
 
-        function setSystemClockTodayDefaultDate() {
-            let today = new Date();
-            let year = today.getFullYear();
-            let month = String(today.getMonth() + 1).padStart(2, '0');
-            let day = String(today.getDate()).padStart(2, '0');
-            activeDate = `${year}-${month}-${day}`;
-            document.getElementById('workbench-active-date').value = activeDate;
-        }
+        // TOGGLE SOUND STATE ENGINE
+        const toggleAudioSystem = () => {
+            soundSystemAudioToggleState = !soundSystemAudioToggleState;
+            localStorage.setItem('app_sound_toggle_v21', JSON.stringify(soundSystemAudioToggleState));
+            document.getElementById('sound-toggle-btn').innerText = soundSystemAudioToggleState ? "🔊 ON" : "🔇 OFF";
+            document.getElementById('sound-toggle-btn').className = soundSystemAudioToggleState ? 
+                "text-xs bg-slate-900 px-2 py-1.5 rounded border border-gray-800 text-indigo-400 font-bold flex items-center gap-1 hover:border-indigo-500 transition-all" :
+                "text-xs bg-slate-900 px-2 py-1.5 rounded border border-gray-800 text-gray-500 font-bold flex items-center gap-1 hover:border-indigo-500 transition-all";
+        };
 
-        function initializeFormSelectors() {
-            let subSelect = document.getElementById('form-subject-selector');
-            subSelect.innerHTML = "";
-            SUBJECTS_CATALOG.forEach(s => {
+        // INITIAL APPLICATION LOAD CYCLE ENGINE HOOK
+        window.addEventListener('DOMContentLoaded', () => {
+            initializeApplicationChronosTimestamps();
+            loadPersistedStorageDataLayers();
+            setupDailyWorkbenchBaselineDates();
+            renderApplicationStateViews();
+            triggerDailyQuoteDisplaySeed();
+            calculateSpacedRepetitionDuesTodayAlerts();
+            bindApplicationKeyboardShortcutListenerEvents();
+            initializePWAServiceListeners();
+        });
+
+        // TIME STAMP ENGINE INITIALIZATION
+        const initializeApplicationChronosTimestamps = () => {
+            const daysBanglaArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const now = new Date();
+            const dateStringOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('current-live-date-header').innerHTML = `
+                <i class="fa-solid fa-clock text-indigo-400 text-xs"></i> 
+                ${now.toLocaleDateString('bn-BD', dateStringOptions)} — ${daysBanglaArray[now.getDay()]}
+            `;
+        };
+
+        // LOAD FROM LOCAL STORAGE REPOSITORIES
+        const loadPersistedStorageDataLayers = () => {
+            // Load routine dataset
+            const cacheRoutine = localStorage.getItem('master_routine_data_v21');
+            if (cacheRoutine) {
+                systemMasterRoutineData = JSON.parse(cacheRoutine);
+            } else {
+                systemMasterRoutineData = {
+                    "Sunday": [["AI Engineering – L2", "JavaScript", "Vocabulary Core"], ["Civil Engineering", "Structure–I"], ["Bangla Literature", "Bangladesh Affairs"], ["Freehand Writing"], ["AutoCAD Design"], ["Research Citation Class"]],
+                    "Monday": [["AI Engineering – L2", "Python", "Vocabulary Core"], ["Geotech Engineering", "Fluid Mechanics"], ["International Orbits", "Geography"], ["Freehand Writing"], ["ETABS Structural"], ["Data Science Modeling"]],
+                    "Tuesday": [["JavaScript", "Algorithms", "Grammar Matrix"], ["Civil Engineering", "Transportation"], ["Bangladesh Affairs", "General Science"], ["Phonetics Real-time"], ["AutoCAD Design"], ["Research Citation Class"]],
+                    "Wednesday": [["Python", "Data Structures", "Grammar Matrix"], ["Structure–I", "Fluid Mechanics"], ["Bangla Literature", "Geography"], ["Freehand Writing"], ["ETABS Structural"], ["Machine Learning"]],
+                    "Thursday": [["AI Engineering – L2", "Algorithms", "Vocabulary Core"], ["Geotech Engineering", "Transportation"], ["International Orbits", "General Science"], ["Phonetics Real-time"], ["GIS Systems Mapping"], ["Data Science Modeling"]],
+                    "Friday": [[], [], ["Bangladesh Affairs", "Geography"], [], [], []],
+                    "Saturday": [["JavaScript", "Data Structures", "Vocabulary Core"], ["Fluid Mechanics", "Civil Engineering"], ["Bangla Literature", "International Orbits"], ["Freehand Writing"], ["ETABS Structural"], ["Research Citation Class"]]
+                };
+                localStorage.setItem('master_routine_data_v21', JSON.stringify(systemMasterRoutineData));
+            }
+
+            // Load topics log list
+            const cacheTopics = localStorage.getItem('logged_topics_list_v21');
+            dbTopicsList = cacheTopics ? JSON.parse(cacheTopics) : [];
+
+            // Load level experience metrics parameters
+            const cacheMetrics = localStorage.getItem('user_experience_metrics_v21');
+            if (cacheMetrics) {
+                globalUserExperienceMetrics = JSON.parse(cacheMetrics);
+            } else {
+                updateExperienceMetricsState(0, true);
+            }
+
+            // Load user designated avatar entity state tracking
+            const cacheAvatar = localStorage.getItem('user_identity_avatar_v21');
+            userSelectedIdentityAvatar = cacheAvatar ? cacheAvatar : '🧑‍💻';
+            evaluateAvatarEvolutionAttachmentDisplay();
+
+            // Load sound setup
+            const cacheSound = localStorage.getItem('app_sound_toggle_v21');
+            if (cacheSound !== null) {
+                soundSystemAudioToggleState = JSON.parse(cacheSound);
+                document.getElementById('sound-toggle-btn').innerText = soundSystemAudioToggleState ? "🔊 ON" : "🔇 OFF";
+            }
+            
+            evaluateActiveStreakOperationalCounterState();
+        };
+
+        // SETUP CHRONOS BASELINE DATES WORKING TARGET SUBTITLE HOOKS
+        const setupDailyWorkbenchBaselineDates = () => {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            activeSelectedDate = `${year}-${month}-${day}`;
+            document.getElementById('date-picker').value = activeSelectedDate;
+            updateDailyWorkbenchSubtitlesLabel();
+        };
+
+        const updateDailyWorkbenchSubtitlesLabel = () => {
+            const targetDate = new Date(activeSelectedDate);
+            const stringOptions = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+            document.getElementById('daily-date-subtitle').innerText = `প্যানেল ভিউ টাইমস্পেস কক্ষপথ: ${targetDate.toLocaleDateString('bn-BD', stringOptions)}`;
+            
+            const daysMapping = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            document.getElementById('daily-day-title').innerText = `${daysMapping[targetDate.getDay()]} Core Execution Workbench`;
+        };
+
+        // SWITCH WORKSPACE LAYER TABS
+        const switchTab = (tabKey) => {
+            currentActiveTab = tabKey;
+            document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-view').forEach(view => view.classList.add('hidden'));
+            
+            const targetBtn = document.getElementById(`tab-${tabKey}`);
+            if (targetBtn) targetBtn.classList.add('active');
+            
+            const targetView = document.getElementById(`view-${tabKey}`);
+            if (targetView) targetView.classList.remove('hidden');
+
+            if (tabKey === 'progress') {
+                renderActivityHeatmapMatrixGrid();
+                renderSubjectRadarDistributionChart();
+            }
+        };
+
+        // MASTER RENDERING DISPATCHER CONROLLER PIPELINES
+        const renderApplicationStateViews = () => {
+            renderMasterRoutineTableMatrix();
+            renderActiveWorkbenchTopicsIndex();
+            renderAnalyticsTopOverviewCards();
+            evaluateSubjectContinuitySevenDaysBanners();
+            renderIntentionSidebarWidget();
+        };
+
+        // RENDER MASTER ROUTINE MATRIX CORE VIEW
+        const renderMasterRoutineTableMatrix = () => {
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const tbody = document.getElementById('routine-table-body');
+            tbody.innerHTML = '';
+
+            days.forEach(day => {
+                const matrixSlots = systemMasterRoutineData[day] || [[], [], [], [], [], []];
+                let rowHtml = `
+                    <tr class="hover:bg-slate-900/30 transition-colors">
+                        <td class="p-3 font-bold text-gray-300 border-r border-gray-950/40 bg-slate-950/20">${day}</td>
+                `;
+                // 6 Columns across channel vectors mapping values structure
+                for (let colIdx = 0; colIdx < 6; colIdx++) {
+                    const subjectsArr = matrixSlots[colIdx] || [];
+                    let slotContent = '';
+                    
+                    subjectsArr.forEach(sub => {
+                        let catClass = 'bg-slate-900 border-gray-800 text-gray-400';
+                        if (colIdx === 0) catClass = 'bg-blue-950/30 border-blue-900/40 text-blue-300';
+                        if (colIdx === 1) catClass = 'bg-rose-950/30 border-rose-900/40 text-rose-300';
+                        if (colIdx === 2) catClass = 'bg-amber-950/30 border-amber-900/40 text-amber-300';
+                        if (colIdx === 3) catClass = 'bg-emerald-950/30 border-emerald-900/40 text-emerald-300';
+                        if (colIdx === 4) catClass = 'bg-sky-950/30 border-sky-900/40 text-sky-300';
+                        if (colIdx === 5) catClass = 'bg-pink-950/30 border-pink-900/40 text-pink-300';
+
+                        slotContent += `
+                            <span class="inline-block px-2 py-1 rounded text-[10px] font-bold border ${catClass} mr-1 mb-1 shadow-sm">
+                                ${sub}
+                            </span>`;
+                    });
+
+                    if (slotContent === '') {
+                        slotContent = `<span class="text-gray-700 italic font-mono opacity-40 text-[9px]">Empty Link</span>`;
+                    }
+                    rowHtml += `<td class="p-3">${slotContent}</td>`;
+                }
+                rowHtml += `</tr>`;
+                tbody.innerHTML += rowHtml;
+            });
+
+            // Populate injector selection menus dynamically matching mapping structures keys definitions
+            const catSelect = document.getElementById('injector-cat-select');
+            if (catSelect && catSelect.options.length === 0) {
+                Object.keys(CATEGORIES_STATIC_DATA_MAP).forEach(cat => {
+                    catSelect.innerHTML += `<option value="${cat}">${cat}</option>`;
+                });
+                populateInjectorSubjects();
+            }
+        };
+
+        const populateInjectorSubjects = () => {
+            const cat = document.getElementById('injector-cat-select').value;
+            const subSelect = document.getElementById('injector-sub-select');
+            subSelect.innerHTML = '';
+            const list = CATEGORIES_STATIC_DATA_MAP[cat] || [];
+            list.forEach(s => {
                 subSelect.innerHTML += `<option value="${s}">${s}</option>`;
             });
-        }
+        };
 
-        // --- CLOUD CLUSTER BACKEND CORE FETCH SYNC INTEGRATION PIPELINE ---
-        async function synchronizeStateCacheWithCloudServer() {
-            showSyncStatusIndicator("Syncing...", "amber");
-            try {
-                let response = await fetch('/api/topics');
-                if (response.ok) {
-                    dbTopics = await response.json();
-                    localStorage.setItem('local_cached_db_topics', JSON.stringify(dbTopics));
-                    showSyncStatusIndicator("Sync Connected", "emerald");
-                } else {
-                    useFallbackLocalStorageCache();
-                }
-            } catch(e) {
-                useFallbackLocalStorageCache();
-            }
-        }
-
-        function useFallbackLocalStorageCache() {
-            let cache = localStorage.getItem('local_cached_db_topics');
-            if (cache) dbTopics = JSON.parse(cache);
-            showSyncStatusIndicator("Offline Cache Mode", "rose");
-        }
-
-        function showSyncStatusIndicator(text, color) {
-            let ind = document.getElementById('sync-status-indicator');
-            if(!ind) return;
-            ind.innerText = text;
-            ind.className = `text-[10px] bg-${color}-950/80 text-${color}-400 border border-${color}-900 px-2 py-0.5 rounded-full font-mono flex items-center gap-1`;
-        }
-
-        async function postDataPayloadToCloudServer(url, payload) {
-            try {
-                let response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                return response.ok;
-            } catch(e) {
-                return false;
-            }
-        }
-
-        // --- GAMIFICATION ENGINE CORE IMPLEMENTATION ---
-        function loadGamificationSystem() {
-            try {
-                const savedGame = localStorage.getItem('routine_game_data');
-                if (savedGame) {
-                    gameData = JSON.parse(savedGame);
-                }
-                verifyAndSyncStreak();
-                updateGamificationUI();
-                syncGamificationWithBackend();
-            } catch (err) {
-                console.error("Failed to load gamification state:", err);
-            }
-        }
-
-        function saveGameData() {
-            localStorage.setItem('routine_game_data', JSON.stringify(gameData));
-            updateGamificationUI();
-            syncGamificationWithBackend();
-        }
-
-        async function syncGamificationWithBackend() {
-            try {
-                await fetch('/api/gamification/sync', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId: 'default', stateData: gameData })
-                });
-            } catch (e) {
-                console.warn("Gamification cloud sync delayed (running offline mode)");
-            }
-        }
-
-        function getLevelDetails(xp) {
-            if (xp <= 100) return { current: "নবীন (Novice)", next: " শিক্ষার্থী", min: 0, max: 100 };
-            if (xp <= 300) return { current: "শিক্ষার্থী (Learner)", next: "পণ্ডিত", min: 101, max: 300 };
-            if (xp <= 600) return { current: "পণ্ডিত (Scholar)", next: "বিশেষজ্ঞ", min: 301, max: 600 };
-            if (xp <= 1000) return { current: "বিশেষজ্ঞ (Expert)", next: "মাস্টার", min: 601, max: 1000 };
-            return { current: "মাস্টার (Master)", next: "Max Level", min: 1001, max: 5000 };
-        }
-
-        function verifyAndSyncStreak() {
-            let todayStr = new Date().toISOString().split('T')[0];
-            let yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            let yesterdayStr = yesterday.toISOString().split('T')[0];
-
-            let completedToday = false;
-            let completedYesterday = false;
-
-            Object.keys(dbTopics).forEach(d => {
-                dbTopics[d].forEach(t => {
-                    if (t.status === 'Complete' && t.completionDate) {
-                        if (t.completionDate === todayStr) completedToday = true;
-                        if (t.completionDate === yesterdayStr) completedYesterday = true;
-                    }
-                });
-            });
-
-            if (gameData.lastActiveDate) {
-                if (gameData.lastActiveDate !== todayStr && gameData.lastActiveDate !== yesterdayStr) {
-                    if (gameData.streakCount > 0) {
-                        gameData.streakCount = 0;
-                        showComebackMessage();
-                    }
-                }
-            }
-
-            if (completedToday && gameData.lastActiveDate !== todayStr) {
-                if (gameData.lastActiveDate === yesterdayStr || completedYesterday) {
-                    gameData.streakCount++;
-                    checkStreakMilestoneAnimation(gameData.streakCount);
-                } else {
-                    gameData.streakCount = 1;
-                }
-                gameData.lastActiveDate = todayStr;
-            } else if (completedToday) {
-                gameData.lastActiveDate = todayStr;
-            }
-
-            localStorage.setItem('routine_game_data', JSON.stringify(gameData));
-        }
-
-        function showComebackMessage() {
-            const container = document.getElementById('surprise-toast-container');
-            if (!container) return;
-            const toast = document.createElement('div');
-            toast.className = `surprise-alert pointer-events-auto w-full bg-gradient-to-r from-rose-950 to-slate-950 p-4 rounded-xl shadow-2xl border border-rose-500/30 text-white mb-3`;
-            toast.innerHTML = `
-                <div class="flex items-center gap-3">
-                    <div class="bg-black/20 p-2 rounded-lg text-lg"><i class="fa-solid fa-heart-crack text-rose-400"></i></div>
-                    <div>
-                        <h5 class="text-xs font-black tracking-wider uppercase">স্ট্রিক আপডেট</h5>
-                        <p class="text-[11px] opacity-90 font-medium">ফিরে এসেছ! নতুন করে শুরু করো 💪 স্ট্রিক রিসেট: 0</p>
-                    </div>
-                </div>`;
-            container.appendChild(toast);
-            setTimeout(() => toast.remove(), 6000);
-        }
-
-        function rewardXP(amount, reason) {
-            const oldDetails = getLevelDetails(gameData.xp);
-            gameData.xp += amount;
-
-            const container = document.getElementById('surprise-toast-container');
-            if (container) {
-                const toast = document.createElement('div');
-                toast.className = `surprise-alert pointer-events-auto bg-[#0a0f24]/90 border border-indigo-500/30 p-2 px-4 rounded-xl text-xs text-indigo-300 font-bold mb-2 flex items-center justify-between shadow-xl`;
-                toast.innerHTML = `<span>✨ ${reason}</span> <span class="text-emerald-400 font-extrabold">+${amount} XP</span>`;
-                container.appendChild(toast);
-                setTimeout(() => toast.remove(), 3000);
-            }
-
-            const newDetails = getLevelDetails(gameData.xp);
-            if (oldDetails.current !== newDetails.current) {
-                triggerLevelUpAnimation(newDetails.current);
-            }
-
-            checkBadgeUnlocks();
-            saveGameData();
-        }
-
-        function triggerLevelUpAnimation(lvlName) {
-            document.getElementById('level-up-announcement-text').innerText = `তুমি এখন একজন ${lvlName.split(' ')[0]}!`;
-            const modal = document.getElementById('level-up-modal');
-            modal.classList.remove('hidden');
-
-            let end = Date.now() + (2 * 1000);
-            (function frame() {
-                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
-                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
-                if (Date.now() < end) { requestAnimationFrame(frame); }
-            }());
-
-            setTimeout(() => { modal.classList.add('hidden'); }, 2500);
-        }
-
-        function checkStreakMilestoneAnimation(days) {
-            const milestones = [7, 14, 30, 60, 100];
-            if (milestones.includes(days)) {
-                confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
-                if (days === 7) rewardXP(50, "৭ দিনের স্ট্রিক বোনাস!");
-            }
-        }
-
-        function checkBadgeUnlocks() {
-            let completedCount = 0;
-            Object.keys(dbTopics).forEach(d => {
-                dbTopics[d].forEach(t => { if (t.status === 'Complete') completedCount++; });
-            });
-
-            const checkList = [
-                { id: "first_step", cond: completedCount >= 1 },
-                { id: "reader_10", cond: completedCount >= 10 },
-                { id: "pioneer_50", cond: completedCount >= 50 },
-                { id: "genius_100", cond: completedCount >= 100 },
-                { id: "hardworker_7", cond: gameData.streakCount >= 7 },
-                { id: "unstoppable_30", cond: gameData.streakCount >= 30 },
-                { id: "master_level", cond: gameData.xp >= 1001 }
-            ];
-
-            checkList.forEach(item => {
-                if (item.cond && !gameData.unlockedBadges.includes(item.id)) {
-                    gameData.unlockedBadges.push(item.id);
-                    const badgeObj = BADGES_DATABASE.find(b => b.id === item.id);
-                    if (badgeObj) {
-                        document.getElementById('unlocked-badge-icon-holder').innerHTML = `<span>${badgeObj.icon}</span>`;
-                        document.getElementById('unlocked-badge-title-holder').innerText = badgeObj.title;
-                        document.getElementById('unlocked-badge-desc-holder').innerText = badgeObj.desc;
-                        document.getElementById('badge-unlock-modal').classList.remove('hidden');
-                        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-                    }
-                }
-            });
-        }
-
-        function closeBadgeUnlockModal() {
-            document.getElementById('badge-unlock-modal').classList.add('hidden');
-        }
-
-        function updateGamificationUI() {
-            document.getElementById('header-streak-display').innerText = `🔥 ${gameData.streakCount} Days Streak`;
-            const details = getLevelDetails(gameData.xp);
-            document.getElementById('header-level-name').innerText = `স্তর: ${details.current.split(' ')[0]}`;
-            document.getElementById('xp-counter-text').innerText = `XP: ${gameData.xp} / ${details.max === 5000 ? '∞' : details.max}`;
-
-            const range = details.max - details.min;
-            const currentProgress = gameData.xp - details.min;
-            const percentage = Math.min(100, Math.max(0, Math.round((currentProgress / range) * 100)));
-
-            document.getElementById('xp-percent-text').innerText = `${percentage}%`;
-            document.getElementById('xp-bar-fill-element').style.width = `${percentage}%`;
-        }
-
-        function renderBadgesTab() {
-            const grid = document.getElementById('badges-grid-container');
-            grid.innerHTML = '';
-
-            BADGES_DATABASE.forEach(badge => {
-                const isUnlocked = gameData.unlockedBadges.includes(badge.id);
-                const card = document.createElement('div');
-                card.className = `badge-card p-5 rounded-2xl flex flex-col items-center text-center justify-center ${isUnlocked ? 'unlocked-badge text-white' : 'opacity-30 text-gray-600'}`;
-
-                card.innerHTML = `
-                    <div class="text-4xl mb-3 ${isUnlocked ? '' : 'grayscale opacity-50'}">${badge.icon}</div>
-                    <h4 class="text-xs font-bold ${isUnlocked ? 'text-amber-400' : 'text-gray-500'}">${badge.title}</h4>
-                    <p class="text-[10px] text-gray-400 mt-1 px-1 leading-relaxed">${badge.desc}</p>
-                    <span class="text-[8px] px-2 py-0.5 rounded-full mt-3 font-mono ${isUnlocked ? 'bg-indigo-950 text-indigo-400' : 'bg-slate-950 text-gray-700'}">
-                        ${isUnlocked ? 'Unlocked' : 'Locked'}
-                    </span>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        // --- WEEKLY REPORT CARD METRICS LAB ---
-        function getWeeklyMetrics() {
-            let completedCount = 0;
-            let earnedXP = 0;
-            let subjectsMap = {};
-            let daysActivityMap = {};
-
-            const today = new Date();
-            const oneWeekAgo = new Date();
-            oneWeekAgo.setDate(today.getDate() - 7);
-
-            Object.keys(dbTopics).forEach(d => {
-                const recordDate = new Date(d);
-                if (recordDate >= oneWeekAgo && recordDate <= today) {
-                    dbTopics[d].forEach(t => {
-                        if (t.status === 'Complete' && t.completionDate) {
-                            completedCount++;
-                            earnedXP += 10;
-                            subjectsMap[t.subject] = (subjectsMap[t.subject] || 0) + 1;
-                            
-                            const dayName = new Date(t.completionDate).toLocaleDateString('bn-BD', { weekday: 'long' });
-                            daysActivityMap[dayName] = (daysActivityMap[dayName] || 0) + 1;
-                        }
-                        if (t.reviewsDone) earnedXP += (t.reviewsDone.length * 5);
-                    });
-                }
-            });
-
-            let bestSubject = "-";
-            let maxSubCount = 0;
-            Object.keys(subjectsMap).forEach(s => {
-                if (subjectsMap[s] > maxSubCount) { maxSubCount = subjectsMap[s]; bestSubject = s; }
-            });
-
-            let bestDay = "-";
-            let maxDayCount = 0;
-            Object.keys(daysActivityMap).forEach(d => {
-                if (daysActivityMap[d] > maxDayCount) { maxDayCount = daysActivityMap[d]; bestDay = d; }
-            });
-
-            return { completedCount, earnedXP, bestSubject, bestDay };
-        }
-
-        function checkWeeklyReportAutoTrigger() {
-            const today = new Date();
-            if (today.getDay() === 0) {
-                const sundayStr = today.toISOString().split('T')[0];
-                if (!gameData.weeklyReportGeneratedFor.includes(sundayStr)) {
-                    gameData.weeklyReportGeneratedFor.push(sundayStr);
-                    saveGameData();
-                    showWeeklyReportCardModal();
-                }
-            }
-        }
-
-        function triggerManualWeeklyReport() {
-            showWeeklyReportCardModal();
-        }
-
-        function showWeeklyReportCardModal() {
-            const metrics = getWeeklyMetrics();
+        // RENDER ACTIVE WORKBENCH SCREEN CORE TOPICS CONTROL FLOW
+        const renderActiveWorkbenchTopicsIndex = () => {
+            const liveContainer = document.getElementById('daily-live-topics-container');
+            const completeContainer = document.getElementById('daily-completed-topics-container');
             
-            document.getElementById('rep-topics-count').innerText = `${metrics.completedCount} টি`;
-            document.getElementById('rep-xp-count').innerText = `+${metrics.earnedXP} XP`;
-            document.getElementById('rep-best-day').innerText = metrics.bestDay !== "-" ? metrics.bestDay : "ডাটা নেই";
-            document.getElementById('rep-streak-status').innerText = `${gameData.streakCount} দিন রানিং`;
-            document.getElementById('rep-best-subject').innerText = metrics.bestSubject !== "-" ? metrics.bestSubject : "বিশ্লেষণাধীন";
+            liveContainer.innerHTML = '';
+            completeContainer.innerHTML = '';
 
-            let msg = "";
-            if (metrics.completedCount >= 8) msg = "অসাধারণ সপ্তাহ! তুমি নিজেকে ছাড়িয়েゲছ 🌟";
-            else if (metrics.completedCount >= 4) msg = "ভালো চেষ্টা! আগামী সপ্তাহ আরও ভালো হবে 💪";
-            else msg = "হাল ছেড়ো না। প্রতিটি দিনই নতুন সুযোগ 🌅";
-            
-            document.getElementById('rep-motivation-message').innerText = msg;
-            document.getElementById('weekly-report-modal').classList.remove('hidden');
-        }
+            // Filter context topics tracking by the matching selected date strings bounds
+            const filtered = dbTopicsList.filter(t => t.date === activeSelectedDate);
 
-        // --- TAB PANEL DISPLAY COORDINATOR ---
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-view').forEach(view => view.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            
-            document.getElementById(`view-${tabId}`).classList.remove('hidden');
-            document.getElementById(`tab-${tabId}`).classList.add('active');
+            let liveCount = 0;
+            let finishedCount = 0;
 
-            if(tabId === 'progress') renderGlobalLedgerTable();
-            if(tabId === 'daily') {
-                renderDailyWorkbenchFeedEntries();
-                renderRadarSpacedSuggestions();
-            }
-            if(tabId === 'badges') renderBadgesTab();
-        }
+            filtered.forEach(topic => {
+                const isDone = topic.status === 'Complete';
+                let channelBorderClass = "cat-prog";
+                if (topic.category === "Academic / Gov Job") channelBorderClass = "cat-acad";
+                if (topic.category === "BCS Matrix") channelBorderClass = "cat-bcs";
+                if (topic.category === "English Skill") channelBorderClass = "cat-eng";
+                if (topic.category === "Engineering Software") channelBorderClass = "cat-soft";
+                if (topic.category === "Research / ML") channelBorderClass = "cat-res";
 
-        function syncActiveWorkbenchSessionDate() {
-            activeDate = document.getElementById('workbench-active-date').value;
-            renderDailyWorkbenchFeedEntries();
-        }
-
-        // --- VIEW CONTROLLER 1: GRID LAYOUT FOR WEEKDAYS SCHEDULE ---
-        async function renderRoutineScheduleMatrixGrid() {
-            let container = document.getElementById('routine-days-container');
-            container.innerHTML = "<p class='text-gray-500 text-xs py-4 col-span-full animate-pulse'>Fetching Class Slots Engine...</p>";
-            
-            try {
-                let res = await fetch('/api/routine');
-                let apiData = await res.json();
-                let routine = apiData.data;
-
-                container.innerHTML = "";
-                WEEK_DAYS_SEQUENCE.forEach(day => {
-                    let periods = routine[day] || [];
-                    let slotCardsHtml = "";
-
-                    periods.forEach((slot, index) => {
-                        if(slot && slot.length > 0) {
-                            let slotBadgeTitle = Array.isArray(slot) ? slot.join(' | ') : slot;
-                            slotCardsHtml += `
-                                <div class="bg-[#050714]/80 p-2.5 rounded-xl border border-gray-900 flex justify-between items-center group hover:border-indigo-900/40 transition-all">
-                                    <div class="truncate pr-2">
-                                        <span class="text-[10px] block font-mono text-gray-500 font-bold uppercase">Slot ${index + 1}</span>
-                                        <span class="text-xs font-bold text-gray-300 group-hover:text-white transition-colors truncate block" title="${slotBadgeTitle}">${slotBadgeTitle}</span>
-                                    </div>
-                                    <button onclick="injectSlotIntoDailyWorkbench('${day}', ${index}, '${escapeHtml(slotBadgeTitle)}')" class="px-2.5 py-1 bg-indigo-950 hover:bg-indigo-900 text-indigo-400 font-black rounded-lg text-[9px] uppercase tracking-wider transition-all active:scale-90 cursor-pointer">
-                                        Inject
-                                    </button>
-                                </div>`;
-                        }
-                    });
-
-                    if(slotCardsHtml === "") {
-                        slotCardsHtml = `<p class="text-[10px] text-gray-600 italic py-2">No standard structured classes mapped for this day vector.</p>`;
-                    }
-
-                    container.innerHTML += `
-                        <div class="p-4 rounded-2xl bg-[#090d22]/40 border border-gray-900/60 shadow-xl flex flex-col justify-between">
+                if (!isDone) {
+                    liveCount++;
+                    liveContainer.innerHTML += `
+                        <div class="glass-panel p-4 rounded-xl flex items-center justify-between border border-[rgba(255,255,255,0.05)] ${channelBorderClass} transition-all hover:border-gray-800">
                             <div>
-                                <h3 class="text-xs font-black uppercase text-indigo-400 tracking-widest border-b border-gray-950 pb-2 mb-3 flex items-center justify-between">
-                                    <span>${day} Matrix</span>
-                                    <span class="text-[9px] bg-slate-900 text-gray-500 px-2 py-0.5 rounded-md font-mono">${periods.filter(s=>s&&s.length>0).length} Slots</span>
-                                </h3>
-                                <div class="space-y-2 max-h-[280px] overflow-y-auto custom-scrollbar pr-1">${slotCardsHtml}</div>
+                                <span class="text-[9px] font-black text-indigo-400 block tracking-wider uppercase mb-0.5">${topic.subject}</span>
+                                <h4 class="text-xs font-bold text-gray-200">${topic.topicName}</h4>
+                                <p class="text-[10px] text-gray-500 mt-1"><i class="fa-solid fa-clock"></i> Logged entry: ${topic.originDate || topic.date}</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="triggerTopicExecutionCompletion(${topic.id})" class="bg-emerald-950/60 border border-emerald-800 text-emerald-400 hover:bg-emerald-900 hover:text-white font-extrabold text-[10px] px-3 py-1.5 rounded-lg transition-all cursor-pointer">
+                                    Complete ✓
+                                </button>
+                                <button onclick="deleteTopicNodeEntry(${topic.id})" class="text-gray-600 hover:text-rose-400 p-1 text-xs transition-all">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
                             </div>
                         </div>`;
-                });
-            } catch (err) {
-                container.innerHTML = "<p class='text-rose-400 text-xs py-4 col-span-full'>Failed to stream routine mapping matrix profile.</p>";
-            }
-        }
+                } else {
+                    finishedCount++;
+                    completeContainer.innerHTML += `
+                        <div class="bg-slate-950/40 p-3 rounded-xl border border-gray-900 flex items-center justify-between text-xs opacity-75">
+                            <div>
+                                <span class="text-[9px] font-bold text-gray-500 block uppercase">${topic.subject}</span>
+                                <h5 class="text-gray-300 line-through font-medium">${topic.topicName}</h5>
+                                <p class="text-[9px] text-gray-600 mt-0.5">Completed at: ${topic.completionDate || 'N/A'}</p>
+                            </div>
+                            <span class="text-[9px] bg-emerald-950/40 text-emerald-500 border border-emerald-900/60 px-2 py-0.5 rounded uppercase font-black tracking-widest">
+                                Arch-Node Archived
+                            </span>
+                        </div>`;
+                }
+            });
 
-        // --- VIEW CONTROLLER 2: DAILY FEED WORKBENCH AND LOG OPERATIONS ---
-        function renderDailyWorkbenchFeedEntries() {
-            document.getElementById('history-box-title').innerText = `Topics Logged on: ${activeDate}`;
-            let container = document.getElementById('daily-workbench-feed-target');
-            container.innerHTML = "";
-
-            let list = dbTopics[activeDate] || [];
-            if(list.length === 0) {
-                container.innerHTML = `
-                    <div class="h-48 border-2 border-dashed border-gray-950 rounded-2xl flex flex-col items-center justify-center text-center p-6">
-                        <i class="fa-solid fa-folder-open text-gray-700 text-xl mb-2"></i>
-                        <p class="text-xs text-gray-500">এই তারিখে এখনো কোনো টপিক লগ করা হয়নি।</p>
+            if (liveCount === 0) {
+                liveContainer.innerHTML = `
+                    <div class="text-center py-6 text-gray-600 text-xs italic glass-panel rounded-xl border-dashed border-gray-900">
+                        আজকের এই ক্যাটাগরিতে কোনো টপিক পেন্ডিং নেই। নতুন টপিক ইনজেক্ট করুন!
                     </div>`;
+            }
+            if (finishedCount === 0) {
+                completeContainer.innerHTML = `<p class="text-center text-gray-700 py-2 text-[11px] italic">কোনো টপিক এখনো সম্পূর্ণ আর্কাইভ করা হয়নি।</p>`;
+            }
+
+            // Sync structural revisions elements display index context list synchronously
+            renderTimelineRevisionArrayLogs();
+        };
+
+        // INJECT NEW TOPIC VECTOR TO CORE PERSISTED ARRAY LAYER STORAGE
+        const handleInjectorSubmit = () => {
+            const cat = document.getElementById('injector-cat-select').value;
+            const sub = document.getElementById('injector-sub-select').value;
+            const name = document.getElementById('injector-topic-name').value.trim();
+
+            if (!name) {
+                fireSurpriseToastNotification("Validation Warning", "টপিকের নাম বা বিবরণী খালি রাখা সম্ভব নয়।");
                 return;
             }
 
-            list.forEach(t => {
-                let isComplete = t.status === 'Complete';
-                let actionBtn = isComplete ? 
-                    `<button class="px-3 py-1 bg-emerald-950 text-emerald-400 font-bold rounded-lg text-[10px] cursor-not-allowed flex items-center gap-1"><i class="fa-solid fa-circle-check"></i> Complete</button>` :
-                    `<button onclick="executeCompletionWorkflow(${t.id})" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg text-[10px] transition-all active:scale-95 cursor-pointer shadow-sm">Mark Complete</button>`;
-                
-                let linkLabel = t.noteUrl ? `<a href="${t.noteUrl}" target="_blank" class="text-cyan-400 hover:underline text-[10px] inline-flex items-center gap-0.5 mt-1 font-medium"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i> View Linked Docs</a>` : "";
-
-                container.innerHTML += `
-                    <div class="p-4 rounded-xl bg-[#050714]/90 border border-gray-950 flex flex-col sm:flex-row justify-between sm:items-center gap-3 hover:border-gray-900 transition-all">
-                        <div class="truncate">
-                            <div class="flex items-center gap-2">
-                                <span class="text-[9px] font-black uppercase bg-indigo-950 text-indigo-400 px-2 py-0.5 rounded border border-indigo-900/30 font-mono">${t.subject}</span>
-                                <span class="text-[9px] font-medium tracking-wide text-gray-500 bg-slate-900 px-2 py-0.5 rounded">${t.category}</span>
-                            </div>
-                            <h4 class="text-xs font-bold text-gray-200 mt-1.5 truncate" title="${t.topicName}">${t.topicName}</h4>
-                            ${linkLabel}
-                        </div>
-                        <div class="flex items-center gap-2 justify-end">${actionBtn}</div>
-                    </div>`;
-            });
-        }
-
-        async function injectSlotIntoDailyWorkbench(day, slotIndex, slotTitle) {
-            let topicName = `Slot ${slotIndex + 1}: ${slotTitle}`;
-            let payload = {
-                id: Date.now() + Math.floor(Math.random() * 1000),
-                date: activeDate,
-                originDate: activeDate,
-                completionDate: null,
-                category: "Theory Lecture",
-                subject: slotTitle.split(' | ')[0],
-                topicName: topicName,
-                noteUrl: "",
-                status: "Pending",
-                reviewsDone: [],
-                reviewHistoryStamps: {},
-                customRevPendingOn: null
-            };
-
-            showSyncStatusIndicator("Saving Load...", "amber");
-            let state = await postDataPayloadToCloudServer('/api/topics', payload);
-            if(state) {
-                await synchronizeStateCacheWithCloudServer();
-                renderDailyWorkbenchFeedEntries();
-                switchTab('daily');
-            }
-        }
-
-        async function submitTopicLogToWorkbench() {
-            let sub = document.getElementById('form-subject-selector').value;
-            let cat = document.getElementById('form-category-selector').value;
-            let name = document.getElementById('form-topic-name').value.trim();
-            let note = document.getElementById('form-note-url').value.trim();
-
-            if(!name) { alert("Please input a valid Topic Title."); return; }
-
-            let payload = {
+            const newTopic = {
                 id: Date.now(),
-                date: activeDate,
-                originDate: activeDate,
+                date: activeSelectedDate,
+                originDate: activeSelectedDate,
                 completionDate: null,
                 category: cat,
                 subject: sub,
                 topicName: name,
-                noteUrl: note,
-                status: "Pending",
-                reviewsDone: [],
-                reviewHistoryStamps: {},
-                customRevPendingOn: null
+                status: 'Pending'
             };
 
-            showSyncStatusIndicator("Saving Custom Load...", "amber");
-            let success = await postDataPayloadToCloudServer('/api/topics', payload);
-            if(success) {
-                document.getElementById('form-topic-name').value = "";
-                document.getElementById('form-note-url').value = "";
-                await synchronizeStateCacheWithCloudServer();
-                renderDailyWorkbenchFeedEntries();
-            }
-        }
+            dbTopicsList.push(newTopic);
+            localStorage.setItem('logged_topics_list_v21', JSON.stringify(dbTopicsList));
+            document.getElementById('injector-topic-name').value = '';
+            
+            playNativeAudioChime('ding');
+            fireSurpriseToastNotification("Task Injected Successfully", `নতুন টপিক ${sub} সাবজেক্টে যোগ করা হয়েছে।`);
+            renderApplicationStateViews();
+        };
 
-        async function executeCompletionWorkflow(id) {
-            let match = null;
-            Object.keys(dbTopics).forEach(d => {
-                dbTopics[d].forEach(t => { if(t.id === id) match = t; });
-            });
+        // MARKS TOPIC EXECUTION TASK NODE COMPLETE GRACEFULLY
+        const triggerTopicExecutionCompletion = (id) => {
+            const index = dbTopicsList.findIndex(t => t.id === id);
+            if (index !== -1) {
+                dbTopicsList[index].status = 'Complete';
+                const now = new Date();
+                const yr = now.getFullYear();
+                const mo = String(now.getMonth() + 1).padStart(2, '0');
+                const dy = String(now.getDate()).padStart(2, '0');
+                dbTopicsList[index].completionDate = `${yr}-${mo}-${dy}`;
 
-            if(!match) return;
-            let todayStr = new Date().toISOString().split('T')[0];
-
-            match.status = 'Complete';
-            match.completionDate = todayStr;
-
-            showSyncStatusIndicator("Updating Node...", "amber");
-            let status = await postDataPayloadToCloudServer('/api/topics', match);
-            if(status) {
-                rewardXP(10, "টপিক সম্পন্ন করেছ!");
+                localStorage.setItem('logged_topics_list_v21', JSON.stringify(dbTopicsList));
                 
-                let dayRecords = dbTopics[activeDate] || [];
-                let pendingCount = dayRecords.filter(t => t.status === 'Pending').length;
-                if(pendingCount === 0 && dayRecords.length > 0) {
-                    rewardXP(15, "আজকের সব গোল ক্লিয়ারড! (Intention Bonus)");
+                // Add XP rewards for high profile accomplishment tracking metrics
+                updateExperienceMetricsState(25);
+                playNativeAudioChime('ding');
+                
+                // Canvas Confetti blast effect
+                confetti({ particleCount: 60, spread: 45, origin: { y: 0.85 } });
+
+                fireSurpriseToastNotification("Completed Target Matrix", "টপিক সফলভাবে সম্পন্ন হয়েছে! +25 XP অর্জিত।");
+                renderApplicationStateViews();
+                calculateSpacedRepetitionDuesTodayAlerts();
+            }
+        };
+
+        // DELETE TOPIC DATA RECORD
+        const deleteTopicNodeEntry = (id) => {
+            if (confirm("আপনি কি নিশ্চিতভাবে এই রেকর্ডটি সিস্টেম থেকে মুছে ফেলতে চান?")) {
+                dbTopicsList = dbTopicsList.filter(t => t.id !== id);
+                localStorage.setItem('logged_topics_list_v21', JSON.stringify(dbTopicsList));
+                fireSurpriseToastNotification("Record Destroyed", "টপিক ডেটাবেস থেকে মুছে ফেলা হয়েছে।");
+                renderApplicationStateViews();
+                calculateSpacedRepetitionDuesTodayAlerts();
+            }
+        };
+
+        // DATE SELECTION PICKER ALTERATION DISPATCHER CHANGELOG
+        const handleDateChange = (val) => {
+            if (!val) return;
+            activeSelectedDate = val;
+            updateDailyWorkbenchSubtitlesLabel();
+            renderActiveWorkbenchTopicsIndex();
+        };
+
+        // RE-EVALUATE AND RENDER USER EXPERIENCE LEVEL METRICS BLOCK (FEATURE 6 CO-LINKED)
+        const updateExperienceMetricsState = (xpGained, isInit = false) => {
+            if (!isInit) {
+                globalUserExperienceMetrics.currentXp += xpGained;
+                while (globalUserExperienceMetrics.currentXp >= globalUserExperienceMetrics.nextLevelXp) {
+                    globalUserExperienceMetrics.currentXp -= globalUserExperienceMetrics.nextLevelXp;
+                    globalUserExperienceMetrics.level += 1;
+                    globalUserExperienceMetrics.nextLevelXp = Math.floor(globalUserExperienceMetrics.nextLevelXp * 1.2);
+                    
+                    playNativeAudioChime('levelup');
+                    fireSurpriseToastNotification("🚀 LEVEL UP UNLOCKED!", `অভিনন্দন! আপনি লেভেল ${globalUserExperienceMetrics.level} এ উন্নীত হয়েছেন।`);
+                    evaluateAvatarEvolutionAttachmentDisplay();
                 }
-
-                verifyAndSyncStreak();
-                await synchronizeStateCacheWithCloudServer();
-                renderDailyWorkbenchFeedEntries();
+                localStorage.setItem('user_experience_metrics_v21', JSON.stringify(globalUserExperienceMetrics));
             }
-        }
 
-        // --- REVISION RADAR SUGGESTIONS AND CHECKPOINT OPERATIONS ---
-        function renderRadarSpacedSuggestions() {
-            let container = document.getElementById('radar-suggestions-container');
-            container.innerHTML = "";
-            let today = new Date();
-            let suggestedCount = 0;
+            document.getElementById('sidebar-level-val').innerText = globalUserExperienceMetrics.level;
+            document.getElementById('sidebar-xp-current').innerText = globalUserExperienceMetrics.currentXp;
+            document.getElementById('sidebar-xp-next').innerText = globalUserExperienceMetrics.nextLevelXp;
+            
+            const pct = Math.min((globalUserExperienceMetrics.currentXp / globalUserExperienceMetrics.nextLevelXp) * 100, 100);
+            document.getElementById('sidebar-xp-progress').style.width = `${pct}%`;
+        };
 
-            Object.keys(dbTopics).forEach(d => {
-                dbTopics[d].forEach(t => {
-                    if(t.status === 'Complete' && t.completionDate) {
-                        let compDate = new Date(t.completionDate);
-                        let diffDays = Math.floor((today - compDate) / (1000 * 60 * 60 * 24));
-                        
-                        let intervals = [1, 3, 7];
-                        let needsReview = intervals.includes(diffDays) && (!t.reviewsDone || !t.reviewsDone.includes(String(diffDays)));
-                        
-                        if(needsReview) {
-                            suggestedCount++;
-                            container.innerHTML += `
-                                <div class="p-3 rounded-xl bg-purple-950/20 border border-purple-900/40 flex justify-between items-center group">
-                                    <div class="truncate pr-2">
-                                        <span class="text-[9px] bg-purple-900/40 text-purple-300 font-bold px-1.5 py-0.5 rounded block w-max uppercase tracking-wider font-mono">Day ${diffDays} Rep</span>
-                                        <span class="text-xs font-bold text-gray-200 block mt-1 truncate" title="${t.topicName}">${t.topicName}</span>
-                                    </div>
-                                    <button onclick="approveRadarRevisionCheckpoint(${t.id}, ${diffDays})" class="px-2.5 py-1 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-lg text-[10px] shadow-md cursor-pointer transition-all active:scale-90">Revise</button>
-                                </div>`;
-                        }
+        // STREAK MANAGEMENT ALGORITHM INTEGRITY RE-CHECK ENGINE
+        const evaluateActiveStreakOperationalCounterState = () => {
+            const now = new Date();
+            const todayStr = now.toISOString().split('T')[0];
+            
+            const lastCheck = globalUserExperienceMetrics.lastCheckInDate;
+            if (lastCheck) {
+                const diffTime = Math.abs(new Date(todayStr) - new Date(lastCheck));
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                if (diffDays === 1) {
+                    globalUserExperienceMetrics.dynamicStreak += 1;
+                    globalUserExperienceMetrics.lastCheckInDate = todayStr;
+                    playNativeAudioChime('streak');
+                } else if (diffDays > 1) {
+                    globalUserExperienceMetrics.dynamicStreak = 1;
+                    globalUserExperienceMetrics.lastCheckInDate = todayStr;
+                }
+            } else {
+                globalUserExperienceMetrics.dynamicStreak = 1;
+                globalUserExperienceMetrics.lastCheckInDate = todayStr;
+            }
+            
+            localStorage.setItem('user_experience_metrics_v21', JSON.stringify(globalUserExperienceMetrics));
+            document.getElementById('streak-counter-value').innerText = globalUserExperienceMetrics.dynamicStreak;
+        };
+
+        // RENDER ANALYTICS MODULE STATS CARDS DATA BLOCK (FEATURE 3: COMPLETION PREDICTOR)
+        const renderAnalyticsTopOverviewCards = () => {
+            const totalCount = dbTopicsList.length;
+            const completedCount = dbTopicsList.filter(t => t.status === 'Complete').length;
+            
+            document.getElementById('analytics-density-ratio').innerText = `${completedCount} / ${totalCount}`;
+
+            // Calculate historical rate velocity average over trailing 14 calendar days bounds
+            const now = new Date();
+            let topicsDoneInLast14Days = 0;
+            
+            dbTopicsList.forEach(t => {
+                if (t.status === 'Complete' && t.completionDate) {
+                    const compDate = new Date(t.completionDate);
+                    const diffTime = Math.abs(now - compDate);
+                    const diffDays = diffTime / (1000 * 60 * 60 * 24);
+                    if (diffDays <= 14) {
+                        topicsDoneInLast14Days++;
                     }
-                });
+                }
             });
 
-            if(suggestedCount === 0) {
-                container.innerHTML = `<p class="text-[11px] text-gray-600 italic py-2">No system spaced revision queues requested on radar for today.</p>`;
-            }
-        }
+            const rawVelocityValue = (topicsDoneInLast14Days / 14);
+            const dailyVelocityAverage = Math.max(rawVelocityValue, 0.1); // Fallback to avoid division by zero loops
+            document.getElementById('analytics-velocity-rate').innerText = rawVelocityValue.toFixed(2);
 
-        async function approveRadarRevisionCheckpoint(id, interval) {
-            let node = null;
-            Object.keys(dbTopics).forEach(d => {
-                dbTopics[d].forEach(t => { if(t.id === id) node = t; });
-            });
-
-            if(!node) return;
-            if(!node.reviewsDone) node.reviewsDone = [];
+            const pendingCount = totalCount - completedCount;
             
-            if(!node.reviewsDone.includes(String(interval))) {
-                node.reviewsDone.push(String(interval));
-            }
+            const predictionRing = document.getElementById('prediction-progress-ring-circle');
+            const pctCompletedText = document.getElementById('prediction-percent-value');
+            const txtDisplay = document.getElementById('prediction-text-display');
+            const dateDisplay = document.getElementById('prediction-date-display');
 
-            showSyncStatusIndicator("Logging Revision...", "amber");
-            let success = await postDataPayloadToCloudServer('/api/topics', node);
-            if(success) {
-                rewardXP(5, "রিভিশন সেশন সম্পন্ন!");
-                await synchronizeStateCacheWithCloudServer();
-                renderRadarSpacedSuggestions();
-            }
-        }
-
-        // --- VIEW CONTROLLER 3: GLOBAL LEDGER HISTORY LOG TABLE ---
-        function renderGlobalLedgerTable() {
-            let tbody = document.getElementById('ledger-table-rows-target');
-            tbody.innerHTML = "";
+            const completedPercentage = totalCount > 0 ? Math.floor((completedCount / totalCount) * 100) : 0;
+            pctCompletedText.innerText = `${completedPercentage}%`;
             
-            let masterList = [];
-            Object.keys(dbTopics).forEach(d => {
-                dbTopics[d].forEach(t => masterList.push(t));
-            });
+            // Progress Ring Stroke Dash bounds assignment logic
+            const radius = 16;
+            const circumference = 2 * Math.PI * radius; // Approx 100.53
+            const offset = circumference - (completedPercentage / 100) * circumference;
+            predictionRing.style.strokeDashoffset = offset;
 
-            masterList.sort((a,b) => b.id - a.id);
+            if (pendingCount === 0) {
+                txtDisplay.innerText = "সব টপিক সম্পন্ন!";
+                dateDisplay.innerText = "কোনো পেন্ডিং লক্ষ্যমাত্রা অবশিষ্ট নেই।";
+            } else {
+                const daysNeededEstimation = Math.ceil(pendingCount / dailyVelocityAverage);
+                txtDisplay.innerText = `এই গতিতে চললে ${daysNeededEstimation} দিনে সব topic শেষ হবে`;
+                
+                const targetCompletionDate = new Date();
+                targetCompletionDate.setDate(targetCompletionDate.getDate() + daysNeededEstimation);
+                const stringOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+                dateDisplay.innerText = `আনুমানিক সমাপ্তির তারিখ: ${targetCompletionDate.toLocaleDateString('bn-BD', stringOptions)}`;
+            }
+        };
 
-            if(masterList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="py-4 text-center text-gray-600 italic">No historical entries mapped inside database registry cluster.</td></tr>`;
+        // RENDER AUTOMATIC INTEGRAL HISTORICAL LOG REVIEWS MATRIX TRACKER SIDEBAR PANEL
+        const renderTimelineRevisionArrayLogs = () => {
+            const container = document.getElementById('automatic-revision-list');
+            container.innerHTML = '';
+
+            const completedNodes = dbTopicsList.filter(t => t.status === 'Complete' && t.completionDate);
+            if (completedNodes.length === 0) {
+                container.innerHTML = `<p class="text-[11px] text-gray-600 italic text-center py-4">রিভিশন হিস্ট্রি ট্র্যাক করার জন্য কোনো আর্কাইভ নোড নেই।</p>`;
                 return;
             }
 
-            masterList.forEach(t => {
-                let isC = t.status === 'Complete';
-                let revBadges = "";
-                if(t.reviewsDone && t.reviewsDone.length > 0) {
-                    t.reviewsDone.forEach(r => {
-                        revBadges += `<span class="bg-purple-950 border border-purple-900 text-purple-400 font-mono text-[9px] px-1.5 py-0.5 rounded font-bold mr-1">R${r}</span>`;
-                    });
-                } else {
-                    revBadges = `<span class="text-gray-600 italic text-[10px]">None</span>`;
-                }
+            // Sort by completion timestamp bounds descending
+            completedNodes.sort((a,b) => new Date(b.completionDate) - new Date(a.completionDate));
 
-                tbody.innerHTML += `
-                    <tr class="hover:bg-white/5 transition-colors border-b border-gray-950">
-                        <td class="py-3 px-3 font-mono text-[11px] text-gray-400">${t.date}</td>
-                        <td class="py-3 px-3 font-bold text-indigo-400 max-w-[120px] truncate" title="${t.subject}">${t.subject}</td>
-                        <td class="py-3 px-3 font-medium text-gray-200 max-w-[200px] truncate" title="${t.topicName}">${t.topicName}</td>
-                        <td class="py-3 px-3 text-gray-500 font-medium">${t.category}</td>
-                        <td class="py-3 px-3">
-                            <span class="px-2 py-0.5 rounded font-bold text-[9px] uppercase tracking-wider ${isC ? 'bg-emerald-950 text-emerald-400 border border-emerald-900/30' : 'bg-rose-950 text-rose-400 border border-rose-900/30'}">${t.status}</span>
-                        </td>
-                        <td class="py-3 px-3">${revBadges}</td>
-                        <td class="py-3 px-3 text-center">
-                            <button onclick="purgeTopicItemNodeElement(${t.id})" class="text-rose-500 hover:text-rose-400 font-bold text-[11px] transition-colors cursor-pointer"><i class="fa-solid fa-trash-can"></i></button>
-                        </td>
-                    </tr>`;
+            completedNodes.forEach(topic => {
+                const baseCompDate = new Date(topic.completionDate);
+                const formatterStr = { month: 'short', day: 'numeric' };
+                
+                const r1 = new Date(baseCompDate); r1.setDate(r1.getDate() + 1);
+                const r2 = new Date(baseCompDate); r2.setDate(r2.getDate() + 3);
+                const r3 = new Date(baseCompDate); r3.setDate(r3.getDate() + 7);
+                const r4 = new Date(baseCompDate); r4.setDate(r4.getDate() + 30);
+
+                container.innerHTML += `
+                    <div class="bg-black/50 p-3 rounded-xl border border-gray-900 space-y-2">
+                        <div class="flex items-center justify-between border-b border-gray-900 pb-1.5">
+                            <div>
+                                <span class="text-[9px] font-black text-amber-500 uppercase block">${topic.subject}</span>
+                                <h5 class="text-[11px] text-gray-300 font-bold truncate max-w-[180px]">${topic.topicName}</h5>
+                            </div>
+                            <span class="text-[8px] font-mono text-gray-600">Done: ${baseCompDate.toLocaleDateString('bn-BD', formatterStr)}</span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-1 text-center text-[8px] font-black tracking-tighter">
+                            <div class="p-1 rounded bg-slate-900 border border-gray-800 text-gray-400">1D: ${r1.toLocaleDateString('en-US', formatterStr)}</div>
+                            <div class="p-1 rounded bg-slate-900 border border-gray-800 text-gray-400">3D: ${r2.toLocaleDateString('en-US', formatterStr)}</div>
+                            <div class="p-1 rounded bg-slate-900 border border-gray-800 text-gray-400">7D: ${r3.toLocaleDateString('en-US', formatterStr)}</div>
+                            <div class="p-1 rounded bg-slate-900 border border-gray-800 text-gray-400">30D: ${r4.toLocaleDateString('en-US', formatterStr)}</div>
+                        </div>
+                    </div>`;
+            });
+        };
+
+        // SIDEBAR CURRENT INTENTIONS TRACKING DISPLAY MATRIX MODIFIER BUILDER
+        const renderIntentionSidebarWidget = () => {
+            const widget = document.getElementById('sidebar-intention-widget');
+            const list = document.getElementById('widget-intention-list');
+            list.innerHTML = '';
+
+            const today = new Date().toISOString().split('T')[0];
+            const activeToday = dbTopicsList.filter(t => t.date === today && t.status === 'Pending');
+
+            if (activeToday.length > 0) {
+                widget.classList.remove('hidden');
+                activeToday.slice(0, 3).forEach(t => {
+                    list.innerHTML += `<li class="truncate flex items-center gap-1.5 text-gray-400 font-medium"><span class="w-1 h-1 rounded-full bg-indigo-500"></span> ${t.subject}: ${t.topicName}</li>`;
+                });
+                if (activeToday.length > 3) {
+                    list.innerHTML += `<li class="text-[10px] text-gray-600 italic font-bold">+ ${activeToday.length - 3} more targets pending</li>`;
+                }
+            } else {
+                widget.classList.add('hidden');
+            }
+        };
+
+        // FEATURE 4: SPACED REPETITION ENGINE ALERTS DISPATCH CO-ORDINATOR (আজকের Review)
+        const calculateSpacedRepetitionDuesTodayAlerts = () => {
+            const alertBox = document.getElementById('spaced-repetition-alert-box');
+            const targetList = document.getElementById('due-reviews-target-list');
+            const badgeCount = document.getElementById('due-review-count-badge');
+            
+            targetList.innerHTML = '';
+            
+            const now = new Date();
+            const todayStr = now.toISOString().split('T')[0];
+            const todayMidnightTimestamp = new Date(todayStr).getTime();
+
+            let dueCount = 0;
+
+            dbTopicsList.forEach(topic => {
+                if (topic.status === 'Complete' && topic.completionDate) {
+                    const baseCompDate = new Date(topic.completionDate);
+                    
+                    // Generate array matching parameters configuration indexes bounds
+                    const spacingIntervals = [1, 3, 7, 30];
+                    
+                    // Initialize empty metadata bucket if missing completely inside system logs arrays
+                    if (!topic.reviewsDone) topic.reviewsDone = [];
+
+                    for (let step = 1; step <= 4; step++) {
+                        // If this specific revision phase has not been signed off yet
+                        if (!topic.reviewsDone.includes(step.toString())) {
+                            const daysAdded = spacingIntervals[step - 1];
+                            const milestoneDueDate = new Date(baseCompDate);
+                            milestoneDueDate.setDate(milestoneDueDate.getDate() + daysAdded);
+                            
+                            const milestoneDueDateStr = milestoneDueDate.toISOString().split('T')[0];
+                            const milestoneDueTimestamp = new Date(milestoneDueDateStr).getTime();
+
+                            // Trigger alert if milestone is due today or overdue from past cycles
+                            if (milestoneDueTimestamp <= todayMidnightTimestamp) {
+                                dueCount++;
+                                const isOverdue = milestoneDueTimestamp < todayMidnightTimestamp;
+                                const statusBadgeHtml = isOverdue ? 
+                                    `<span class="text-[9px] bg-rose-950 text-rose-400 border border-rose-900 px-1.5 py-0.2 rounded font-black uppercase">বাকি আছে ⚠️</span>` :
+                                    `<span class="text-[9px] bg-amber-950 text-amber-400 border border-amber-900 px-1.5 py-0.2 rounded font-black uppercase">আজকে Due</span>`;
+
+                                targetList.innerHTML += `
+                                    <div class="bg-[#0b0c16] p-3 rounded-xl border border-gray-900 flex flex-col justify-between space-y-2 hover:border-rose-500/30 transition-all">
+                                        <div class="flex items-start justify-between gap-2">
+                                            <div>
+                                                <span class="text-[9px] font-black text-rose-400 uppercase block tracking-wider">${topic.subject} (Review Phase ${step})</span>
+                                                <h4 class="text-xs font-bold text-gray-200 mt-0.5">${topic.topicName}</h4>
+                                                <p class="text-[9px] text-gray-500 mt-1"><i class="fa-solid fa-calendar-day"></i> Orig: ${topic.originDate || topic.date}</p>
+                                            </div>
+                                            ${statusBadgeHtml}
+                                        </div>
+                                        <button onclick="logSpacedReviewMilestoneComplete(${topic.id}, ${step})" class="w-full text-center bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 hover:text-white border border-rose-900/50 text-[10px] py-1.5 rounded-lg font-bold transition-all cursor-pointer">
+                                            Review Done ✓
+                                        </button>
+                                    </div>`;
+                                break; // Only showcase the earliest pending un-reviewed milestone phase block card inside rendering stack
+                            }
+                        }
+                    }
+                }
             });
 
-            calculateStatMetricsAnalytics(masterList);
-        }
-
-        function calculateStatMetricsAnalytics(list) {
-            let complete = list.filter(t => t.status === 'Complete').length;
-            let pending = list.filter(t => t.status === 'Pending').length;
-            let ratio = list.length > 0 ? Math.round((complete / list.length) * 100) : 0;
-            
-            let revs = 0;
-            list.forEach(t => { if(t.reviewsDone) revs += t.reviewsDone.length; });
-
-            document.getElementById('stat-total-complete').innerText = complete;
-            document.getElementById('stat-total-pending').innerText = pending;
-            document.getElementById('stat-efficiency-ratio').innerText = `${ratio}%`;
-            document.getElementById('stat-total-reviews').innerText = revs;
-        }
-
-        async function purgeTopicItemNodeElement(id) {
-            if(!confirm("Are you sure you want to delete this topic from historical ledger?")) return;
-            
-            try {
-                showSyncStatusIndicator("Purging Node...", "amber");
-                let response = await fetch(`/api/topics/${id}`, { method: 'DELETE' });
-                if(response.ok) {
-                    await synchronizeStateCacheWithCloudServer();
-                    renderGlobalLedgerTable();
-                }
-            } catch(e) {
-                alert("Failed to delete node from server cluster mapping.");
+            badgeCount.innerText = `${dueCount} DUE`;
+            if (dueCount > 0) {
+                alertBox.classList.remove('hidden');
+            } else {
+                alertBox.classList.add('hidden');
             }
-        }
+        };
 
-        function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
+        // CLOSE OUT SPACED REPETITION STEP LOG ENTRIES ON COMPLETED REVIEW ACTION CLICK
+        const logSpacedReviewMilestoneComplete = (id, step) => {
+            const idx = dbTopicsList.findIndex(t => t.id === id);
+            if (idx !== -1) {
+                if (!dbTopicsList[idx].reviewsDone) dbTopicsList[idx].reviewsDone = [];
+                dbTopicsList[idx].reviewsDone.push(step.toString());
+                
+                localStorage.setItem('logged_topics_list_v21', JSON.stringify(dbTopicsList));
+                updateExperienceMetricsState(15);
+                playNativeAudioChime('badge');
+                
+                fireSurpriseToastNotification("Review Metric Logged", `Phase ${step} রিভিশন সফলভাবে সংরক্ষণ করা হয়েছে। +15 XP`);
+                calculateSpacedRepetitionDuesTodayAlerts();
+                renderTimelineRevisionArrayLogs();
+            }
+        };
+
+        // FEATURE 1: HEATMAP GRID ARRAY ARCHITECTURE BUILDER (GITHUB CONTRIBUTION MAP STYLE)
+        const renderActivityHeatmapMatrixGrid = () => {
+            const container = document.getElementById('heatmap-grid-container');
+            container.innerHTML = '';
+
+            // Aggregate completion tallies mapped to date strings
+            const matrixCountsMap = {};
+            dbTopicsList.forEach(t => {
+                if (t.status === 'Complete' && t.completionDate) {
+                    matrixCountsMap[t.completionDate] = (matrixCountsMap[t.completionDate] || 0) + 1;
+                }
+            });
+
+            const now = new Date();
+            // Trace backward exactly 364 loops to form perfectly sequential aligned week arrays structures layout blocks
+            const totalCellsArray = [];
+            for (let i = 364; i >= 0; i--) {
+                const tempDate = new Date();
+                tempDate.setDate(now.getDate() - i);
+                const formatStr = tempDate.toISOString().split('T')[0];
+                totalCellsArray.push(formatStr);
+            }
+
+            totalCellsArray.forEach(dateStr => {
+                const count = matrixCountsMap[dateStr] || 0;
+                let colorHex = "#1a1a2e"; // 0 completions
+                if (count >= 1 && count <= 2) colorHex = "#1e3a5f";
+                if (count >= 3 && count <= 5) colorHex = "#2563eb";
+                if (count >= 6) colorHex = "#60a5fa";
+
+                const cell = document.createElement('div');
+                cell.className = "heatmap-cell cursor-pointer relative group";
+                cell.style.backgroundColor = colorHex;
+                
+                // Native structural floating native browser HTML title markup tooltip parameters instantiation values
+                const localizedDateNode = new Date(dateStr).toLocaleDateString('bn-BD', { month: 'short', day: 'numeric', year: 'numeric' });
+                cell.title = `${localizedDateNode} : ${count} টপিক সম্পন্ন`;
+                
+                container.appendChild(cell);
+            });
+        };
+
+        // FEATURE 2: CHART.JS RADAR / SPIDER DISTRIBUTION VECTOR SYSTEM INITIALIZATION
+        const renderSubjectRadarDistributionChart = () => {
+            const ctx = document.getElementById('subjectRadarChartCanvas').getContext('2d');
+            
+            // Collate unique structured key terms from master static maps definitions
+            const axisLabelsList = [];
+            Object.values(CATEGORIES_STATIC_DATA_MAP).forEach(subList => {
+                subList.forEach(sub => { if (!axisLabelsList.includes(sub)) axisLabelsList.push(sub); });
+            });
+
+            // Map data arrays counts values
+            const completedTalliesArray = axisLabelsList.map(subjectKey => {
+                return dbTopicsList.filter(t => t.subject === subjectKey && t.status === 'Complete').length;
+            });
+
+            if (subjectRadarChartInstance) {
+                subjectRadarChartInstance.destroy();
+            }
+
+            subjectRadarChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: axisLabelsList,
+                    datasets: [{
+                        label: 'টপিক সম্পন্ন সংখ্যা (Completions)',
+                        data: completedTalliesArray,
+                        backgroundColor: 'rgba(79, 142, 247, 0.2)',
+                        borderColor: '#4f8ef7',
+                        pointBackgroundColor: '#a855f7',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#4f8ef7',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255, 255, 255, 0.08)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.08)' },
+                            pointLabels: { color: '#9ca3af', font: { size: 9, weight: 'bold' } },
+                            ticks: { display: false, stepSize: 1 }
+                        }
+                    }
+                }
+            });
+        };
+
+        // FEATURE 2: SUBJECT BALANCE 7 DAYS STALE ALERT WARNING ENGINE
+        const evaluateSubjectContinuitySevenDaysBanners = () => {
+            const bannerHub = document.getElementById('subject-balance-warning-banner');
+            bannerHub.innerHTML = '';
+
+            const axisLabelsList = [];
+            Object.values(CATEGORIES_STATIC_DATA_MAP).forEach(subList => {
+                subList.forEach(sub => { if (!axisLabelsList.includes(sub)) axisLabelsList.push(sub); });
+            });
+
+            const now = new Date();
+            const pastSevenDaysThresholdTimestamp = now.getTime() - (7 * 24 * 60 * 60 * 1000);
+
+            axisLabelsList.forEach(subjectKey => {
+                // Verify if this subject is present inside system topics list matching completion timestamps within past 7 days range
+                const recordsInPastSevenDays = dbTopicsList.filter(t => {
+                    return t.subject === subjectKey && 
+                           t.status === 'Complete' && 
+                           t.completionDate && 
+                           (new Date(t.completionDate).getTime() >= pastSevenDaysThresholdTimestamp);
+                });
+
+                // Trigger stale notice banner if completions count returns exactly 0
+                if (recordsInPastSevenDays.length === 0) {
+                    // Check if it's explicitly included in user's routine matrix before warning
+                    let isAssignedInRoutine = false;
+                    Object.values(systemMasterRoutineData).forEach(daySlots => {
+                        daySlots.forEach(slotArr => {
+                            if (slotArr.includes(subjectKey)) isAssignedInRoutine = true;
+                        });
+                    });
+
+                    if (isAssignedInRoutine) {
+                        bannerHub.innerHTML += `
+                            <div class="glass-panel px-4 py-2.5 rounded-xl border-amber-500/30 bg-amber-950/10 text-amber-400 font-bold text-xs flex items-center justify-between shadow-md">
+                                <span class="flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-amber-500"></i> ⚠️ ${subjectKey} — ৭ দিন ধরে পড়া হয়নি!</span>
+                                <span class="text-[9px] bg-amber-950 border border-amber-800 px-2 py-0.5 rounded uppercase tracking-wider font-black">Attention Stale Node</span>
+                            </div>`;
+                    }
+                }
+            });
+        };
+
+        // FEATURE 1: DYNAMIC DAILY SEED MOTIVATIONAL QUOTES DISPATCHER
+        const triggerDailyQuoteDisplaySeed = () => {
+            const now = new Date();
+            const numericSeedValue = now.getFullYear() + now.getMonth() + now.getDate();
+            const quoteIdx = numericSeedValue % PREMIUM_MOTIVATIONAL_QUOTES.length;
+            
+            const selectedQuote = PREMIUM_MOTIVATIONAL_QUOTES[quoteIdx];
+            document.getElementById('motivational-quote-text').innerText = `"${selectedQuote.text}"`;
+            document.getElementById('motivational-quote-author').innerText = `— ${selectedQuote.author}`;
+        };
+
+        // FEATURE 5: EXPORT WEEKLY STATUS ANALYSIS SUMMARY REPORT VIA EXPLICIT JSPDF METHOD
+        const generateWeeklyPDFReport = () => {
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                doc.setFillColor(10, 10, 15);
+                doc.rect(0, 0, 210, 297, 'F');
+
+                doc.setFont("Helvetica", "bold");
+                doc.setFontSize(22);
+                doc.setTextColor(79, 142, 247);
+                doc.text("AMAR PATHSHALA LEARNING REPORT", 20, 25);
+
+                doc.setFontSize(10);
+                doc.setTextColor(156, 163, 175);
+                doc.text("Premium Suite Engine Automation System Logs Summary", 20, 32);
+                doc.line(20, 36, 190, 36);
+
+                doc.setFontSize(12);
+                doc.setTextColor(255, 255, 255);
+                doc.text(`Generated Date Range Orbit: Up to ${new Date().toLocaleDateString('en-US')}`, 20, 46);
+                doc.text(`Current Tracker Operational Rank Level: Level ${globalUserExperienceMetrics.level}`, 20, 54);
+                doc.text(`Dynamic Managed Streak Engine Counter: ${globalUserExperienceMetrics.dynamicStreak} Active Days Running`, 20, 62);
+
+                const totalManaged = dbTopicsList.length;
+                const totalFinished = dbTopicsList.filter(t => t.status === 'Complete').length;
+                doc.text(`System Analytics Volume Density: ${totalFinished} Completed / ${totalManaged} Total Topics`, 20, 72);
+
+                doc.line(20, 80, 190, 80);
+                doc.setFontSize(14);
+                doc.setTextColor(168, 85, 247);
+                doc.text("Latest Completed Action Nodes Matrix Summary", 20, 92);
+
+                doc.setFontSize(10);
+                doc.setTextColor(209, 213, 219);
+                const finishedTopicsSlice = dbTopicsList.filter(t => t.status === 'Complete').slice(-10);
+                
+                let lineYTracker = 102;
+                if (finishedTopicsSlice.length === 0) {
+                    doc.text("No archived completed topic nodes recorded yet inside this deployment cluster.", 25, lineYTracker);
+                } else {
+                    finishedTopicsSlice.forEach((t, idx) => {
+                        doc.text(`${idx + 1}. [${t.subject}] — ${t.topicName} (Done: ${t.completionDate})`, 25, lineYTracker);
+                        lineYTracker += 8;
+                    });
+                }
+
+                doc.line(20, 210, 190, 210);
+                doc.setFontSize(11);
+                doc.setTextColor(52, 211, 153);
+                doc.text('"Success is the sum of small actions repeated day in and day out."', 20, 225);
+                
+                doc.setFontSize(9);
+                doc.setTextColor(100, 116, 139);
+                doc.text("Data integrity synchronized locally via securely isolated browser local cache tokens parameters mapping.", 20, 235);
+
+                doc.save(`Pathshala-Weekly-Report-${new Date().toISOString().split('T')[0]}.pdf`);
+                fireSurpriseToastNotification("PDF Export Completed", "সাপ্তাহিক প্রগ্রেস রিপোর্ট সফলভাবে ডাউনলোড হয়েছে।");
+            } catch (err) {
+                console.error("PDF engine crash caught", err);
+                alert("PDF লাইব্রেরি লোড হতে ব্যর্থ হয়েছে অথবা কোনো অভ্যন্তরীণ ক্র্যাশ ঘটেছে। অনুগ্রহ করে ইন্টারনেট সংযোগ পরীক্ষা করুন।");
+            }
+        };
+
+        // FEATURE 6: CUSTOM AVATAR SYSTEM MATRIX METHODS
+        const openAvatarModal = () => {
+            const grid = document.getElementById('avatar-presets-grid-container');
+            grid.innerHTML = '';
+            
+            const list8Presets = ['🧑‍💻', '👨‍🎓', '🦸', '🧙‍♂️', '🥷', '👨‍🔬', '🧑‍🚀', '🏆'];
+            list8Presets.forEach(emoji => {
+                const isSelected = userSelectedIdentityAvatar === emoji;
+                grid.innerHTML += `
+                    <div onclick="selectIdentityAvatarPreset('${emoji}')" class="w-14 h-14 rounded-2xl bg-slate-950 border ${isSelected ? 'border-purple-500 bg-purple-950/20' : 'border-gray-900'} hover:border-indigo-500 transition-all flex items-center justify-center text-2xl cursor-pointer select-none">
+                        ${emoji}
+                    </div>`;
+            });
+            document.getElementById('avatar-picker-modal').classList.remove('hidden');
+        };
+
+        const closeAvatarModal = () => {
+            document.getElementById('avatar-picker-modal').classList.add('hidden');
+        };
+
+        const selectIdentityAvatarPreset = (emoji) => {
+            userSelectedIdentityAvatar = emoji;
+            localStorage.setItem('user_identity_avatar_v21', emoji);
+            evaluateAvatarEvolutionAttachmentDisplay();
+            closeAvatarModal();
+            fireSurpriseToastNotification("Identity Identity Altered", `আপনার প্রোফাইল অবতার হিসেবে ${emoji} সেট করা হয়েছে।`);
+        };
+
+        const evaluateAvatarEvolutionAttachmentDisplay = () => {
+            const crown = document.getElementById('header-avatar-crown');
+            const accessory = document.getElementById('header-avatar-accessory');
+            const mainEmoji = document.getElementById('header-avatar-emoji');
+
+            mainEmoji.innerText = userSelectedIdentityAvatar;
+            
+            const lvl = globalUserExperienceMetrics.level;
+            if (lvl >= 1 && lvl <= 4) {
+                // Novice Status
+                crown.innerText = "";
+                accessory.innerText = "";
+            } else if (lvl >= 5 && lvl <= 9) {
+                // Scholar Status Accessory unlocked
+                crown.innerText = "";
+                accessory.innerText = "📚";
+            } else if (lvl >= 10) {
+                // Master Status Celestial Crown granted
+                crown.innerText = "⭐";
+                accessory.innerText = "📚";
+            }
+        };
+
+        // FEATURE 4: GLOBAL INTERACTION KEYBOARD SHORTCUTS CONTROLLER (MODAL + ACTION LISTENERS)
+        const toggleKeyboardModal = (show) => {
+            const modal = document.getElementById('keyboard-shortcuts-modal');
+            if (show) modal.classList.remove('hidden');
+            else modal.classList.add('hidden');
+        };
+
+        const bindApplicationKeyboardShortcutListenerEvents = () => {
+            window.addEventListener('keydown', (e) => {
+                const focusedTag = document.activeElement.tagName.toLowerCase();
+                // Avoid capturing inputs when typing within regular textboxes fields forms
+                if (focusedTag === 'input' || focusedTag === 'select' || focusedTag === 'textarea') {
+                    if (e.key === 'Escape') {
+                        document.activeElement.blur();
+                    }
+                    return;
+                }
+
+                const upperKey = e.key.toUpperCase();
+                
+                if (e.key === '?') {
+                    e.preventDefault();
+                    toggleKeyboardModal(true);
+                } else if (upperKey === 'N') {
+                    e.preventDefault();
+                    switchTab('daily');
+                    setTimeout(() => { document.getElementById('injector-topic-name').focus(); }, 150);
+                } else if (upperKey === 'T') {
+                    e.preventDefault();
+                    switchTab('pomo');
+                } else if (upperKey === 'R') {
+                    e.preventDefault();
+                    switchTab('daily');
+                    const srAnchor = document.getElementById('spaced-repetition-alert-box');
+                    if (srAnchor) srAnchor.scrollIntoView({ behavior: 'smooth' });
+                } else if (upperKey === 'A') {
+                    e.preventDefault();
+                    switchTab('progress');
+                } else if (upperKey === 'H') {
+                    e.preventDefault();
+                    switchTab('routine');
+                } else if (e.key === 'Escape') {
+                    closeAvatarModal();
+                    toggleKeyboardModal(false);
+                }
+            });
+        };
+
+        // GLOBAL UTILITY TOAST ENGINE TO DISPLAY FEEDBACK METRICS SYNC STATS
+        const fireSurpriseToastNotification = (title, body) => {
+            const container = document.getElementById('surprise-toast-container');
+            container.innerHTML = `
+                <div class="glass-panel p-4 rounded-xl border-indigo-500/40 bg-slate-950/95 shadow-2xl pointer-events-auto surprise-alert flex items-start gap-3">
+                    <div class="w-6 h-6 rounded-lg bg-indigo-950 border border-indigo-800 flex items-center justify-center text-indigo-400 mt-0.5 flex-shrink-0">
+                        <i class="fa-solid fa-circle-info text-[10px]"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-black text-white uppercase tracking-wide">${title}</h4>
+                        <p class="text-[11px] text-gray-400 mt-0.5 leading-normal">${body}</p>
+                    </div>
+                </div>`;
+            setTimeout(() => { container.innerHTML = ""; }, 4000);
+        };
+
+        // POMODORO FOCUS STATION LOCAL RUNTIME INTERNAL METHODS
+        let pomoIntervalTimerReference = null;
+        let pomoSecondsRemainingCounter = 1500;
+        let isPomoTimerRunningState = false;
+
+        const togglePomoTimer = () => {
+            const btn = document.getElementById('pomo-start-btn');
+            if (isPomoTimerRunningState) {
+                clearInterval(pomoIntervalTimerReference);
+                isPomoTimerRunningState = false;
+                btn.innerHTML = `<i class="fa-solid fa-play"></i> Resume Engine`;
+            } else {
+                isPomoTimerRunningState = true;
+                btn.innerHTML = `<i class="fa-solid fa-pause"></i> Pause Clock`;
+                pomoIntervalTimerReference = setInterval(() => {
+                    if (pomoSecondsRemainingCounter > 0) {
+                        pomoSecondsRemainingCounter--;
+                        updatePomoTimeDisplayInterfaceView();
+                    } else {
+                        clearInterval(pomoIntervalTimerReference);
+                        isPomoTimerRunningState = false;
+                        playNativeAudioChime('levelup');
+                        fireSurpriseToastNotification("Session Concluded", "গভীর মনোযোগের সেশনটি শেষ হয়েছে! চমৎকার প্রচেষ্টা। +50 XP");
+                        updateExperienceMetricsState(50);
+                        resetPomoTimer();
+                    }
+                }, 1000);
+            }
+        };
+
+        const resetPomoTimer = () => {
+            clearInterval(pomoIntervalTimerReference);
+            isPomoTimerRunningState = false;
+            pomoSecondsRemainingCounter = 1500;
+            document.getElementById('pomo-start-btn').innerHTML = `<i class="fa-solid fa-play"></i> Start Engine`;
+            updatePomoTimeDisplayInterfaceView();
+        };
+
+        const updatePomoTimeDisplayInterfaceView = () => {
+            const mins = Math.floor(pomoSecondsRemainingCounter / 60);
+            const secs = pomoSecondsRemainingCounter % 60;
+            document.getElementById('pomo-time-display').innerText = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+            
+            const total = 1500;
+            const dasharrayLength = 439.8;
+            const offset = ((total - pomoSecondsRemainingCounter) / total) * dasharrayLength;
+            document.getElementById('pomo-progress-ring').style.strokeDashoffset = offset;
+        };
+
+        // FEATURE 3 (PHASE 5): PROGRESSIVE WEB APP INTERNET CAPABILITIES NETWORK BROADCAST WATCHER
+        const initializePWAServiceListeners = () => {
+            // Live online/offline monitoring system hooks
+            window.addEventListener('online', () => {
+                document.getElementById('offline-banner').classList.add('hidden');
+                fireSurpriseToastNotification("System Online", "ইন্টারনেট সংযোগ পুনরায় স্থাপিত হয়েছে। লাইভ সিঙ্ক সক্রিয়।");
+            });
+            window.addEventListener('offline', () => {
+                document.getElementById('offline-banner').classList.remove('hidden');
+                fireSurpriseToastNotification("Network Interrupted", "ডিভাইসটি বর্তমানে অফলাইন মোডে স্থানান্তরিত হয়েছে।");
+            });
+            if (!navigator.onLine) {
+                document.getElementById('offline-banner').classList.remove('hidden');
+            }
+
+            // Beforeinstallprompt event capturing for customized install CTA link
+            let deferredPromptToken;
+            const installBtn = document.getElementById('pwa-install-btn');
+            
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPromptToken = e;
+                installBtn.classList.remove('hidden');
+            });
+
+            installBtn.addEventListener('click', async () => {
+                if (deferredPromptToken) {
+                    deferredPromptToken.prompt();
+                    const { outcome } = await deferredPromptToken.userChoice;
+                    if (outcome === 'accepted') {
+                        installBtn.classList.add('hidden');
+                    }
+                    deferredPromptToken = null;
+                }
+            });
+        };
     </script>
 </body>
 </html>
